@@ -59,8 +59,9 @@ function startBrightnessCheck() {
         c.getContext("2d")!.drawImage(videoRef.value, 0, 0, 40, 40);
         const d = c.getContext("2d")!.getImageData(0, 0, 40, 40).data;
         let sum = 0;
-        for (let i = 0; i < d.length; i += 4)
+        for (let i = 0; i < d.length; i += 4) {
             sum += (d[i] + d[i + 1] + d[i + 2]) / 3;
+        }
         qualityWarn.value = sum / (d.length / 4) < 55;
     }, 800);
 }
@@ -76,8 +77,9 @@ function capturePhoto() {
         (blob) => {
             if (!blob) return;
             capturedBlob.value = blob;
-            if (previewRef.value)
+            if (previewRef.value) {
                 previewRef.value.src = URL.createObjectURL(blob);
+            }
             mode.value = "captured";
             stopStream();
         },
@@ -127,6 +129,7 @@ function triggerUpload() {
 async function onFileChange(e: Event) {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
+
     if (["image/heic", "image/heif"].includes(file.type)) {
         toast.add({ title: "Please use JPEG or PNG format", color: "warning" });
         return;
@@ -135,6 +138,7 @@ async function onFileChange(e: Event) {
         toast.add({ title: "Image too large — max 10MB", color: "warning" });
         return;
     }
+
     (e.target as HTMLInputElement).value = "";
     try {
         await scan(file);
@@ -150,14 +154,7 @@ async function onFileChange(e: Event) {
 <template>
     <div class="flex flex-col gap-4 p-4">
         <!-- Camera zone -->
-        <div
-            class="relative rounded-2xl overflow-hidden bg-elevated aspect-[3/4] w-full flex items-center justify-center"
-            :class="
-                mode === 'captured'
-                    ? 'ring-2 ring-primary'
-                    : 'ring-1 ring-dashed ring-default'
-            "
-        >
+        <CameraFrame :mode="mode" :show-quality-warning="qualityWarn">
             <video
                 v-show="mode === 'live'"
                 ref="videoRef"
@@ -173,54 +170,19 @@ async function onFileChange(e: Event) {
                 alt="Captured receipt"
                 class="absolute inset-0 w-full h-full object-cover"
             />
-
-            <div
-                v-if="mode === 'idle'"
-                class="flex flex-col items-center gap-3 p-6 text-center"
-            >
-                <UIcon name="i-lucide-camera" class="size-10 text-muted" />
-                <p class="text-sm text-muted max-w-[22ch]">
-                    Point camera at your receipt
-                </p>
-            </div>
-
-            <template v-if="mode === 'live'">
-                <div
-                    class="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-primary rounded-tl opacity-70"
-                />
-                <div
-                    class="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-primary rounded-tr opacity-70"
-                />
-                <div
-                    class="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-primary rounded-bl opacity-70"
-                />
-                <div
-                    class="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-primary rounded-br opacity-70"
-                />
-            </template>
-
-            <Transition name="fade">
-                <UAlert
-                    v-if="qualityWarn"
-                    icon="i-lucide-sun"
-                    color="warning"
-                    variant="soft"
-                    title="Too dark — try better lighting"
-                    class="absolute bottom-3 left-3 right-3 text-xs"
-                />
-            </Transition>
-        </div>
+        </CameraFrame>
 
         <div v-if="mode === 'live'" class="flex gap-3">
-            <UButton variant="outline" icon="i-lucide-x" @click="resetToIdle"
-                >Cancel</UButton
-            >
+            <UButton variant="outline" icon="i-lucide-x" @click="resetToIdle">
+                Cancel
+            </UButton>
             <UButton
                 class="flex-1"
                 icon="i-lucide-aperture"
                 @click="capturePhoto"
-                >Capture</UButton
             >
+                Capture
+            </UButton>
         </div>
 
         <div v-else-if="mode === 'captured'" class="flex gap-3">
@@ -228,15 +190,17 @@ async function onFileChange(e: Event) {
                 variant="outline"
                 icon="i-lucide-rotate-ccw"
                 @click="retake"
-                >Retake</UButton
             >
+                Retake
+            </UButton>
             <UButton
                 class="flex-1"
                 icon="i-lucide-check"
                 :loading="loading"
                 @click="useThis"
-                >Scan this</UButton
             >
+                Scan this
+            </UButton>
         </div>
 
         <template v-else>
@@ -246,8 +210,9 @@ async function onFileChange(e: Event) {
                 size="lg"
                 :ui="{ base: 'justify-center' }"
                 @click="startCamera"
-                >Open Camera</UButton
             >
+                Open Camera
+            </UButton>
             <USeparator label="or" />
             <div
                 class="border border-dashed border-default rounded-xl p-5 flex flex-col items-center gap-2 text-sm text-muted cursor-pointer hover:border-primary hover:bg-primary/5 hover:text-primary transition-colors"
