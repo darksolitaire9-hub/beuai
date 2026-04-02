@@ -129,7 +129,6 @@ function triggerUpload() {
 async function onFileChange(e: Event) {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
-
     if (["image/heic", "image/heif"].includes(file.type)) {
         toast.add({ title: "Please use JPEG or PNG format", color: "warning" });
         return;
@@ -138,7 +137,6 @@ async function onFileChange(e: Event) {
         toast.add({ title: "Image too large — max 10MB", color: "warning" });
         return;
     }
-
     (e.target as HTMLInputElement).value = "";
     try {
         await scan(file);
@@ -153,7 +151,7 @@ async function onFileChange(e: Event) {
 
 <template>
     <div class="flex flex-col gap-4 p-4">
-        <!-- Camera zone -->
+        <!-- Camera zone — step 5, unchanged -->
         <CameraFrame :mode="mode" :show-quality-warning="qualityWarn">
             <video
                 v-show="mode === 'live'"
@@ -172,47 +170,19 @@ async function onFileChange(e: Event) {
             />
         </CameraFrame>
 
-        <div v-if="mode === 'live'" class="flex gap-3">
-            <UButton variant="outline" icon="i-lucide-x" @click="resetToIdle">
-                Cancel
-            </UButton>
-            <UButton
-                class="flex-1"
-                icon="i-lucide-aperture"
-                @click="capturePhoto"
-            >
-                Capture
-            </UButton>
-        </div>
+        <!-- Step 6: button rows extracted into CameraControls -->
+        <CameraControls
+            :mode="mode"
+            :loading="loading"
+            @open="startCamera"
+            @cancel="resetToIdle"
+            @capture="capturePhoto"
+            @retake="retake"
+            @confirm="useThis"
+        />
 
-        <div v-else-if="mode === 'captured'" class="flex gap-3">
-            <UButton
-                variant="outline"
-                icon="i-lucide-rotate-ccw"
-                @click="retake"
-            >
-                Retake
-            </UButton>
-            <UButton
-                class="flex-1"
-                icon="i-lucide-check"
-                :loading="loading"
-                @click="useThis"
-            >
-                Scan this
-            </UButton>
-        </div>
-
-        <template v-else>
-            <UButton
-                class="w-full"
-                icon="i-lucide-camera"
-                size="lg"
-                :ui="{ base: 'justify-center' }"
-                @click="startCamera"
-            >
-                Open Camera
-            </UButton>
+        <!-- Upload zone — step 7, still inline, guarded to idle only -->
+        <template v-if="mode === 'idle'">
             <USeparator label="or" />
             <div
                 class="border border-dashed border-default rounded-xl p-5 flex flex-col items-center gap-2 text-sm text-muted cursor-pointer hover:border-primary hover:bg-primary/5 hover:text-primary transition-colors"
@@ -223,18 +193,18 @@ async function onFileChange(e: Event) {
             >
                 <UIcon name="i-lucide-upload" class="size-6" />
                 Upload from gallery
-                <span class="text-xs text-faint">JPEG, PNG, HEIC accepted</span>
+                <span class="text-xs text-faint">JPEG or PNG · max 10 MB</span>
             </div>
             <input
                 ref="fileInput"
                 type="file"
                 accept="image/*"
                 class="hidden"
-                capture="environment"
                 @change="onFileChange"
             />
         </template>
 
+        <!-- Processing overlay — step 8, still inline -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -260,7 +230,7 @@ async function onFileChange(e: Event) {
     </div>
 </template>
 
-<style scoped>
+<style>
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 200ms ease;

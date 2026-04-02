@@ -4,6 +4,7 @@ import type { ReceiptItem } from "~/types/receipt";
 const { result, clear } = useReceiptScanner();
 const { save } = useReceiptHistory();
 const toast = useToast();
+const setTab = inject<(tab: string) => void>("setTab")!;
 
 const categoryGroups = computed(() => {
     if (!result.value) return {};
@@ -18,12 +19,14 @@ const categoryGroups = computed(() => {
 });
 
 const fmt = (n: number) => `€${n.toFixed(2)}`;
+
 const formatDate = (iso: string) =>
     new Date(iso).toLocaleDateString("pt-PT", {
         day: "2-digit",
         month: "short",
         year: "numeric",
     });
+
 const qtyLabel = (item: ReceiptItem) => {
     if (item.qty % 1 !== 0)
         return `${item.qty} kg × ${fmt(item.unit_price)}/kg`;
@@ -40,6 +43,7 @@ function saveReceipt() {
         icon: "i-lucide-check-circle",
         color: "success",
     });
+    setTab("history"); // ← user sees what they just saved
 }
 
 function discard() {
@@ -49,6 +53,7 @@ function discard() {
         icon: "i-lucide-trash-2",
         color: "neutral",
     });
+    setTab("scan"); // ← back to camera ready to scan again
 }
 </script>
 
