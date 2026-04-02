@@ -1,9 +1,11 @@
 import type { ParsedReceipt } from "~/types/receipt";
+import type { ReceiptLanguage } from "~/composables/useReceiptLanguage";
 
 export const useReceiptScanner = () => {
   const result = useState<ParsedReceipt | null>("scan-result", () => null);
   const loading = ref(false);
   const step = ref(0);
+  const { lang } = useReceiptLanguage();
 
   const scan = async (blob: Blob) => {
     loading.value = true;
@@ -20,6 +22,9 @@ export const useReceiptScanner = () => {
 
       const data = await $fetch<ParsedReceipt>("/api/parse-receipt", {
         method: "POST",
+        headers: {
+          "x-receipt-language": lang.value, // ← send selected language
+        },
         body: { base64, mimeType },
       });
 

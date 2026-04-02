@@ -7,6 +7,9 @@
             Bills OCR
         </div>
 
-        <UColorModeButton />
+        <div class="flex items-center gap-1">
+            <AppLanguagePicker />
+            <UColorModeButton />
+        </div>
     </header>
 </template>
