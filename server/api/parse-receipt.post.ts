@@ -1,26 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const PROMPT = `
-You are a receipt parser. Extract all data from this receipt image into JSON.
-
-Rules:
-- Weighted items: "0.496 x 3.49" → qty: 0.496, unit_price: 3.49
-- "Poupança Imediata" is a discount — attach it to the item ABOVE it as "discount"
-- Use category headers (MERCEARIA, TALHO, FRUTAS E VEGETAIS, etc.) as item categories
-- All monetary values as numbers, not strings
-- date in ISO 8601 (YYYY-MM-DD)
-
-Return ONLY this JSON, no markdown:
-{
-  "store": string,
-  "date": string,
-  "payment_method": string,
-  "subtotal": number,
-  "total_savings": number,
-  "total_paid": number,
-  "items": [{ "name": string, "category": string, "qty": number, "unit_price": number, "total": number, "discount": number }]
-}
-`;
+import { PROMPTS } from "../prompts/index";
+import { FALLBACK_LANG } from "../config";
+import type { PromptLanguage } from "../types";
 
 export default defineEventHandler(async (event) => {
   const { base64, mimeType } = await readBody(event);
@@ -31,6 +12,10 @@ export default defineEventHandler(async (event) => {
       message: "Missing base64 or mimeType",
     });
 
+  const lang = (getHeader(event, "x-receipt-language") ??
+    FALLBACK_LANG) as PromptLanguage;
+  const prompt = PROMPTS[lang] ?? PROMPTS[FALLBACK_LANG];
+
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY!);
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash-lite",
@@ -40,7 +25,7 @@ export default defineEventHandler(async (event) => {
   let text = "";
   try {
     const response = await model.generateContent([
-      PROMPT,
+      prompt,
       { inlineData: { mimeType, data: base64 } },
     ]);
     text = response.response.text().trim();
