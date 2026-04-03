@@ -5,7 +5,6 @@ const toast = useToast();
 const videoRef = ref<HTMLVideoElement | null>(null);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const previewRef = ref<HTMLImageElement | null>(null);
-const fileInput = ref<HTMLInputElement | null>(null);
 
 const mode = ref<"idle" | "live" | "captured">("idle");
 const capturedBlob = ref<Blob | null>(null);
@@ -133,22 +132,7 @@ async function useThis() {
     }
 }
 
-function triggerUpload() {
-    fileInput.value?.click();
-}
-
-async function onFileChange(e: Event) {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    if (["image/heic", "image/heif"].includes(file.type)) {
-        toast.add({ title: "Please use JPEG or PNG format", color: "warning" });
-        return;
-    }
-    if (file.size > 10 * 1024 * 1024) {
-        toast.add({ title: "Image too large — max 10 MB", color: "warning" });
-        return;
-    }
-    (e.target as HTMLInputElement).value = "";
+async function onUpload(file: File) {
     try {
         await scan(file);
     } catch (err: any) {
@@ -189,121 +173,13 @@ async function onFileChange(e: Event) {
             @confirm="useThis"
         />
 
-        <!-- Upload zone — step 7, still inline -->
+        <!-- Upload zone  -->
         <template v-if="mode === 'idle'">
             <USeparator label="or" />
-            <div
-                class="border border-dashed border-default rounded-xl p-5 flex flex-col items-center gap-2 text-sm text-muted cursor-pointer hover:border-primary hover:bg-primary/5 hover:text-primary transition-colors"
-                role="button"
-                tabindex="0"
-                @click="triggerUpload"
-                @keydown.enter="triggerUpload"
-            >
-                <UIcon name="i-lucide-upload" class="size-6" />
-                Upload from gallery
-                <span class="text-xs text-faint">JPEG or PNG · max 10 MB</span>
-            </div>
-            <input
-                ref="fileInput"
-                type="file"
-                accept="image/*"
-                class="hidden"
-                @change="onFileChange"
-            />
+            <UploadZone @upload="onUpload" />
         </template>
 
-        <!-- Processing overlay — step 8, still inline -->
-        <Teleport to="body">
-            <Transition name="fade">
-                <div
-                    v-if="loading"
-                    class="fixed inset-0 z-50 overflow-hidden"
-                    role="status"
-                    aria-live="polite"
-                >
-                    <!-- wave layer — theme-aware, sits behind content -->
-                    <div class="scan-wave-bg absolute inset-0" />
-
-                    <!-- content -->
-                    <div
-                        class="relative z-10 flex flex-col items-center justify-center h-full gap-6"
-                    >
-                        <UIcon
-                            name="i-lucide-scan-line"
-                            class="size-12 text-primary animate-pulse"
-                        />
-                        <div class="text-center">
-                            <p class="font-semibold text-lg">
-                                Reading receipt…
-                            </p>
-                            <p class="text-sm text-muted">
-                                Extracting your items…
-                            </p>
-                        </div>
-                        <ProcessingSteps />
-                    </div>
-                </div>
-            </Transition>
-        </Teleport>
+        <!-- Processing overlay -->
+        <ProcessingOverlay :visible="loading" />
     </div>
 </template>
-
-<style>
-/* ─── overlay fade ─────────────────────────────────────── */
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 200ms ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-    opacity: 0;
-}
-
-/* ─── wave color tokens — light mode ──────────────────── */
-:root {
-    --scan-wave-1: #f7f6f2;
-    --scan-wave-2: color-mix(in oklch, #01696f 6%, #f7f6f2);
-    --scan-wave-3: #f9f8f5;
-    --scan-wave-4: color-mix(in oklch, #01696f 10%, #f9f8f5);
-}
-
-/* dark mode — Nuxt UI / Tailwind class toggle */
-.dark,
-[data-theme="dark"] {
-    --scan-wave-1: #171614;
-    --scan-wave-2: color-mix(in oklch, #4f98a3 10%, #171614);
-    --scan-wave-3: #1c1b19;
-    --scan-wave-4: color-mix(in oklch, #4f98a3 15%, #1c1b19);
-}
-
-/* ─── wave animation ──────────────────────────────────── */
-.scan-wave-bg {
-    background: linear-gradient(
-        -45deg,
-        var(--scan-wave-1),
-        var(--scan-wave-2),
-        var(--scan-wave-3),
-        var(--scan-wave-4)
-    );
-    background-size: 400% 400%;
-    animation: scan-wave 5s ease infinite;
-}
-
-@keyframes scan-wave {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .scan-wave-bg {
-        animation: none;
-    }
-}
-</style>
