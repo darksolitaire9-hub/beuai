@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { PROMPTS } from "../prompts/index";
-import { FALLBACK_LANG } from "../config";
+import { FALLBACK_LANG, GEMINI_MODEL } from "../config";
 import type { PromptLanguage } from "../types";
 
 export default defineEventHandler(async (event) => {
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY!);
   const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-flash-lite",
+    model: GEMINI_MODEL,
     generationConfig: { responseMimeType: "application/json", temperature: 0 },
   });
 
@@ -31,12 +31,41 @@ export default defineEventHandler(async (event) => {
     text = response.response.text().trim();
     if (!text) throw new Error("EMPTY_RESPONSE");
   } catch (e: any) {
+    console.error(
+      "[ai:parse] raw error:",
+      e?.message,
+      e?.status,
+      e?.errorDetails,
+    );
+
     if (e.message === "EMPTY_RESPONSE")
       throw createError({
         statusCode: 502,
-        message: "Gemini returned empty response — retry",
+        message: "Empty response from AI — retry",
       });
-    throw createError({ statusCode: 502, message: "Gemini API error" });
+
+    if (
+      e.status === 429 ||
+      e?.errorDetails?.[0]?.reason === "RATE_LIMIT_EXCEEDED"
+    )
+      throw createError({
+        statusCode: 429,
+        message: "AI rate limit reached — try again later",
+      });
+
+    if (e.status === 404)
+      throw createError({
+        statusCode: 503,
+        message: "AI model unavailable — service may have changed",
+      });
+
+    if (e.status === 401 || e.status === 403)
+      throw createError({
+        statusCode: 503,
+        message: "AI authentication failed — check API key",
+      });
+
+    throw createError({ statusCode: 502, message: "AI service error — retry" });
   }
 
   let parsed: any;
@@ -45,7 +74,7 @@ export default defineEventHandler(async (event) => {
   } catch {
     throw createError({
       statusCode: 422,
-      message: "Could not parse Gemini response as JSON",
+      message: "Could not parse AI response — retry",
     });
   }
 

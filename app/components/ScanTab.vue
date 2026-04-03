@@ -109,16 +109,27 @@ function resetToIdle() {
 
 onUnmounted(resetToIdle);
 
+function toastForError(err: any) {
+    const code = err?.statusCode ?? err?.status;
+    const messages: Record<number, string> = {
+        429: "Too many requests — wait a moment and retry",
+        503: "Service temporarily unavailable — try again later",
+        502: "Could not read receipt — try again",
+        422: "Receipt could not be parsed — try a clearer image",
+    };
+    toast.add({
+        title: messages[code] ?? "Could not read receipt — try again",
+        color: "error",
+    });
+}
+
 async function useThis() {
     if (!capturedBlob.value) return;
     try {
         await scan(capturedBlob.value);
         resetToIdle();
-    } catch {
-        toast.add({
-            title: "Could not read receipt — try again",
-            color: "error",
-        });
+    } catch (err: any) {
+        toastForError(err);
     }
 }
 
@@ -134,24 +145,21 @@ async function onFileChange(e: Event) {
         return;
     }
     if (file.size > 10 * 1024 * 1024) {
-        toast.add({ title: "Image too large — max 10MB", color: "warning" });
+        toast.add({ title: "Image too large — max 10 MB", color: "warning" });
         return;
     }
     (e.target as HTMLInputElement).value = "";
     try {
         await scan(file);
-    } catch {
-        toast.add({
-            title: "Could not read receipt — try again",
-            color: "error",
-        });
+    } catch (err: any) {
+        toastForError(err);
     }
 }
 </script>
 
 <template>
     <div class="flex flex-col gap-4 p-4">
-        <!-- Camera zone — step 5, unchanged -->
+        <!-- Camera zone — step 5 -->
         <CameraFrame :mode="mode" :show-quality-warning="qualityWarn">
             <video
                 v-show="mode === 'live'"
@@ -170,7 +178,7 @@ async function onFileChange(e: Event) {
             />
         </CameraFrame>
 
-        <!-- Step 6: button rows extracted into CameraControls -->
+        <!-- Step 6: CameraControls -->
         <CameraControls
             :mode="mode"
             :loading="loading"
@@ -181,7 +189,7 @@ async function onFileChange(e: Event) {
             @confirm="useThis"
         />
 
-        <!-- Upload zone — step 7, still inline, guarded to idle only -->
+        <!-- Upload zone — step 7, still inline -->
         <template v-if="mode === 'idle'">
             <USeparator label="or" />
             <div
@@ -209,21 +217,31 @@ async function onFileChange(e: Event) {
             <Transition name="fade">
                 <div
                     v-if="loading"
-                    class="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-default/90 backdrop-blur-sm"
+                    class="fixed inset-0 z-50 overflow-hidden"
                     role="status"
                     aria-live="polite"
                 >
-                    <UIcon
-                        name="i-lucide-scan-line"
-                        class="size-12 text-primary animate-pulse"
-                    />
-                    <div class="text-center">
-                        <p class="font-semibold text-lg">Reading receipt…</p>
-                        <p class="text-sm text-muted">
-                            Gemini is extracting your items
-                        </p>
+                    <!-- wave layer — theme-aware, sits behind content -->
+                    <div class="scan-wave-bg absolute inset-0" />
+
+                    <!-- content -->
+                    <div
+                        class="relative z-10 flex flex-col items-center justify-center h-full gap-6"
+                    >
+                        <UIcon
+                            name="i-lucide-scan-line"
+                            class="size-12 text-primary animate-pulse"
+                        />
+                        <div class="text-center">
+                            <p class="font-semibold text-lg">
+                                Reading receipt…
+                            </p>
+                            <p class="text-sm text-muted">
+                                Extracting your items…
+                            </p>
+                        </div>
+                        <ProcessingSteps />
                     </div>
-                    <ProcessingSteps />
                 </div>
             </Transition>
         </Teleport>
@@ -231,6 +249,7 @@ async function onFileChange(e: Event) {
 </template>
 
 <style>
+/* ─── overlay fade ─────────────────────────────────────── */
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 200ms ease;
@@ -238,5 +257,53 @@ async function onFileChange(e: Event) {
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+
+/* ─── wave color tokens — light mode ──────────────────── */
+:root {
+    --scan-wave-1: #f7f6f2;
+    --scan-wave-2: color-mix(in oklch, #01696f 6%, #f7f6f2);
+    --scan-wave-3: #f9f8f5;
+    --scan-wave-4: color-mix(in oklch, #01696f 10%, #f9f8f5);
+}
+
+/* dark mode — Nuxt UI / Tailwind class toggle */
+.dark,
+[data-theme="dark"] {
+    --scan-wave-1: #171614;
+    --scan-wave-2: color-mix(in oklch, #4f98a3 10%, #171614);
+    --scan-wave-3: #1c1b19;
+    --scan-wave-4: color-mix(in oklch, #4f98a3 15%, #1c1b19);
+}
+
+/* ─── wave animation ──────────────────────────────────── */
+.scan-wave-bg {
+    background: linear-gradient(
+        -45deg,
+        var(--scan-wave-1),
+        var(--scan-wave-2),
+        var(--scan-wave-3),
+        var(--scan-wave-4)
+    );
+    background-size: 400% 400%;
+    animation: scan-wave 5s ease infinite;
+}
+
+@keyframes scan-wave {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scan-wave-bg {
+        animation: none;
+    }
 }
 </style>

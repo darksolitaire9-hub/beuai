@@ -6,3 +6,5 @@ import type { PromptLanguage } from "./types";
  * Supported: 'pt' | 'en' | 'es'
  */
 export const FALLBACK_LANG: PromptLanguage = "pt";
+export const GEMINI_MODEL =
+  process.env.GEMINI_MODEL ?? "gemini-3.1-flash-lite-preview";
