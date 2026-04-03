@@ -23,7 +23,7 @@ defineProps<{ visible: boolean }>();
                         <p class="font-semibold text-lg">Reading receipt…</p>
                         <p class="text-sm text-muted">Extracting your items…</p>
                     </div>
-                    <ProcessingSteps />
+                    <ScanProcessingSteps />
                 </div>
             </div>
         </Transition>
