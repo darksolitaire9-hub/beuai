@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { scan, loading } = useReceiptScanner();
-const toast = useToast();
+const { show: showScanError } = useScanErrorToast();
 
 const {
     videoRef,
@@ -15,21 +15,6 @@ const {
     resetToIdle,
 } = useCameraCapture();
 
-function toastForError(err: any) {
-    const code = err?.statusCode ?? err?.status;
-    const messages: Record<number, string> = {
-        429: "Too many requests — wait a moment and retry",
-        503: "Service temporarily unavailable — try again later",
-        502: "Could not read receipt — try again",
-        422: "Receipt could not be parsed — try a clearer image",
-    };
-
-    toast.add({
-        title: messages[code] ?? "Could not read receipt — try again",
-        color: "error",
-    });
-}
-
 async function useThis() {
     if (!capturedBlob.value) return;
 
@@ -37,7 +22,7 @@ async function useThis() {
         await scan(capturedBlob.value);
         resetToIdle();
     } catch (err: any) {
-        toastForError(err);
+        showScanError(err);
     }
 }
 
@@ -45,7 +30,7 @@ async function onUpload(file: File) {
     try {
         await scan(file);
     } catch (err: any) {
-        toastForError(err);
+        showScanError(err);
     }
 }
 </script>

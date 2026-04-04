@@ -1,8 +1,14 @@
+// server/prompts/en.ts | Constants | Parsing context
+// Receipt parsing prompt for English-language receipts.
+
 import { BASE_SCHEMA } from "./schema";
 import { PACK_RULES } from "./rules/pack";
+import { NOT_RECEIPT_RULE } from "./rules/not-receipt";
 
 export const EN_PROMPT = `
 You are a receipt parser for English-language receipts.
+
+${NOT_RECEIPT_RULE}
 
 Context:
 - Currency may vary; output all amounts as numbers with decimal point

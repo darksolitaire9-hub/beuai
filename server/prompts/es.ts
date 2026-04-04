@@ -1,8 +1,14 @@
+// server/prompts/es.ts | Constants | Parsing context
+// Receipt parsing prompt for Spanish-language receipts (tickets, facturas).
+
 import { BASE_SCHEMA } from "./schema";
 import { PACK_RULES } from "./rules/pack";
+import { NOT_RECEIPT_RULE } from "./rules/not-receipt";
 
 export const ES_PROMPT = `
 You are a receipt parser specialized in Spanish receipts (tickets, facturas).
+
+${NOT_RECEIPT_RULE}
 
 Context:
 - Receipts are issued in Spain or Latin America, labels are in Spanish

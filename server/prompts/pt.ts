@@ -1,8 +1,14 @@
+// server/prompts/pt.ts | Constants | Parsing context
+// Receipt parsing prompt for Portuguese-language receipts (faturas, talões de compra).
+
 import { BASE_SCHEMA } from "./schema";
 import { PACK_RULES } from "./rules/pack";
+import { NOT_RECEIPT_RULE } from "./rules/not-receipt";
 
 export const PT_PROMPT = `
 You are a receipt parser specialized in Portuguese receipts (faturas, talões de compra).
+
+${NOT_RECEIPT_RULE}
 
 Context:
 - Receipts are issued in Portugal, labels are in Portuguese
