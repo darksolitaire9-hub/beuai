@@ -30,6 +30,7 @@ function onFileChange(e: Event) {
         tabindex="0"
         @click="triggerUpload"
         @keydown.enter="triggerUpload"
+        @keydown.space.prevent="triggerUpload"
     >
         <UIcon name="i-lucide-upload" class="size-6" />
         Upload from gallery
