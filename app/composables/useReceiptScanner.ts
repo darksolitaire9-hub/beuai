@@ -1,3 +1,8 @@
+// app/composables/useReceiptScanner.ts | Composable | Parsing context
+// Wraps the receipt scan flow: base64 encoding, request to /api/parse-receipt,
+// and shared ParsedReceipt state for the scan results.
+// Needs: useReceiptLanguage, Nuxt $fetch, blobToBase64, delay
+
 import type { ParsedReceipt } from "~/types/receipt";
 
 export const useReceiptScanner = () => {
@@ -30,6 +35,9 @@ export const useReceiptScanner = () => {
       step.value = 4;
       await delay(400);
       result.value = data;
+    } catch (err) {
+      // Propagate typed $fetch error so callers (ScanTab.vue) can map it to toasts.
+      throw err;
     } finally {
       loading.value = false;
       step.value = 0;

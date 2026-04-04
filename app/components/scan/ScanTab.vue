@@ -1,4 +1,14 @@
+<!--
+app/components/scan/ScanTab.vue | Component — orchestration only
+Orchestrates camera capture, upload flow, and calls useReceiptScanner.
+Delegates error mapping to useScanErrorToast and renders the scan UI shell.
+Needs: useReceiptScanner, useCameraCapture, useScanErrorToast, CameraFrame,
+CameraControls, ScanUploadZone, ScanProcessingOverlay
+-->
+
 <script setup lang="ts">
+import type { ApiFetchError } from "../../../shared/constants/errors";
+
 const { scan, loading } = useReceiptScanner();
 const { show: showScanError } = useScanErrorToast();
 
@@ -21,23 +31,23 @@ async function useThis() {
     try {
         await scan(capturedBlob.value);
         resetToIdle();
-    } catch (err: any) {
-        showScanError(err);
+    } catch (err) {
+        showScanError(err as ApiFetchError);
     }
 }
 
 async function onUpload(file: File) {
     try {
         await scan(file);
-    } catch (err: any) {
-        showScanError(err);
+    } catch (err) {
+        showScanError(err as ApiFetchError);
     }
 }
 </script>
 
 <template>
     <div class="flex flex-col gap-4 p-4">
-        <!-- Camera zone — step 5 -->
+        <!-- Camera zone -->
         <CameraFrame :mode="mode" :show-quality-warning="qualityWarn">
             <video
                 v-show="mode === 'live'"
@@ -56,7 +66,7 @@ async function onUpload(file: File) {
             />
         </CameraFrame>
 
-        <!-- Step 6: CameraControls -->
+        <!-- CameraControls -->
         <CameraControls
             :mode="mode"
             :loading="loading"

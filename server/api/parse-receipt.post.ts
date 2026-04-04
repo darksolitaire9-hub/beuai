@@ -33,7 +33,7 @@ export default defineEventHandler(async (event) => {
   const model = genAI.getGenerativeModel({
     model: GEMINI_MODEL,
     generationConfig: {
-      responseMimeType: "application/json", // recommended pattern [web:57]
+      responseMimeType: "application/json",
       temperature: 0,
     },
   });
@@ -54,41 +54,55 @@ export default defineEventHandler(async (event) => {
       e?.errorDetails,
     );
 
-    if (e.message === "EMPTY_RESPONSE")
+    if (e.message === "EMPTY_RESPONSE") {
       throw createError({
         statusCode: 502,
         message: "Empty response from AI — retry",
       });
+    }
 
     if (
       e.status === 429 ||
       e?.errorDetails?.[0]?.reason === "RATE_LIMIT_EXCEEDED"
-    )
+    ) {
       throw createError({
         statusCode: 429,
         message: "AI rate limit reached — try again later",
       });
+    }
 
-    if (e.status === 404)
+    if (e.status === 404) {
       throw createError({
         statusCode: 503,
         message: "AI model unavailable — service may have changed",
       });
+    }
 
-    if (e.status === 401 || e.status === 403)
+    if (e.status === 401 || e.status === 403) {
       throw createError({
         statusCode: 503,
         message: "AI authentication failed — check API key",
       });
+    }
 
     throw createError({ statusCode: 502, message: "AI service error — retry" });
   }
 
   let parsed: any;
   try {
-    // Following Google’s recommended pattern: model returns JSON text, we parse it. [web:57]
+    // Model returns JSON text, we parse it.
     parsed = JSON.parse(text);
   } catch {
+    // If the model explicitly indicated a non-receipt but the JSON is malformed,
+    // surface NOT_A_RECEIPT instead of a generic parse failure.
+    if (typeof text === "string" && text.includes('"not_receipt": true')) {
+      throw createError({
+        statusCode: 422,
+        data: { code: ERROR_CODES.NOT_A_RECEIPT },
+        message: "Image is not a shopping receipt",
+      });
+    }
+
     throw createError({
       statusCode: 422,
       data: { code: ERROR_CODES.AI_RESPONSE_PARSE_FAILED },
@@ -98,6 +112,20 @@ export default defineEventHandler(async (event) => {
 
   // Strict check — only literal true signals a non-receipt image
   if (parsed?.not_receipt === true) {
+    throw createError({
+      statusCode: 422,
+      data: { code: ERROR_CODES.NOT_A_RECEIPT },
+      message: "Image is not a shopping receipt",
+    });
+  }
+
+  // Heuristic: if there are no items and no total, treat as non-receipt.
+  const hasItems = Array.isArray(parsed.items) && parsed.items.length > 0;
+  const hasTotal =
+    typeof parsed.receipt_total_paid === "number" &&
+    parsed.receipt_total_paid > 0;
+
+  if (!hasItems && !hasTotal) {
     throw createError({
       statusCode: 422,
       data: { code: ERROR_CODES.NOT_A_RECEIPT },
