@@ -1,4 +1,4 @@
-# bewai — Domain Language
+# beuai — Domain Language
 
 > This is the project's ubiquitous language document.  
 > When naming a variable, interface, function, or UI label — consult this first.  
