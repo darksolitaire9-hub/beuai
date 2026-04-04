@@ -26,3 +26,7 @@ logs
 # certs — never commit these
 localhost+1.pem
 localhost+1-key.pem
+
+
+# internal mds
+docs/dev-conventions.md
