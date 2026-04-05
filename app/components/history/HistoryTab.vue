@@ -1,15 +1,20 @@
 <!--
   app/components/history/HistoryTab.vue | Component — orchestration only
-  Renders the saved receipt list with totals and delete actions.
+  Renders the saved receipt list with totals, delete actions, and detail slideover.
   Hydrates from IndexedDB on mount via useReceiptHistory.
-  Needs: useReceiptHistory
+  Needs: useReceiptHistory, HistoryReceiptDetail
 -->
 
 <script setup lang="ts">
-import type { ReceiptItem } from "~/types/receipt";
+import type { ReceiptItem, SavedReceipt } from "~/types/receipt";
+
 const { history, remove, totalSpent, totalSaved, hydrate } =
     useReceiptHistory();
 const toast = useToast();
+
+const selected = ref<SavedReceipt | null>(null);
+const showDetail = ref(false);
+
 onMounted(async () => {
     try {
         await hydrate();
@@ -32,9 +37,20 @@ const formatDate = (iso: string) =>
 const categorySummary = (items: ReceiptItem[]) =>
     [...new Set(items.map((i) => i.category.split(" ")[0]))].slice(0, 3);
 
+function openReceipt(receipt: SavedReceipt) {
+    selected.value = receipt;
+    showDetail.value = true;
+}
+
+function closeDetail() {
+    showDetail.value = false;
+    selected.value = null;
+}
+
 async function deleteReceipt(id: string) {
     try {
         await remove(id);
+        if (selected.value?.id === id) closeDetail();
         toast.add({ title: "Receipt removed", color: "neutral" });
     } catch {
         toast.add({ title: "Could not remove receipt", color: "error" });
@@ -73,8 +89,9 @@ async function deleteReceipt(id: string) {
             <UCard
                 v-for="receipt in history"
                 :key="receipt.id"
-                class="active:scale-[0.99] transition-transform"
+                class="active:scale-[0.99] transition-transform cursor-pointer"
                 :ui="{ body: 'p-0' }"
+                @click="openReceipt(receipt)"
             >
                 <div class="flex items-start justify-between p-4">
                     <div class="flex-1 min-w-0 mr-3">
@@ -124,5 +141,12 @@ async function deleteReceipt(id: string) {
                 </div>
             </UCard>
         </div>
+
+        <HistoryReceiptDetail
+            v-if="selected"
+            :receipt="selected"
+            :open="showDetail"
+            @close="closeDetail"
+        />
     </div>
 </template>
