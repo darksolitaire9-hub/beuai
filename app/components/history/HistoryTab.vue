@@ -1,6 +1,26 @@
+<!--
+  app/components/history/HistoryTab.vue | Component — orchestration only
+  Renders the saved receipt list with totals and delete actions.
+  Hydrates from IndexedDB on mount via useReceiptHistory.
+  Needs: useReceiptHistory
+-->
+
 <script setup lang="ts">
-const { history, remove, totalSpent, totalSaved } = useReceiptHistory();
+import type { ReceiptItem } from "~/types/receipt";
+const { history, remove, totalSpent, totalSaved, hydrate } =
+    useReceiptHistory();
 const toast = useToast();
+onMounted(async () => {
+    try {
+        await hydrate();
+    } catch {
+        toast.add({
+            title: "Could not load history",
+            description: "Storage may be unavailable.",
+            color: "error",
+        });
+    }
+});
 
 const fmt = (n: number) => `€${n.toFixed(2)}`;
 const formatDate = (iso: string) =>
@@ -9,12 +29,16 @@ const formatDate = (iso: string) =>
         month: "short",
         year: "numeric",
     });
-const categorySummary = (items: any[]) =>
+const categorySummary = (items: ReceiptItem[]) =>
     [...new Set(items.map((i) => i.category.split(" ")[0]))].slice(0, 3);
 
-function deleteReceipt(id: string) {
-    remove(id);
-    toast.add({ title: "Receipt removed", color: "neutral" });
+async function deleteReceipt(id: string) {
+    try {
+        await remove(id);
+        toast.add({ title: "Receipt removed", color: "neutral" });
+    } catch {
+        toast.add({ title: "Could not remove receipt", color: "error" });
+    }
 }
 </script>
 

@@ -1,3 +1,10 @@
+<!--
+  app/components/results/ResultsTab.vue | Component — orchestration only
+  Displays a parsed receipt for review and lets the user save or discard it.
+  Delegates persistence to useReceiptHistory, scanner state to useReceiptScanner.
+  Needs: useReceiptScanner, useReceiptHistory, ResultsItemCard, setTab (inject)
+-->
+
 <script setup lang="ts">
 import type { ReceiptItem } from "~/types/receipt";
 
@@ -31,19 +38,24 @@ const formatDate = (iso: string) =>
         year: "numeric",
     });
 
-function saveReceipt() {
+async function saveReceipt() {
     if (!result.value) return;
-
-    save(result.value);
-    clear();
-
-    toast.add({
-        title: "Receipt saved!",
-        icon: "i-lucide-check-circle",
-        color: "success",
-    });
-
-    setTab("history");
+    try {
+        await save(result.value);
+        clear();
+        toast.add({
+            title: "Receipt saved!",
+            icon: "i-lucide-check-circle",
+            color: "success",
+        });
+        setTab("history");
+    } catch {
+        toast.add({
+            title: "Could not save receipt",
+            description: "Storage may be full or unavailable.",
+            color: "error",
+        });
+    }
 }
 
 function discard() {
