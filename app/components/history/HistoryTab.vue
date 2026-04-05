@@ -1,12 +1,13 @@
 <!--
   app/components/history/HistoryTab.vue | Component — orchestration only
-  Renders the saved receipt list with totals, delete actions, and detail slideover.
+  Renders the saved receipt list with totals, delete actions, and detail modal.
   Hydrates from IndexedDB on mount via useReceiptHistory.
   Needs: useReceiptHistory, HistoryReceiptDetail
 -->
 
 <script setup lang="ts">
 import type { ReceiptItem, SavedReceipt } from "~/types/receipt";
+import { buildReceiptsCsv, downloadCsv } from "~/utils/exportReceiptsCsv";
 
 const { history, remove, totalSpent, totalSaved, hydrate } =
     useReceiptHistory();
@@ -56,12 +57,36 @@ async function deleteReceipt(id: string) {
         toast.add({ title: "Could not remove receipt", color: "error" });
     }
 }
+
+function exportAll() {
+    if (!history.value.length) {
+        toast.add({ title: "No receipts to export", color: "neutral" });
+        return;
+    }
+    const csv = buildReceiptsCsv(history.value);
+    const filename = `beuai-receipts-${new Date().toISOString().slice(0, 10)}.csv`;
+    downloadCsv(csv, filename);
+}
 </script>
 
 <template>
     <div class="flex flex-col">
+        <!-- Single header — always visible -->
         <div class="px-4 pt-5 pb-3 border-b border-default">
-            <h2 class="text-lg font-bold mb-0.5">History</h2>
+            <div class="flex items-center justify-between mb-0.5">
+                <h2 class="text-lg font-bold">History</h2>
+                <UButton
+                    v-if="history.length"
+                    variant="ghost"
+                    color="neutral"
+                    icon="i-lucide-download"
+                    size="xs"
+                    aria-label="Export all receipts as CSV"
+                    @click="exportAll"
+                >
+                    Export CSV
+                </UButton>
+            </div>
             <p v-if="history.length" class="text-sm text-muted">
                 {{ history.length }} receipt{{
                     history.length > 1 ? "s" : ""
@@ -72,6 +97,7 @@ async function deleteReceipt(id: string) {
             <p v-else class="text-sm text-muted">No receipts saved yet.</p>
         </div>
 
+        <!-- Empty state -->
         <div
             v-if="!history.length"
             class="flex flex-col items-center gap-4 p-12 text-center"
@@ -85,6 +111,7 @@ async function deleteReceipt(id: string) {
             </div>
         </div>
 
+        <!-- Cards list — v-else directly follows v-if above -->
         <div v-else class="flex flex-col gap-3 p-4">
             <UCard
                 v-for="receipt in history"
