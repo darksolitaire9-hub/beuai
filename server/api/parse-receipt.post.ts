@@ -2,12 +2,15 @@
 // Receives a base64 receipt image, calls the AI parser, validates and returns ParsedReceipt.
 // Internal field not_receipt is stripped before returning — client types remain unchanged.
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI } from "@google/genai";
 import { PROMPTS } from "../prompts/index";
 import { FALLBACK_LANG, GEMINI_MODEL } from "../config";
 import { ERROR_CODES } from "#shared/constants/errors";
 import { assertValidUploadInput } from "../utils/validate-upload";
 import type { PromptLanguage } from "../types";
+
+// Singleton — avoids re-instantiating the client on every request
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_KEY! });
 
 export default defineEventHandler(async (event) => {
   const { base64, mimeType } = await readBody<{
@@ -29,22 +32,23 @@ export default defineEventHandler(async (event) => {
     FALLBACK_LANG) as PromptLanguage;
   const prompt = PROMPTS[lang] ?? PROMPTS[FALLBACK_LANG];
 
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY!);
-  const model = genAI.getGenerativeModel({
-    model: GEMINI_MODEL,
-    generationConfig: {
-      responseMimeType: "application/json",
-      temperature: 0,
-    },
-  });
-
   let text = "";
   try {
-    const response = await model.generateContent([
-      prompt,
-      { inlineData: { mimeType, data: base64 } },
-    ]);
-    text = response.response.text().trim();
+    const response = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: [
+        {
+          parts: [{ text: prompt }, { inlineData: { mimeType, data: base64 } }],
+        },
+      ],
+      config: {
+        responseMimeType: "application/json",
+        temperature: 0,
+      },
+    });
+
+    // .text is a property in the new SDK, not a method call
+    text = (response.text ?? "").trim();
     if (!text) throw new Error("EMPTY_RESPONSE");
   } catch (e: any) {
     console.error(
