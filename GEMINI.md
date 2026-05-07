@@ -2,6 +2,13 @@
 
 This project follows a strict **Domain-Driven Design (DDD)** and **Hexagonal Architecture** pattern tailored for the Nuxt/Vue ecosystem (**Vue-Native DDD**).
 
+## Environment & Tech Stack Mandates
+
+- **Package Manager:** ALWAYS use `pnpm`. Do not use `npm` or `yarn`.
+- **Framework:** Nuxt 4 (running with `future: { compatibilityVersion: 4 }`).
+- **Language:** TypeScript (Strict).
+- **Styling:** Tailwind CSS (via `@nuxt/ui`).
+
 ## Architectural Mandates
 
 ### 1. Vertical Slices (Bounded Contexts)
@@ -32,6 +39,7 @@ We follow a strict "Test-First" cycle for all new features and bug fixes.
 
 ## Engineering Standards
 
+- **Nuxt 4 / Vue 3:** Follow the latest Vue 3 Composition API patterns and Nuxt 4 directory conventions (e.g., placing the app in the `app/` directory).
 - **Reactivity:** Embrace Vue 3 reactivity (`ref`, `computed`) inside composables. Do not use pure TypeScript for domain logic if it requires complex manual mapping to UI state.
 - **Naming:** Follow the project's ubiquitous language defined in `docs/domain-language.md`.
 - **Testing:** Every composable MUST have a corresponding `.spec.ts` using **Vitest**.
