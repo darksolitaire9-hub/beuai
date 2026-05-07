@@ -3,7 +3,7 @@
 // Opens a versioned IDBDatabase once per session; exposes loadAll, persist, drop.
 // Needs: SavedReceipt from ~/types/receipt
 
-import type { SavedReceipt } from "~/types/receipt";
+import type { SavedReceipt } from "../types/receipt";
 
 const DB_NAME = "bewai-db";
 const DB_VERSION = 1;

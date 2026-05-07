@@ -3,13 +3,14 @@
 // and shared ParsedReceipt state for the scan results.
 // Needs: useReceiptLanguage, Nuxt $fetch, blobToBase64, delay
 
-import type { ParsedReceipt } from "~/types/receipt";
+import type { ParsedReceipt } from "../types/receipt";
 
 export const useReceiptScanner = () => {
   const result = useState<ParsedReceipt | null>("scan-result", () => null);
   const loading = useState<boolean>("scan-loading", () => false);
   const step = useState<number>("scan-step", () => 0);
   const { lang } = useReceiptLanguage();
+  const { parse } = useReceiptApi();
 
   const scan = async (blob: Blob) => {
     loading.value = true;
@@ -24,13 +25,7 @@ export const useReceiptScanner = () => {
       await delay(300);
       step.value = 3;
 
-      const data = await $fetch<ParsedReceipt>("/api/parse-receipt", {
-        method: "POST",
-        headers: {
-          "x-receipt-language": lang.value,
-        },
-        body: { base64, mimeType },
-      });
+      const data = await parse(base64, mimeType, lang.value);
 
       step.value = 4;
       await delay(400);

@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import {
-    useReceiptLanguage,
-    LANGUAGE_LABELS,
-    type ReceiptLanguage,
-} from "~/composables/useReceiptLanguage";
+import type { ReceiptLanguage } from "../composables/useReceiptLanguage";
 
 const { lang, set } = useReceiptLanguage();
+
+const LANGUAGE_LABELS = {
+    en: "English",
+    es: "Español",
+    pt: "Português",
+};
 
 const display = computed(() => LANGUAGE_LABELS[lang.value]);
 

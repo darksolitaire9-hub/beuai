@@ -3,7 +3,8 @@
 // downloadCsv is the only impure function — it is isolated here deliberately.
 // Needs: SavedReceipt, ReceiptExportRow from ~/types/receipt
 
-import type { SavedReceipt, ReceiptExportRow } from "~/types/receipt";
+import type { SavedReceipt } from "../../history/types/receipt";
+import type { ReceiptExportRow } from "../types/receipt";
 
 const CSV_SEPARATOR = ",";
 

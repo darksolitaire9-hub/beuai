@@ -5,6 +5,21 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui"],
   css: ["~/assets/css/main.css"],
 
+  future: {
+    compatibilityVersion: 4,
+  },
+
+  components: [
+    {
+      path: "~/features",
+      pathPrefix: false,
+    },
+  ],
+
+  imports: {
+    dirs: ["features/**/composables", "features/**/utils", "features/**/types"],
+  },
+
   devServer: {
     https: {
       key: "./localhost+1-key.pem",

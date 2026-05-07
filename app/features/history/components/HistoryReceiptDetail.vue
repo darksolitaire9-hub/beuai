@@ -6,7 +6,8 @@
 -->
 
 <script setup lang="ts">
-import type { SavedReceipt, ReceiptItem } from "~/types/receipt";
+import type { SavedReceipt } from "../types/receipt";
+import type { ReceiptItem } from "../../parsing/types/receipt";
 
 const props = defineProps<{
     receipt: SavedReceipt;

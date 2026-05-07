@@ -3,9 +3,8 @@
 // Hydrates from IndexedDB on first client mount; delegates storage to useReceiptStorage.
 // Needs: useReceiptStorage, ParsedReceipt, SavedReceipt, deepClone
 
-import type { ParsedReceipt, SavedReceipt } from "~/types/receipt";
-
-import { deepClone } from "~/utils/clone";
+import type { SavedReceipt } from "../types/receipt";
+import type { ParsedReceipt } from "../../parsing/types/receipt";
 
 let _hydrated = false;
 

@@ -6,11 +6,12 @@
 -->
 
 <script setup lang="ts">
-import type { ReceiptItem, SavedReceipt } from "~/types/receipt";
-import { buildReceiptsCsv, downloadCsv } from "~/utils/exportReceiptsCsv";
+import type { SavedReceipt } from "../types/receipt";
+import type { ReceiptItem } from "../../parsing/types/receipt";
 
 const { history, remove, totalSpent, totalSaved, hydrate } =
     useReceiptHistory();
+const { exportAll: exportToCsv } = useCsvExport();
 const toast = useToast();
 
 const selected = ref<SavedReceipt | null>(null);
@@ -59,13 +60,10 @@ async function deleteReceipt(id: string) {
 }
 
 function exportAll() {
-    if (!history.value.length) {
+    const success = exportToCsv(history.value);
+    if (!success) {
         toast.add({ title: "No receipts to export", color: "neutral" });
-        return;
     }
-    const csv = buildReceiptsCsv(history.value);
-    const filename = `beuai-receipts-${new Date().toISOString().slice(0, 10)}.csv`;
-    downloadCsv(csv, filename);
 }
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ReceiptItem } from "~/types/receipt";
+import type { ReceiptItem } from "../types/receipt";
 
 const props = defineProps<{
     item: ReceiptItem;

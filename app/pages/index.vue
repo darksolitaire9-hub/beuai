@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { APP_TABS, type AppTabId } from "~/constants/tabs";
-
 const activeTab = ref<AppTabId>("scan");
 
 provide("setTab", (tab: AppTabId) => {
