@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { APP_TABS, type AppTabId } from "~/features/shared/constants/tabs";
+
 const activeTab = ref<AppTabId>("scan");
 
 provide("setTab", (tab: AppTabId) => {
@@ -13,12 +15,10 @@ watch(result, (val, prev) => {
 </script>
 
 <template>
-    <div class="max-w-md mx-auto min-h-dvh flex flex-col">
-        <AppHeader />
-        <AppTabs v-model="activeTab" :items="APP_TABS">
-            <template #scan><ScanTab /></template>
-            <template #results><ResultsTab /></template>
-            <template #history><HistoryTab /></template>
-        </AppTabs>
-    </div>
+    <AppTabs v-model="activeTab" :items="APP_TABS">
+        <template #scan><ScanTab /></template>
+        <template #results><ResultsTab /></template>
+        <template #history><HistoryTab /></template>
+        <template #analyze><AnalyzeTab /></template>
+    </AppTabs>
 </template>

@@ -68,31 +68,27 @@ function exportAll() {
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col min-h-full">
         <!-- Single header — always visible -->
-        <div class="px-4 pt-5 pb-3 border-b border-default">
-            <div class="flex items-center justify-between mb-0.5">
-                <h2 class="text-lg font-bold">History</h2>
+        <div class="px-6 py-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+            <div class="flex items-center justify-between mb-1">
+                <h2 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">History</h2>
                 <UButton
                     v-if="history.length"
                     variant="ghost"
                     color="neutral"
                     icon="i-lucide-download"
-                    size="xs"
-                    aria-label="Export all receipts as CSV"
+                    size="sm"
+                    label="Export CSV"
                     @click="exportAll"
-                >
-                    Export CSV
-                </UButton>
+                />
             </div>
-            <p v-if="history.length" class="text-sm text-muted">
-                {{ history.length }} receipt{{
-                    history.length > 1 ? "s" : ""
-                }}
-                · {{ fmt(totalSpent) }} total ·
-                <span class="text-success">{{ fmt(totalSaved) }} saved</span>
+            <p v-if="history.length" class="text-sm text-neutral-500 font-medium">
+                {{ history.length }} items rescued · 
+                <span class="text-neutral-900 dark:text-white">{{ fmt(totalSpent) }} total</span> ·
+                <span class="text-success-600">{{ fmt(totalSaved) }} saved</span>
             </p>
-            <p v-else class="text-sm text-muted">No receipts saved yet.</p>
+            <p v-else class="text-sm text-neutral-500">No data rescued yet.</p>
         </div>
 
         <!-- Empty state -->
@@ -100,35 +96,37 @@ function exportAll() {
             v-if="!history.length"
             class="flex flex-col items-center gap-4 p-12 text-center"
         >
-            <UIcon name="i-lucide-clock" class="size-10 text-faint" />
+            <div class="bg-neutral-100 dark:bg-neutral-800 p-4 rounded-full">
+                <UIcon name="i-lucide-clock" class="size-8 text-neutral-400" />
+            </div>
             <div>
-                <p class="font-semibold mb-1">No receipts yet</p>
-                <p class="text-sm text-muted max-w-[26ch]">
-                    Scan your first receipt and save it here.
+                <p class="text-lg font-semibold text-neutral-900 dark:text-white">Ready for rescue?</p>
+                <p class="text-sm text-neutral-500 max-w-sm">
+                    Scan your physical receipts to transform them into structured intelligence.
                 </p>
             </div>
         </div>
 
-        <!-- Cards list — v-else directly follows v-if above -->
-        <div v-else class="flex flex-col gap-3 p-4">
+        <!-- Cards list -->
+        <div v-else class="grid grid-cols-1 gap-4 p-6">
             <UCard
                 v-for="receipt in history"
                 :key="receipt.id"
-                class="active:scale-[0.99] transition-transform cursor-pointer"
+                class="hover:border-primary-500 transition-colors cursor-pointer group"
                 :ui="{ body: 'p-0' }"
                 @click="openReceipt(receipt)"
             >
-                <div class="flex items-start justify-between p-4">
+                <div class="flex items-start justify-between p-5">
                     <div class="flex-1 min-w-0 mr-3">
-                        <p class="font-semibold truncate">
+                        <p class="font-bold text-neutral-900 dark:text-white truncate group-hover:text-primary-600 transition-colors">
                             {{ receipt.store }}
                         </p>
-                        <p class="text-xs text-muted mt-0.5">
+                        <p class="text-xs font-medium text-neutral-500 mt-1 uppercase tracking-wider">
                             {{ formatDate(receipt.date) }}
                         </p>
                     </div>
                     <div class="text-right flex-shrink-0">
-                        <p class="text-lg font-bold tabular-nums">
+                        <p class="text-lg font-bold tabular-nums text-neutral-900 dark:text-white">
                             {{ fmt(receipt.total_paid) }}
                         </p>
                         <UButton
@@ -136,33 +134,39 @@ function exportAll() {
                             color="error"
                             icon="i-lucide-trash-2"
                             size="xs"
-                            class="mt-1"
+                            class="mt-2"
                             aria-label="Delete receipt"
                             @click.stop="deleteReceipt(receipt.id)"
                         />
                     </div>
                 </div>
                 <div
-                    class="flex gap-1.5 flex-wrap px-4 pb-3 border-t border-default pt-2"
+                    class="flex gap-2 flex-wrap px-5 pb-4 pt-3 bg-neutral-50 dark:bg-neutral-800/50 border-t border-neutral-200 dark:border-neutral-800"
                 >
                     <UBadge
                         variant="subtle"
                         color="neutral"
-                        :label="`${receipt.items.length} items`"
-                    />
+                        class="text-[10px] font-bold"
+                    >
+                        {{ receipt.items.length }} items
+                    </UBadge>
                     <UBadge
                         v-for="cat in categorySummary(receipt.items)"
                         :key="cat"
                         variant="subtle"
                         color="neutral"
-                        :label="cat"
-                    />
+                        class="text-[10px] font-bold"
+                    >
+                        {{ cat }}
+                    </UBadge>
                     <UBadge
                         v-if="receipt.total_savings > 0"
                         variant="subtle"
                         color="success"
-                        :label="`−${fmt(receipt.total_savings)} saved`"
-                    />
+                        class="text-[10px] font-bold"
+                    >
+                        −{{ fmt(receipt.total_savings) }}
+                    </UBadge>
                 </div>
             </UCard>
         </div>

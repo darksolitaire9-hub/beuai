@@ -12,12 +12,20 @@ export default defineNuxtConfig({
   components: [
     {
       path: "~/features",
+      extensions: [".vue"],
       pathPrefix: false,
     },
   ],
 
   imports: {
-    dirs: ["features/**/composables", "features/**/utils", "features/**/types"],
+    dirs: [
+      "features/**/composables",
+      "features/**/utils",
+      "features/**/types",
+      "features/**/constants",
+      "features/**/api",
+      "features/**/storage",
+    ],
   },
 
   devServer: {

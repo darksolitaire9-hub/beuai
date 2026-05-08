@@ -49,30 +49,33 @@ const packLabel = computed(() => {
 </script>
 
 <template>
-    <UCard :ui="{ body: 'p-3' }">
-        <div class="flex items-start gap-3">
+    <UCard class="border border-neutral-200 dark:border-neutral-800 shadow-none" :ui="{ body: 'p-4' }">
+        <div class="flex items-start gap-4">
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium truncate">
+                <p class="text-sm font-bold text-neutral-900 dark:text-white truncate">
                     {{ item.name }}
                 </p>
-                <p class="text-xs text-muted mt-0.5">
-                    {{ qtyLabel }}
-                </p>
-                <p
-                    v-if="packLabel"
-                    class="text-[11px] text-faint mt-1 tabular-nums"
-                >
-                    {{ packLabel }}
-                </p>
+                <div class="flex items-center gap-2 mt-1">
+                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">
+                        {{ qtyLabel }}
+                    </p>
+                    <span v-if="packLabel" class="text-[10px] text-neutral-300 dark:text-neutral-700">•</span>
+                    <p
+                        v-if="packLabel"
+                        class="text-[10px] font-bold text-primary-600 dark:text-primary-400 tabular-nums uppercase"
+                    >
+                        {{ packLabel }}
+                    </p>
+                </div>
             </div>
 
             <div class="text-right flex-shrink-0">
-                <p class="text-sm font-semibold tabular-nums">
+                <p class="text-sm font-bold tabular-nums text-neutral-900 dark:text-white">
                     {{ fmt(item.total) }}
                 </p>
                 <p
                     v-if="item.discount > 0"
-                    class="text-xs text-success tabular-nums"
+                    class="text-[10px] font-bold text-success-600 tabular-nums mt-0.5"
                 >
                     −{{ fmt(item.discount) }}
                 </p>

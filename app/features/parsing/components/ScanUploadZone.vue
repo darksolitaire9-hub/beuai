@@ -25,16 +25,20 @@ function onFileChange(e: Event) {
 
 <template>
     <div
-        class="border border-dashed border-default rounded-xl p-5 flex flex-col items-center gap-2 text-sm text-muted cursor-pointer hover:border-primary hover:bg-primary/5 hover:text-primary transition-colors"
+        class="bg-white dark:bg-neutral-900 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl p-8 flex flex-col items-center gap-3 text-center cursor-pointer hover:border-primary-500 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-all group"
         role="button"
         tabindex="0"
         @click="triggerUpload"
         @keydown.enter="triggerUpload"
         @keydown.space.prevent="triggerUpload"
     >
-        <UIcon name="i-lucide-upload" class="size-6" />
-        Upload from gallery
-        <span class="text-xs text-faint">JPEG or PNG · max 10 MB</span>
+        <div class="p-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 group-hover:bg-primary-50 dark:group-hover:bg-primary-950/30 transition-colors">
+            <UIcon name="i-lucide-upload-cloud" class="size-6 text-neutral-500 group-hover:text-primary-600 transition-colors" />
+        </div>
+        <div>
+            <p class="text-sm font-bold text-neutral-900 dark:text-white">Click or drag to upload</p>
+            <p class="text-xs text-neutral-500 mt-1">JPEG, PNG up to 10 MB</p>
+        </div>
     </div>
     <input
         ref="fileInput"

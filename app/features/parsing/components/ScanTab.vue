@@ -7,7 +7,7 @@ CameraControls, ScanUploadZone, ScanProcessingOverlay
 -->
 
 <script setup lang="ts">
-import type { ApiFetchError } from "../../../shared/constants/errors";
+import type { ApiFetchError } from "../../../../shared/constants/errors";
 
 const { scan, loading } = useReceiptScanner();
 const { show: showScanError } = useScanErrorToast();
@@ -46,9 +46,9 @@ async function onUpload(file: File) {
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 p-4">
+    <div class="flex flex-col gap-6 p-6 h-full">
         <!-- Camera zone -->
-        <CameraFrame :mode="mode" :show-quality-warning="qualityWarn">
+        <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-[3/4] md:aspect-video rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden shadow-sm">
             <video
                 v-show="mode === 'live'"
                 ref="videoRef"
@@ -67,19 +67,28 @@ async function onUpload(file: File) {
         </CameraFrame>
 
         <!-- CameraControls -->
-        <CameraControls
-            :mode="mode"
-            :loading="loading"
-            @open="startCamera"
-            @cancel="resetToIdle"
-            @capture="capturePhoto"
-            @retake="retake"
-            @confirm="useThis"
-        />
+        <div class="flex items-center justify-center">
+            <CameraControls
+                :mode="mode"
+                :loading="loading"
+                @open="startCamera"
+                @cancel="resetToIdle"
+                @capture="capturePhoto"
+                @retake="retake"
+                @confirm="useThis"
+            />
+        </div>
 
         <!-- Upload zone  -->
         <template v-if="mode === 'idle'">
-            <USeparator label="or" />
+            <div class="relative py-2">
+                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-neutral-200 dark:border-neutral-800"></div>
+                </div>
+                <div class="relative flex justify-center text-[10px] uppercase font-bold tracking-widest text-neutral-400">
+                    <span class="bg-neutral-50 dark:bg-neutral-950 px-2">or upload file</span>
+                </div>
+            </div>
             <ScanUploadZone @upload="onUpload" />
         </template>
 

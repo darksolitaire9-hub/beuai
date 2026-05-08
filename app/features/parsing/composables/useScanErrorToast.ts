@@ -4,8 +4,8 @@
 // Needs: shared/constants/errors (ERROR_CODES, ApiFetchError), useToast (Nuxt UI)
 
 import { useToast } from "#imports";
-import { ERROR_CODES } from "../../shared/constants/errors";
-import type { ApiFetchError } from "../../shared/constants/errors";
+import { ERROR_CODES } from "../../../../shared/constants/errors";
+import type { ApiFetchError } from "../../../../shared/constants/errors";
 
 const BY_CODE: Record<string, string> = {
   [ERROR_CODES.NOT_A_RECEIPT]:
