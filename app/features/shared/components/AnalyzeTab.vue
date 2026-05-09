@@ -5,36 +5,45 @@ const fmt = (n: number) => `€${n.toFixed(2)}`;
 </script>
 
 <template>
-    <div class="flex flex-col min-h-full">
-        <div class="px-6 py-6 border-b border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
-            <h2 class="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white">Intelligence</h2>
-            <p class="text-sm text-neutral-500 font-medium mt-1">
+    <div class="flex flex-col min-h-full pb-24 md:pb-12">
+        <div class="px-6 py-8 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+            <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">Intelligence</h2>
+            <p class="text-sm text-neutral-500 font-bold mt-1">
                 Advanced patterns and spending analysis.
             </p>
         </div>
 
-        <div class="flex-1 p-6 space-y-6">
+        <div class="flex-1 p-6 space-y-8">
             <!-- Impact Cards -->
-            <div class="grid grid-cols-2 gap-4">
-                <UCard class="border-neutral-200 dark:border-neutral-800 shadow-none">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Items Rescued</p>
-                    <p class="text-3xl font-bold mt-1 text-neutral-900 dark:text-white">{{ history.length }}</p>
-                    <p class="text-[10px] text-neutral-500 font-medium mt-1">From total receipts</p>
+            <div class="grid grid-cols-2 gap-6">
+                <UCard class="ring-1 ring-neutral-200 dark:ring-neutral-800 shadow-lg">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-neutral-400">Rescued</p>
+                    <p class="text-4xl font-black mt-2 text-neutral-900 dark:text-white tracking-tighter">{{ history.length }}</p>
+                    <p class="text-[10px] text-neutral-500 font-bold mt-1">Total items</p>
                 </UCard>
-                <UCard class="border-neutral-200 dark:border-neutral-800 shadow-none">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Total Savings</p>
-                    <p class="text-3xl font-bold mt-1 text-success-600">{{ fmt(totalSaved) }}</p>
-                    <p class="text-[10px] text-neutral-500 font-medium mt-1">Captured discounts</p>
+                <UCard class="ring-1 ring-neutral-200 dark:ring-neutral-800 shadow-lg">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-neutral-400">Savings</p>
+                    <p class="text-4xl font-black mt-2 text-success-600 tracking-tighter">{{ fmt(totalSaved) }}</p>
+                    <p class="text-[10px] text-neutral-500 font-bold mt-1">Discounts</p>
                 </UCard>
             </div>
 
             <!-- Future Roadmap Placeholder -->
-            <div class="bg-neutral-50 dark:bg-neutral-900/50 rounded-xl border border-dashed border-neutral-300 dark:border-neutral-700 p-12 text-center">
-                <UIcon name="i-lucide-bar-chart-horizontal-big" class="size-10 text-neutral-300 dark:text-neutral-700 mx-auto mb-4" />
-                <p class="font-bold text-neutral-900 dark:text-white mb-1">Coming Soon: Deep Patterns</p>
-                <p class="text-sm text-neutral-500 leading-relaxed max-w-sm mx-auto">
+            <div class="bg-white dark:bg-neutral-900 rounded-[2rem] border-2 border-dashed border-neutral-200 dark:border-neutral-800 p-10 text-center shadow-inner relative overflow-hidden group">
+                <div class="absolute inset-0 bg-primary-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                <div class="bg-neutral-50 dark:bg-neutral-800 size-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700">
+                    <UIcon name="i-lucide-sparkles" class="size-8 text-primary-500" />
+                </div>
+                
+                <p class="font-black text-xl text-neutral-900 dark:text-white mb-2 tracking-tight">Coming Soon: Deep Patterns</p>
+                <p class="text-sm text-neutral-500 leading-relaxed max-w-xs mx-auto font-medium">
                     We're building automated price comparisons and category-level spending trends to help you optimize every purchase.
                 </p>
+                
+                <div class="mt-8">
+                     <UBadge variant="soft" color="primary" class="font-black px-3">BETA ACCESS COMING SOON</UBadge>
+                </div>
             </div>
         </div>
     </div>

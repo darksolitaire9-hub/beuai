@@ -80,7 +80,7 @@ function discard() {
         <p class="text-sm">Scan a receipt to see results here.</p>
     </div>
 
-    <div v-else class="flex flex-col h-full bg-neutral-50 dark:bg-neutral-950 pb-40 md:pb-12">
+    <div v-else class="flex flex-col min-h-full bg-neutral-50 dark:bg-neutral-950 pb-40 md:pb-12">
         <div class="px-6 py-8 border-b border-neutral-100 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl sticky top-0 z-20 shadow-sm">
             <div class="flex items-center gap-2 text-primary-600 dark:text-primary-400 font-black text-[10px] uppercase tracking-[0.2em] mb-4">
                 <UIcon name="i-lucide-shield-check" class="size-4" />

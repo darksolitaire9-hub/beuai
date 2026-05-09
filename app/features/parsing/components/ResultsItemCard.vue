@@ -49,20 +49,20 @@ const packLabel = computed(() => {
 </script>
 
 <template>
-    <UCard class="border border-neutral-200 dark:border-neutral-800 shadow-none" :ui="{ body: 'p-4' }">
+    <UCard class="shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-800" :ui="{ body: 'p-4' }">
         <div class="flex items-start gap-4">
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-bold text-neutral-900 dark:text-white truncate">
+                <p class="text-sm font-black text-neutral-900 dark:text-white truncate tracking-tight">
                     {{ item.name }}
                 </p>
-                <div class="flex items-center gap-2 mt-1">
-                    <p class="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">
+                <div class="flex items-center gap-2 mt-1.5">
+                    <p class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.1em]">
                         {{ qtyLabel }}
                     </p>
-                    <span v-if="packLabel" class="text-[10px] text-neutral-300 dark:text-neutral-700">•</span>
+                    <div v-if="packLabel" class="size-1 rounded-full bg-neutral-300" />
                     <p
                         v-if="packLabel"
-                        class="text-[10px] font-bold text-primary-600 dark:text-primary-400 tabular-nums uppercase"
+                        class="text-[10px] font-black text-primary-500 dark:text-primary-400 tabular-nums uppercase tracking-widest"
                     >
                         {{ packLabel }}
                     </p>
@@ -70,12 +70,12 @@ const packLabel = computed(() => {
             </div>
 
             <div class="text-right flex-shrink-0">
-                <p class="text-sm font-bold tabular-nums text-neutral-900 dark:text-white">
+                <p class="text-sm font-black tabular-nums text-neutral-900 dark:text-white tracking-tight">
                     {{ fmt(item.total) }}
                 </p>
                 <p
                     v-if="item.discount > 0"
-                    class="text-[10px] font-bold text-success-600 tabular-nums mt-0.5"
+                    class="text-[10px] font-black text-success-600 tabular-nums mt-1 uppercase tracking-tighter"
                 >
                     −{{ fmt(item.discount) }}
                 </p>

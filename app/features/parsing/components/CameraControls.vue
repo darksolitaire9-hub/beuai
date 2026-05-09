@@ -15,13 +15,21 @@ defineEmits<{
 
 <template>
     <!-- Live controls -->
-    <div v-if="mode === 'live'" class="flex gap-3">
-        <UButton variant="outline" icon="i-lucide-x" @click="$emit('cancel')">
+    <div v-if="mode === 'live'" class="flex gap-4">
+        <UButton 
+            variant="soft" 
+            color="neutral" 
+            icon="i-lucide-x" 
+            size="xl" 
+            class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
+            @click="$emit('cancel')"
+        >
             Cancel
         </UButton>
         <UButton
-            class="flex-1"
+            class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
             icon="i-lucide-aperture"
+            size="xl"
             @click="$emit('capture')"
         >
             Capture
@@ -29,17 +37,21 @@ defineEmits<{
     </div>
 
     <!-- Captured controls -->
-    <div v-else-if="mode === 'captured'" class="flex gap-3">
+    <div v-else-if="mode === 'captured'" class="flex gap-4">
         <UButton
-            variant="outline"
+            variant="soft"
+            color="neutral"
             icon="i-lucide-rotate-ccw"
+            size="xl"
+            class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
             @click="$emit('retake')"
         >
             Retake
         </UButton>
         <UButton
-            class="flex-1"
+            class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
             icon="i-lucide-check"
+            size="xl"
             :loading="loading"
             @click="$emit('confirm')"
         >
@@ -50,10 +62,9 @@ defineEmits<{
     <!-- Idle controls -->
     <template v-else>
         <UButton
-            class="w-full"
+            class="w-full justify-center font-black uppercase tracking-wider text-xs h-16 shadow-xl shadow-primary-500/10 rounded-2xl"
             icon="i-lucide-camera"
-            size="lg"
-            :ui="{ base: 'justify-center' }"
+            size="xl"
             @click="$emit('open')"
         >
             Open Camera

@@ -85,14 +85,14 @@ function onTabClick(value: TabValue) {
                 class="flex-1 overflow-y-auto bg-neutral-50 dark:bg-neutral-950"
                 :class="[!hideNav ? 'pb-32 md:pb-0' : '']"
             >
-                <div class="max-w-4xl mx-auto h-full">
+                <div class="max-w-4xl mx-auto min-h-full">
                     <div 
                         v-for="item in props.items" 
                         :key="item.value"
                         :id="`tabpanel-${item.value}`"
                         role="tabpanel"
                         :aria-labelledby="`tab-${item.value}`"
-                        class="h-full"
+                        class="min-h-full"
                         v-show="props.modelValue === item.value"
                     >
                         <slot :name="item.value" />
@@ -101,7 +101,7 @@ function onTabClick(value: TabValue) {
                     <div 
                         v-if="!props.items.some(i => i.value === props.modelValue)"
                         role="tabpanel"
-                        class="h-full"
+                        class="min-h-full"
                     >
                         <slot v-if="props.modelValue === 'scan'" name="scan" />
                         <slot v-if="props.modelValue === 'results'" name="results" />

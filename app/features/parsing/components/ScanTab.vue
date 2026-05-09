@@ -46,7 +46,7 @@ async function onUpload(file: File) {
 </script>
 
 <template>
-    <div class="flex flex-col gap-10 p-6 md:p-8 h-full pb-32 md:pb-12">
+    <div class="flex flex-col gap-10 p-6 md:p-8 min-h-full pb-32 md:pb-12">
         <!-- Header -->
         <div class="space-y-1">
             <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">Rescue Receipt</h2>
@@ -56,7 +56,7 @@ async function onUpload(file: File) {
         <!-- Camera zone -->
         <div class="space-y-4">
             <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">Live Capture</p>
-            <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-[3/4] md:aspect-video rounded-[2rem] shadow-2xl ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden transition-all duration-500">
+            <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-square md:aspect-video rounded-[2.5rem] shadow-2xl ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden transition-all duration-500">
                 <video
                     v-show="mode === 'live'"
                     ref="videoRef"
@@ -73,20 +73,21 @@ async function onUpload(file: File) {
                     class="absolute inset-0 w-full h-full object-cover"
                 />
                 
-                <!-- Overlay for idle state -->
-                <div v-if="mode === 'idle'" class="absolute inset-0 flex items-center justify-center bg-neutral-100/50 dark:bg-neutral-900/50 backdrop-blur-sm">
-                    <div class="bg-white/80 dark:bg-neutral-800/80 p-6 rounded-full shadow-xl">
-                        <UIcon name="i-lucide-camera" class="size-12 text-primary-500" />
+                <!-- Overlay for idle state — make it look like a prompt -->
+                <div v-if="mode === 'idle'" class="absolute inset-0 flex flex-col items-center justify-center bg-neutral-100/50 dark:bg-neutral-900/50 backdrop-blur-sm p-8 text-center">
+                    <div class="bg-white dark:bg-neutral-800 p-6 rounded-full shadow-2xl mb-4 animate-pulse">
+                        <UIcon name="i-lucide-camera" class="size-10 text-primary-500" />
                     </div>
+                    <p class="text-xs font-black uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Ready to Scan</p>
                 </div>
             </CameraFrame>
 
             <!-- CameraControls -->
-            <div class="flex items-center justify-center pt-4">
+            <div class="flex items-center justify-center pt-2">
                 <CameraControls
                     :mode="mode"
                     :loading="loading"
-                    class="w-full max-w-sm"
+                    class="w-full max-w-sm h-14"
                     @open="startCamera"
                     @cancel="resetToIdle"
                     @capture="capturePhoto"

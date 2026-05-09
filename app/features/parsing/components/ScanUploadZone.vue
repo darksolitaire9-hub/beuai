@@ -25,19 +25,19 @@ function onFileChange(e: Event) {
 
 <template>
     <div
-        class="bg-white dark:bg-neutral-900 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-xl p-8 flex flex-col items-center gap-3 text-center cursor-pointer hover:border-primary-500 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-all group"
+        class="bg-white dark:bg-neutral-900 border-2 border-dashed border-neutral-200 dark:border-neutral-800 rounded-[2rem] p-10 flex flex-col items-center gap-6 text-center cursor-pointer hover:border-primary-500 hover:bg-primary-50/30 dark:hover:bg-primary-950/20 transition-all duration-300 group shadow-inner"
         role="button"
         tabindex="0"
         @click="triggerUpload"
         @keydown.enter="triggerUpload"
         @keydown.space.prevent="triggerUpload"
     >
-        <div class="p-3 rounded-lg bg-neutral-100 dark:bg-neutral-800 group-hover:bg-primary-50 dark:group-hover:bg-primary-950/30 transition-colors">
-            <UIcon name="i-lucide-upload-cloud" class="size-6 text-neutral-500 group-hover:text-primary-600 transition-colors" />
+        <div class="p-5 rounded-[1.5rem] bg-neutral-50 dark:bg-neutral-800 group-hover:bg-white dark:group-hover:bg-neutral-700 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700 group-hover:ring-primary-500/50 transition-all duration-300 group-active:scale-90">
+            <UIcon name="i-lucide-upload-cloud" class="size-8 text-neutral-400 group-hover:text-primary-500 transition-colors" />
         </div>
-        <div>
-            <p class="text-sm font-bold text-neutral-900 dark:text-white">Click or drag to upload</p>
-            <p class="text-xs text-neutral-500 mt-1">JPEG, PNG up to 10 MB</p>
+        <div class="space-y-1">
+            <p class="text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider">Choose a File</p>
+            <p class="text-xs text-neutral-400 font-bold tracking-tight">JPEG, PNG UP TO 10 MB</p>
         </div>
     </div>
     <input
