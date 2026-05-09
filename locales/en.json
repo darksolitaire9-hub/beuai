@@ -1,0 +1,70 @@
+{
+  "app": {
+    "title": "beuai",
+    "tabs": {
+      "scan": "Scan",
+      "history": "History",
+      "analyze": "Intelligence",
+      "results": "Results"
+    }
+  },
+  "scan": {
+    "title": "Rescue Receipt",
+    "subtitle": "Scan or upload a physical receipt to transform it.",
+    "live_capture": "Live Capture",
+    "digital_upload": "Digital Upload",
+    "or_use_file": "OR USE FILE",
+    "choose_file": "Choose a File",
+    "file_limits": "JPEG, PNG UP TO 10 MB",
+    "ready": "Ready to Scan",
+    "controls": {
+      "open": "Open Camera",
+      "cancel": "Cancel",
+      "capture": "Capture",
+      "retake": "Retake",
+      "confirm": "Scan this"
+    },
+    "stages": {
+      "compressing": "Securing privacy & optimizing image...",
+      "analyzing": "Extracting data with AI..."
+    }
+  },
+  "results": {
+    "title": "Review & Confirm",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "savings": "Savings",
+    "total_paid": "Total Paid",
+    "items": "items",
+    "actions": {
+      "discard": "Discard",
+      "save": "Save to History"
+    },
+    "warnings": {
+      "mismatch": "Verify Accuracy",
+      "mismatch_desc": "We detected a price mismatch. Please check the line items."
+    }
+  },
+  "history": {
+    "title": "History",
+    "export": "Export CSV",
+    "rescued": "rescued",
+    "total": "total",
+    "saved": "saved",
+    "empty_title": "Ready for rescue?",
+    "empty_desc": "Scan your physical receipts to transform them into structured intelligence.",
+    "no_data": "No data rescued yet.",
+    "items": "items"
+  },
+  "analyze": {
+    "title": "Intelligence",
+    "subtitle": "Advanced patterns and spending analysis.",
+    "rescued": "Rescued",
+    "savings": "Savings",
+    "discounts": "Discounts",
+    "total_items": "Total items",
+    "coming_soon_title": "Coming Soon: Deep Patterns",
+    "coming_soon_desc": "We're building automated price comparisons and category-level spending trends to help you optimize every purchase.",
+    "beta_access": "BETA ACCESS COMING SOON"
+  }
+}

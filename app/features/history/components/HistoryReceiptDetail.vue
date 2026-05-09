@@ -66,7 +66,7 @@ function close() {
                                 </p>
                                 <div class="size-1 rounded-full bg-neutral-300" />
                                 <p class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.15em]">
-                                    {{ receipt.items.length }} items
+                                    {{ receipt.items.length }} {{ $t('results.items') }}
                                 </p>
                             </div>
                         </div>
@@ -121,19 +121,19 @@ function close() {
                         <!-- Totals Section -->
                         <div class="pt-6 border-t border-neutral-100 dark:border-neutral-800 space-y-4">
                             <div class="flex justify-between items-center text-sm font-bold">
-                                <span class="text-neutral-500">Subtotal</span>
+                                <span class="text-neutral-500">{{ $t('results.subtotal') }}</span>
                                 <span class="text-neutral-900 dark:text-white tabular-nums">
                                     {{ fmt(receipt.subtotal) }}
                                 </span>
                             </div>
                             <div class="flex justify-between items-center text-sm font-bold">
-                                <span class="text-neutral-500">Total Savings</span>
+                                <span class="text-neutral-500">{{ $t('results.savings') }}</span>
                                 <span class="text-success-600 tabular-nums">
                                     {{ receipt.total_savings > 0 ? `−${fmt(receipt.total_savings)}` : fmt(0) }}
                                 </span>
                             </div>
                             <div class="flex justify-between items-center px-6 py-6 rounded-2xl bg-primary-50/50 dark:bg-primary-950/20 mt-4">
-                                <span class="font-black text-neutral-900 dark:text-white uppercase tracking-tight">Total Paid</span>
+                                <span class="font-black text-neutral-900 dark:text-white uppercase tracking-tight">{{ $t('results.total_paid') }}</span>
                                 <span class="font-black text-3xl tabular-nums text-primary-600 dark:text-primary-400 tracking-tighter">
                                     {{ fmt(receipt.total_paid) }}
                                 </span>

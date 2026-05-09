@@ -1,0 +1,70 @@
+{
+  "app": {
+    "title": "beuai",
+    "tabs": {
+      "scan": "Escanear",
+      "history": "Historial",
+      "analyze": "Inteligencia",
+      "results": "Resultados"
+    }
+  },
+  "scan": {
+    "title": "Rescatar Recibo",
+    "subtitle": "Escanee o suba un recibo físico para transformarlo.",
+    "live_capture": "Captura en Vivo",
+    "digital_upload": "Carga Digital",
+    "or_use_file": "O USAR ARCHIVO",
+    "choose_file": "Elegir un Archivo",
+    "file_limits": "JPEG, PNG HASTA 10 MB",
+    "ready": "Listo para Escanear",
+    "controls": {
+      "open": "Abrir Cámara",
+      "cancel": "Cancelar",
+      "capture": "Capturar",
+      "retake": "Reintentar",
+      "confirm": "Escanear esto"
+    },
+    "stages": {
+      "compressing": "Protegiendo la privacidad y optimizando la imagen...",
+      "analyzing": "Extrayendo datos con IA..."
+    }
+  },
+  "results": {
+    "title": "Revisar y Confirmar",
+    "summary": "Resumen",
+    "subtotal": "Subtotal",
+    "savings": "Ahorros",
+    "total_paid": "Total Pagado",
+    "items": "artículos",
+    "actions": {
+      "discard": "Descartar",
+      "save": "Guardar en Historial"
+    },
+    "warnings": {
+      "mismatch": "Verificar Precisión",
+      "mismatch_desc": "Detectamos una discrepancia de precios. Por favor, revise los artículos."
+    }
+  },
+  "history": {
+    "title": "Historial",
+    "export": "Exportar CSV",
+    "rescued": "rescatados",
+    "total": "total",
+    "saved": "ahorrado",
+    "empty_title": "¿Listo para el rescate?",
+    "empty_desc": "Escanee sus recibos físicos para transformarlos en inteligencia estructurada.",
+    "no_data": "Aún no hay datos rescatados.",
+    "items": "artículos"
+  },
+  "analyze": {
+    "title": "Inteligencia",
+    "subtitle": "Patrones avanzados y análisis de gastos.",
+    "rescued": "Rescatados",
+    "savings": "Ahorros",
+    "discounts": "Descuentos",
+    "total_items": "Total de artículos",
+    "coming_soon_title": "Próximamente: Patrones Profundos",
+    "coming_soon_desc": "Estamos creando comparaciones automáticas de precios y tendencias de gastos por categoría.",
+    "beta_access": "ACCESO BETA PRÓXIMAMENTE"
+  }
+}

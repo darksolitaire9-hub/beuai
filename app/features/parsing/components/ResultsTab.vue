@@ -84,7 +84,7 @@ function discard() {
         <div class="px-6 py-8 border-b border-neutral-100 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl sticky top-0 z-20 shadow-sm">
             <div class="flex items-center gap-2 text-primary-600 dark:text-primary-400 font-black text-[10px] uppercase tracking-[0.2em] mb-4">
                 <UIcon name="i-lucide-shield-check" class="size-4" />
-                Review & Confirm
+                {{ $t('results.title') }}
             </div>
             <h2 class="text-4xl font-black tracking-tighter text-neutral-900 dark:text-white mb-3">
                 {{ result.store }}
@@ -99,7 +99,7 @@ function discard() {
                     <UIcon name="i-lucide-package" class="size-4" />{{
                         result.items.length
                     }}
-                    items
+                    {{ $t('results.items') }}
                 </div>
                 <UBadge
                     variant="soft"
@@ -118,8 +118,8 @@ function discard() {
                 icon="i-lucide-triangle-alert"
                 color="warning"
                 variant="soft"
-                title="Verify Accuracy"
-                description="We detected a price mismatch. Please check the line items."
+                :title="$t('results.warnings.mismatch')"
+                :description="$t('results.warnings.mismatch_desc')"
             />
 
             <div
@@ -146,19 +146,19 @@ function discard() {
             <!-- Totals Section (Enclosure principle) -->
             <div class="space-y-4">
                 <p class="text-[11px] font-black uppercase tracking-[0.15em] text-neutral-400 ml-1">
-                    Summary
+                    {{ $t('results.summary') }}
                 </p>
                 <UCard class="shadow-xl ring-2 ring-primary-500/10 dark:ring-primary-400/10" :ui="{ body: 'p-0 divide-y divide-neutral-100 dark:divide-neutral-800' }">
                     <div class="flex justify-between items-center px-6 py-4.5 text-sm font-bold">
-                        <span class="text-neutral-500">Subtotal</span>
+                        <span class="text-neutral-500">{{ $t('results.subtotal') }}</span>
                         <span class="text-neutral-900 dark:text-white tabular-nums">{{ fmt(result.subtotal) }}</span>
                     </div>
                     <div class="flex justify-between items-center px-6 py-4.5 text-sm font-bold">
-                        <span class="text-neutral-500">Savings</span>
+                        <span class="text-neutral-500">{{ $t('results.savings') }}</span>
                         <span class="text-success-600 tabular-nums">{{ result.total_savings > 0 ? `−${fmt(result.total_savings)}` : fmt(0) }}</span>
                     </div>
                     <div class="flex justify-between items-center px-6 py-8 bg-primary-50/30 dark:bg-primary-950/20">
-                        <span class="font-black text-xl text-neutral-900 dark:text-white uppercase tracking-tight">Total Paid</span>
+                        <span class="font-black text-xl text-neutral-900 dark:text-white uppercase tracking-tight">{{ $t('results.total_paid') }}</span>
                         <span class="font-black text-4xl text-primary-600 dark:text-primary-400 tabular-nums tracking-tighter">{{ fmt(result.total_paid) }}</span>
                     </div>
                 </UCard>
@@ -174,14 +174,14 @@ function discard() {
                     icon="i-lucide-trash-2"
                     size="xl"
                     class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
-                    label="Discard"
+                    :label="$t('results.actions.discard')"
                     @click="discard"
                 />
                 <UButton 
                     icon="i-lucide-save" 
                     size="xl"
                     class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20" 
-                    label="Save to History"
+                    :label="$t('results.actions.save')"
                     @click="saveReceipt"
                 />
              </div>

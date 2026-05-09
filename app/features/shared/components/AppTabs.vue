@@ -30,7 +30,7 @@ function onTabClick(value: TabValue) {
                     <div class="bg-primary-500 text-white p-2.5 rounded-2xl shadow-lg shadow-primary-500/30">
                         <UIcon name="i-lucide-scan-line" class="size-7 block" />
                     </div>
-                    <span>beuai</span>
+                    <span>{{ $t('app.title') }}</span>
                 </div>
             </div>
 
@@ -51,15 +51,15 @@ function onTabClick(value: TabValue) {
                     @click="onTabClick(item.value)"
                 >
                     <UIcon :name="item.icon" class="size-5 transition-transform group-hover:scale-110" />
-                    {{ item.label }}
+                    {{ $t(`app.tabs.${item.value}`) }}
                     
                     <div v-if="props.modelValue === item.value" class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary-500 rounded-r-full" />
                 </button>
             </nav>
 
             <div class="p-6 border-t border-neutral-100 dark:border-neutral-800 space-y-6">
-               <AppLanguagePicker class="w-full justify-start font-bold" aria-label="Change language" />
-               <UColorModeButton class="w-full justify-start font-bold" aria-label="Toggle dark mode" />
+               <AppLanguagePicker class="w-full justify-start font-bold" />
+               <UColorModeButton class="w-full justify-start font-bold" />
             </div>
         </aside>
 
@@ -72,7 +72,7 @@ function onTabClick(value: TabValue) {
             >
                 <div class="flex items-center gap-3 font-black text-xl text-neutral-900 dark:text-white tracking-tighter">
                     <UIcon name="i-lucide-scan-line" class="text-primary-500 size-6" />
-                    <span>beuai</span>
+                    <span>{{ $t('app.title') }}</span>
                 </div>
                 <div class="flex items-center gap-2">
                     <AppLanguagePicker aria-label="Change language" />
@@ -134,7 +134,7 @@ function onTabClick(value: TabValue) {
                     @click="onTabClick(item.value)"
                 >
                     <UIcon :name="item.icon" class="size-6" />
-                    <span class="text-[10px] font-black uppercase tracking-widest">{{ item.label }}</span>
+                    <span class="text-[10px] font-black uppercase tracking-widest">{{ $t(`app.tabs.${item.value}`) }}</span>
                 </button>
             </nav>
         </main>

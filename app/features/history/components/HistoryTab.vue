@@ -72,29 +72,29 @@ function exportAll() {
         <!-- Single header — always visible -->
         <div class="px-6 py-8 border-b border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">History</h2>
+                <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">{{ $t('history.title') }}</h2>
                 <UButton
                     v-if="history.length"
                     variant="soft"
                     color="neutral"
                     icon="i-lucide-download"
                     size="sm"
-                    label="Export CSV"
+                    :label="$t('history.export')"
                     class="font-bold tracking-tight"
                     @click="exportAll"
                 />
             </div>
             <div v-if="history.length" class="flex items-center gap-3">
                  <UBadge color="primary" variant="soft" class="font-black px-2.5">
-                    {{ history.length }} rescued
+                    {{ history.length }} {{ $t('history.rescued') }}
                  </UBadge>
                  <div class="h-4 w-px bg-neutral-200 dark:bg-neutral-700" />
                  <p class="text-sm font-bold text-neutral-500">
-                    <span class="text-neutral-900 dark:text-white">{{ fmt(totalSpent) }}</span> total ·
-                    <span class="text-success-600">{{ fmt(totalSaved) }} saved</span>
+                    <span class="text-neutral-900 dark:text-white">{{ fmt(totalSpent) }}</span> {{ $t('history.total') }} ·
+                    <span class="text-success-600">{{ fmt(totalSaved) }} {{ $t('history.saved') }}</span>
                  </p>
             </div>
-            <p v-else class="text-sm font-bold text-neutral-400 uppercase tracking-widest">No data rescued yet.</p>
+            <p v-else class="text-sm font-bold text-neutral-400 uppercase tracking-widest">{{ $t('history.no_data') }}</p>
         </div>
 
         <!-- Empty state -->
@@ -106,9 +106,9 @@ function exportAll() {
                 <UIcon name="i-lucide-clock" class="size-16 text-primary-500/20" />
             </div>
             <div class="space-y-3">
-                <p class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white">Ready for rescue?</p>
+                <p class="text-2xl font-black tracking-tight text-neutral-900 dark:text-white">{{ $t('history.empty_title') }}</p>
                 <p class="text-neutral-500 max-w-sm leading-relaxed font-medium">
-                    Scan your physical receipts to transform them into structured intelligence.
+                    {{ $t('history.empty_desc') }}
                 </p>
             </div>
         </div>
@@ -139,7 +139,7 @@ function exportAll() {
                                     </p>
                                     <div class="size-1 rounded-full bg-neutral-300" />
                                      <p class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.15em]">
-                                        {{ receipt.items.length }} items
+                                        {{ receipt.items.length }} {{ $t('history.items') }}
                                     </p>
                                 </div>
                             </div>

@@ -24,7 +24,7 @@ defineEmits<{
             class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
             @click="$emit('cancel')"
         >
-            Cancel
+            {{ $t('scan.controls.cancel') }}
         </UButton>
         <UButton
             class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
@@ -32,7 +32,7 @@ defineEmits<{
             size="xl"
             @click="$emit('capture')"
         >
-            Capture
+            {{ $t('scan.controls.capture') }}
         </UButton>
     </div>
 
@@ -46,7 +46,7 @@ defineEmits<{
             class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
             @click="$emit('retake')"
         >
-            Retake
+            {{ $t('scan.controls.retake') }}
         </UButton>
         <UButton
             class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
@@ -55,7 +55,7 @@ defineEmits<{
             :loading="loading"
             @click="$emit('confirm')"
         >
-            Scan this
+            {{ $t('scan.controls.confirm') }}
         </UButton>
     </div>
 
@@ -67,7 +67,7 @@ defineEmits<{
             size="xl"
             @click="$emit('open')"
         >
-            Open Camera
+            {{ $t('scan.controls.open') }}
         </UButton>
     </template>
 </template>

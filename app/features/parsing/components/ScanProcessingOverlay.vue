@@ -1,13 +1,16 @@
 <script setup lang="ts">
-const props = defineProps<{ visible: boolean }>();
-const { step } = useReceiptScanner();
+import type { ScanStage } from "../composables/useReceiptScanner";
 
-const steps = [
-    { id: 1, label: "Preparing Rescue", icon: "i-lucide-package-open" },
-    { id: 2, label: "Extracting Data", icon: "i-lucide-zap" },
-    { id: 3, label: "AI Analysis", icon: "i-lucide-brain-circuit" },
-    { id: 4, label: "Rescue Complete", icon: "i-lucide-check-circle" },
-];
+const props = defineProps<{ visible: boolean }>();
+const { stage } = useReceiptScanner();
+
+const STAGES: Record<ScanStage, { id: number, labelKey: string, icon: string }> = {
+    idle: { id: 0, labelKey: '', icon: '' },
+    compressing: { id: 1, labelKey: 'scan.stages.compressing', icon: 'i-lucide-shield-check' },
+    analyzing: { id: 2, labelKey: 'scan.stages.analyzing', icon: 'i-lucide-brain-circuit' }
+};
+
+const current = computed(() => STAGES[stage.value]);
 </script>
 
 <template>
@@ -15,7 +18,7 @@ const steps = [
         <Transition name="fade">
             <div
                 v-if="visible"
-                class="fixed inset-0 z-[100] flex items-center justify-center bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md"
+                class="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 dark:bg-neutral-900/95 backdrop-blur-xl"
             >
                 <div class="max-w-xs w-full p-8 text-center">
                     <!-- Rescue Spinner -->
@@ -24,35 +27,37 @@ const steps = [
                         <div class="absolute inset-0 border-8 border-primary-500 rounded-full border-t-transparent animate-spin" />
                         <div class="absolute inset-0 flex items-center justify-center">
                             <UIcon
-                                :name="steps.find(s => s.id === step)?.icon || 'i-lucide-search'"
+                                :name="current.icon || 'i-lucide-scan-line'"
                                 class="size-12 text-primary-500 animate-pulse"
                             />
                         </div>
                     </div>
 
-                    <h3 class="text-2xl font-extrabold text-primary-900 dark:text-primary-100 mb-2">
-                        Rescuing Data...
-                    </h3>
-                    
-                    <div class="flex flex-col gap-4 mt-8">
-                        <div
-                            v-for="s in steps"
-                            :key="s.id"
-                            class="flex items-center gap-3 transition-all duration-300"
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-black text-neutral-900 dark:text-white tracking-tighter">
+                            {{ $t('app.title') }}
+                        </h3>
+                        
+                        <Transition name="slide-up" mode="out-in">
+                            <p 
+                                :key="stage"
+                                class="text-sm font-bold text-neutral-500 leading-relaxed min-h-[3rem]"
+                            >
+                                {{ $t(current.labelKey) }}
+                            </p>
+                        </Transition>
+                    </div>
+
+                    <!-- Stage Progress dots -->
+                    <div class="flex justify-center gap-2 mt-8">
+                        <div 
+                            v-for="s in [1, 2]" 
+                            :key="s"
+                            class="size-2 rounded-full transition-all duration-500"
                             :class="[
-                                step === s.id
-                                    ? 'text-primary-600 dark:text-primary-400 scale-105 font-bold'
-                                    : step > s.id
-                                        ? 'text-success-500 opacity-60'
-                                        : 'text-muted opacity-30',
+                                current.id >= s ? 'bg-primary-500 w-6' : 'bg-neutral-200 dark:bg-neutral-800'
                             ]"
-                        >
-                            <UIcon
-                                :name="step > s.id ? 'i-lucide-check-circle-2' : s.icon"
-                                class="size-5"
-                            />
-                            <span class="text-sm tracking-wide font-bold">{{ s.label }}</span>
-                        </div>
+                        />
                     </div>
                 </div>
             </div>
@@ -63,10 +68,23 @@ const steps = [
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 300ms ease;
+    transition: opacity 500ms ease;
 }
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+    transition: all 400ms ease;
+}
+.slide-up-enter-from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+.slide-up-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
 }
 </style>

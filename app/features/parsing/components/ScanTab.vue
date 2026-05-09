@@ -49,13 +49,13 @@ async function onUpload(file: File) {
     <div class="flex flex-col gap-10 p-6 md:p-8 min-h-full pb-32 md:pb-12">
         <!-- Header -->
         <div class="space-y-1">
-            <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">Rescue Receipt</h2>
-            <p class="text-sm font-medium text-neutral-500">Scan or upload a physical receipt to transform it.</p>
+            <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">{{ $t('scan.title') }}</h2>
+            <p class="text-sm font-medium text-neutral-500">{{ $t('scan.subtitle') }}</p>
         </div>
 
         <!-- Camera zone -->
         <div class="space-y-4">
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">Live Capture</p>
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">{{ $t('scan.live_capture') }}</p>
             <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-square md:aspect-video rounded-[2.5rem] shadow-2xl ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden transition-all duration-500">
                 <video
                     v-show="mode === 'live'"
@@ -78,7 +78,7 @@ async function onUpload(file: File) {
                     <div class="bg-white dark:bg-neutral-800 p-6 rounded-full shadow-2xl mb-4 animate-pulse">
                         <UIcon name="i-lucide-camera" class="size-10 text-primary-500" />
                     </div>
-                    <p class="text-xs font-black uppercase tracking-widest text-neutral-500 dark:text-neutral-400">Ready to Scan</p>
+                    <p class="text-xs font-black uppercase tracking-widest text-neutral-500 dark:text-neutral-400">{{ $t('scan.ready') }}</p>
                 </div>
             </CameraFrame>
 
@@ -104,12 +104,12 @@ async function onUpload(file: File) {
                     <div class="w-full border-t border-neutral-100 dark:border-neutral-800"></div>
                 </div>
                 <div class="relative flex justify-center text-[10px] uppercase font-black tracking-[0.2em] text-neutral-400">
-                    <span class="bg-neutral-50 dark:bg-neutral-950 px-4">OR USE FILE</span>
+                    <span class="bg-neutral-50 dark:bg-neutral-950 px-4">{{ $t('scan.or_use_file') }}</span>
                 </div>
             </div>
             
             <div class="space-y-4">
-                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">Digital Upload</p>
+                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">{{ $t('scan.digital_upload') }}</p>
                  <ScanUploadZone @upload="onUpload" />
             </div>
         </template>

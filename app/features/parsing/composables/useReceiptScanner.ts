@@ -5,37 +5,39 @@
 
 import type { ParsedReceipt } from "../types/receipt";
 
+export type ScanStage = "idle" | "compressing" | "analyzing";
+
 export const useReceiptScanner = () => {
   const result = useState<ParsedReceipt | null>("scan-result", () => null);
   const loading = useState<boolean>("scan-loading", () => false);
-  const step = useState<number>("scan-step", () => 0);
+  const stage = useState<ScanStage>("scan-stage", () => "idle");
+  
   const { lang } = useReceiptLanguage();
   const { parse } = useReceiptApi();
+  const { compressForOcr } = useImageCompression();
 
   const scan = async (blob: Blob) => {
     loading.value = true;
-    step.value = 1;
+    stage.value = "compressing";
 
     try {
-      const base64Full = await blobToBase64(blob);
+      // Step 1: Optimize & Strip Metadata
+      const optimized = await compressForOcr(blob);
+      
+      stage.value = "analyzing";
+      
+      // Step 2: Extract
+      const base64Full = await blobToBase64(optimized);
       const base64 = base64Full.split(",")[1];
-      const mimeType = blob.type || "image/jpeg";
-
-      step.value = 2;
-      await delay(300);
-      step.value = 3;
+      const mimeType = optimized.type || "image/jpeg";
 
       const data = await parse(base64, mimeType, lang.value);
-
-      step.value = 4;
-      await delay(400);
       result.value = data;
     } catch (err) {
-      // Propagate typed $fetch error so callers (ScanTab.vue) can map it to toasts.
       throw err;
     } finally {
       loading.value = false;
-      step.value = 0;
+      stage.value = "idle";
     }
   };
 
@@ -43,7 +45,7 @@ export const useReceiptScanner = () => {
     result.value = null;
   };
 
-  return { result, loading, step, scan, clear };
+  return { result, loading, stage, scan, clear };
 };
 
 const blobToBase64 = (blob: Blob): Promise<string> =>

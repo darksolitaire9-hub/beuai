@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { ReceiptLanguage } from "../composables/useReceiptLanguage";
 
-const { lang, set } = useReceiptLanguage();
+const { setLocale, locale } = useI18n();
+const { set: setBusinessLang } = useReceiptLanguage();
 
 const LANGUAGE_LABELS = {
     en: "English",
@@ -9,11 +10,14 @@ const LANGUAGE_LABELS = {
     pt: "Português",
 };
 
-const display = computed(() => LANGUAGE_LABELS[lang.value]);
+const display = computed(() => LANGUAGE_LABELS[locale.value as keyof typeof LANGUAGE_LABELS] || 'English');
 
-const items = Object.entries(LANGUAGE_LABELS).map(([value, label]) => ({
+const items = Object.entries(LANGUAGE_LABELS).map(([code, label]) => ({
     label,
-    onSelect: () => set(value as ReceiptLanguage),
+    onSelect: () => {
+        setLocale(code);
+        setBusinessLang(code as ReceiptLanguage);
+    },
 }));
 </script>
 
@@ -23,6 +27,7 @@ const items = Object.entries(LANGUAGE_LABELS).map(([value, label]) => ({
             variant="ghost"
             size="sm"
             trailing-icon="i-lucide-chevron-down"
+            v-bind="$attrs"
         >
             {{ display }}
         </UButton>

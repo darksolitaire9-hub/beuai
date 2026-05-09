@@ -36,8 +36,8 @@ function onFileChange(e: Event) {
             <UIcon name="i-lucide-upload-cloud" class="size-8 text-neutral-400 group-hover:text-primary-500 transition-colors" />
         </div>
         <div class="space-y-1">
-            <p class="text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider">Choose a File</p>
-            <p class="text-xs text-neutral-400 font-bold tracking-tight">JPEG, PNG UP TO 10 MB</p>
+            <p class="text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider">{{ $t('scan.choose_file') }}</p>
+            <p class="text-xs text-neutral-400 font-bold tracking-tight">{{ $t('scan.file_limits') }}</p>
         </div>
     </div>
     <input
