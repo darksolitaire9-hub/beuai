@@ -60,5 +60,10 @@ Refer to `docs/domain-language.md` for naming conventions:
 - **Responsive Design System:** Follow "Refactoring UI" principles: use soft, multi-layered shadows for elevation, avoid harsh borders, use typographic weight/color for hierarchy instead of just size, and ensure all mobile touch targets respect Fitts's Law (min 44px height, safe-area padded).
 - **DDD-Aligned Translations:** Error messages and domain responses MUST map 1:1 from the domain constants (e.g. `ERROR_CODES`) directly to i18n JSON keys (e.g., `api_errors.NOT_A_RECEIPT`). Never hardcode English error dictionaries in composables or components.
 
+## Source Control Policy
+
+- **Branching:** Always create a new branch for new features, bug fixes, or architectural changes. 
+- **Main Branch Protection:** NEVER commit or push directly to the `main` branch. All work must be merged into `main` via a Pull Request or local merge after verification on a feature branch.
+
 ---
 *These instructions are foundational. Any architectural deviation requires a corresponding update to this document.*
