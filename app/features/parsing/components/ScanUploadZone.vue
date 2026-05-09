@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits<{ upload: [file: File] }>();
 const toast = useToast();
+const { t } = useI18n();
 const fileInput = ref<HTMLInputElement | null>(null);
 
 function triggerUpload() {
@@ -11,11 +12,11 @@ function onFileChange(e: Event) {
     const file = (e.target as HTMLInputElement).files?.[0];
     if (!file) return;
     if (["image/heic", "image/heif"].includes(file.type)) {
-        toast.add({ title: "Please use JPEG or PNG format", color: "warning" });
+        toast.add({ title: t('scan.alerts.invalid_format'), color: "warning" });
         return;
     }
     if (file.size > 10 * 1024 * 1024) {
-        toast.add({ title: "Image too large — max 10 MB", color: "warning" });
+        toast.add({ title: t('scan.alerts.too_large'), color: "warning" });
         return;
     }
     (e.target as HTMLInputElement).value = "";

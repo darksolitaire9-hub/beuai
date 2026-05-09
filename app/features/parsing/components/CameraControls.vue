@@ -15,19 +15,19 @@ defineEmits<{
 
 <template>
     <!-- Live controls -->
-    <div v-if="mode === 'live'" class="flex gap-4">
+    <div v-if="mode === 'live'" class="flex flex-wrap gap-4">
         <UButton 
             variant="soft" 
             color="neutral" 
             icon="i-lucide-x" 
             size="xl" 
-            class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
+            class="flex-1 min-w-[120px] justify-center font-black uppercase tracking-wider text-xs h-14"
             @click="$emit('cancel')"
         >
             {{ $t('scan.controls.cancel') }}
         </UButton>
         <UButton
-            class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
+            class="flex-[2] min-w-[160px] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
             icon="i-lucide-aperture"
             size="xl"
             @click="$emit('capture')"
@@ -37,19 +37,19 @@ defineEmits<{
     </div>
 
     <!-- Captured controls -->
-    <div v-else-if="mode === 'captured'" class="flex gap-4">
+    <div v-else-if="mode === 'captured'" class="flex flex-wrap gap-4">
         <UButton
             variant="soft"
             color="neutral"
             icon="i-lucide-rotate-ccw"
             size="xl"
-            class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
+            class="flex-1 min-w-[120px] justify-center font-black uppercase tracking-wider text-xs h-14"
             @click="$emit('retake')"
         >
             {{ $t('scan.controls.retake') }}
         </UButton>
         <UButton
-            class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
+            class="flex-[2] min-w-[160px] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20"
             icon="i-lucide-check"
             size="xl"
             :loading="loading"

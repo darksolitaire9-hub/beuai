@@ -27,6 +27,11 @@
     "stages": {
       "compressing": "Securing privacy & optimizing image...",
       "analyzing": "Extracting data with AI..."
+    },
+    "alerts": {
+      "scan_failed": "Scan failed",
+      "invalid_format": "Please use JPEG or PNG format",
+      "too_large": "Image too large — max 10 MB"
     }
   },
   "results": {
@@ -43,6 +48,12 @@
     "warnings": {
       "mismatch": "Verify Accuracy",
       "mismatch_desc": "We detected a price mismatch. Please check the line items."
+    },
+    "alerts": {
+      "saved": "Receipt saved!",
+      "save_failed": "Could not save receipt",
+      "storage_full": "Storage may be full or unavailable.",
+      "discarded": "Discarded"
     }
   },
   "history": {
@@ -54,7 +65,14 @@
     "empty_title": "Ready for rescue?",
     "empty_desc": "Scan your physical receipts to transform them into structured intelligence.",
     "no_data": "No data rescued yet.",
-    "items": "items"
+    "items": "items",
+    "alerts": {
+      "load_failed": "Could not load history",
+      "storage_unavailable": "Storage may be unavailable.",
+      "removed": "Receipt removed",
+      "remove_failed": "Could not remove receipt",
+      "no_export": "No receipts to export"
+    }
   },
   "analyze": {
     "title": "Intelligence",
@@ -66,5 +84,14 @@
     "coming_soon_title": "Coming Soon: Deep Patterns",
     "coming_soon_desc": "We're building automated price comparisons and category-level spending trends to help you optimize every purchase.",
     "beta_access": "BETA ACCESS COMING SOON"
+  },
+  "api_errors": {
+    "NOT_A_RECEIPT": "This image is not a shopping receipt — try a different photo.",
+    "AI_RESPONSE_PARSE_FAILED": "We could not read this receipt right now. Please try again in a moment.",
+    "UNSUPPORTED_MEDIA_TYPE": "Unsupported file type or size — use a JPEG or PNG up to 10 MB.",
+    "HTTP_429": "Too many requests — please wait a bit before scanning again.",
+    "HTTP_502": "Receipt service is temporarily unavailable. Please try again shortly.",
+    "HTTP_503": "Receipt service is temporarily unavailable. Please try again shortly.",
+    "generic": "We could not read this receipt. Please try again with a clearer photo."
   }
 }

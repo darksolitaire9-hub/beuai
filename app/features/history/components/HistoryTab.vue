@@ -13,6 +13,7 @@ const { history, remove, totalSpent, totalSaved, hydrate } =
     useReceiptHistory();
 const { exportAll: exportToCsv } = useCsvExport();
 const toast = useToast();
+const { t } = useI18n();
 
 const selected = ref<SavedReceipt | null>(null);
 const showDetail = ref(false);
@@ -22,8 +23,8 @@ onMounted(async () => {
         await hydrate();
     } catch {
         toast.add({
-            title: "Could not load history",
-            description: "Storage may be unavailable.",
+            title: t('history.alerts.load_failed'),
+            description: t('history.alerts.storage_unavailable'),
             color: "error",
         });
     }
@@ -53,16 +54,16 @@ async function deleteReceipt(id: string) {
     try {
         await remove(id);
         if (selected.value?.id === id) closeDetail();
-        toast.add({ title: "Receipt removed", color: "neutral" });
+        toast.add({ title: t('history.alerts.removed'), color: "neutral" });
     } catch {
-        toast.add({ title: "Could not remove receipt", color: "error" });
+        toast.add({ title: t('history.alerts.remove_failed'), color: "error" });
     }
 }
 
 function exportAll() {
     const success = exportToCsv(history.value);
     if (!success) {
-        toast.add({ title: "No receipts to export", color: "neutral" });
+        toast.add({ title: t('history.alerts.no_export'), color: "neutral" });
     }
 }
 </script>

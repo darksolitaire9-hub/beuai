@@ -27,6 +27,11 @@
     "stages": {
       "compressing": "Protegendo privacidade e otimizando imagem...",
       "analyzing": "Extraindo dados com IA..."
+    },
+    "alerts": {
+      "scan_failed": "Falha na leitura",
+      "invalid_format": "Por favor, use o formato JPEG ou PNG",
+      "too_large": "Imagem muito grande — máx. 10 MB"
     }
   },
   "results": {
@@ -43,6 +48,12 @@
     "warnings": {
       "mismatch": "Verificar Precisão",
       "mismatch_desc": "Detectamos uma divergência de preço. Por favor, verifique os itens."
+    },
+    "alerts": {
+      "saved": "Recibo salvo!",
+      "save_failed": "Não foi possível salvar o recibo",
+      "storage_full": "O armazenamento pode estar cheio ou indisponível.",
+      "discarded": "Descartado"
     }
   },
   "history": {
@@ -54,7 +65,14 @@
     "empty_title": "Pronto para o resgate?",
     "empty_desc": "Escaneie seus recibos físicos para transformá-los em inteligência estruturada.",
     "no_data": "Nenhum dado resgatado ainda.",
-    "items": "itens"
+    "items": "itens",
+    "alerts": {
+      "load_failed": "Não foi possível carregar o histórico",
+      "storage_unavailable": "O armazenamento pode estar indisponível.",
+      "removed": "Recibo removido",
+      "remove_failed": "Não foi possível remover o recibo",
+      "no_export": "Nenhum recibo para exportar"
+    }
   },
   "analyze": {
     "title": "Inteligência",
@@ -66,5 +84,14 @@
     "coming_soon_title": "Em Breve: Padrões Profundos",
     "coming_soon_desc": "Estamos construindo comparações automáticas de preços e tendências de gastos por categoria.",
     "beta_access": "ACESSO BETA EM BREVE"
+  },
+  "api_errors": {
+    "NOT_A_RECEIPT": "Esta imagem não é um recibo de compras — tente outra foto.",
+    "AI_RESPONSE_PARSE_FAILED": "Não foi possível ler este recibo agora. Tente novamente em um momento.",
+    "UNSUPPORTED_MEDIA_TYPE": "Tipo ou tamanho de arquivo não suportado — use um JPEG ou PNG de até 10 MB.",
+    "HTTP_429": "Muitas solicitações — aguarde um pouco antes de escanear novamente.",
+    "HTTP_502": "O serviço de recibos está temporariamente indisponível. Tente novamente em breve.",
+    "HTTP_503": "O serviço de recibos está temporariamente indisponível. Tente novamente em breve.",
+    "generic": "Não foi possível ler este recibo. Tente novamente com uma foto mais clara."
   }
 }

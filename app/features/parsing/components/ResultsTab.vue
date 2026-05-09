@@ -11,6 +11,7 @@ import type { ReceiptItem } from "../types/receipt";
 const { result, clear } = useReceiptScanner();
 const { save } = useReceiptHistory();
 const toast = useToast();
+const { t } = useI18n();
 const _setTab = inject<(tab: string) => void>("setTab");
 if (!_setTab) throw new Error("setTab injection is missing");
 const setTab = _setTab;
@@ -44,15 +45,15 @@ async function saveReceipt() {
         await save(result.value);
         clear();
         toast.add({
-            title: "Receipt saved!",
+            title: t('results.alerts.saved'),
             icon: "i-lucide-check-circle",
             color: "success",
         });
         setTab("history");
     } catch {
         toast.add({
-            title: "Could not save receipt",
-            description: "Storage may be full or unavailable.",
+            title: t('results.alerts.save_failed'),
+            description: t('results.alerts.storage_full'),
             color: "error",
         });
     }
@@ -62,7 +63,7 @@ function discard() {
     clear();
 
     toast.add({
-        title: "Discarded",
+        title: t('results.alerts.discarded'),
         icon: "i-lucide-trash-2",
         color: "neutral",
     });
@@ -167,20 +168,20 @@ function discard() {
 
         <!-- Wizard Sticky Actions (Thumb Zone & Safe Area) -->
         <div class="fixed bottom-0 left-0 right-0 p-6 pb-safe bg-gradient-to-t from-neutral-50 dark:from-neutral-950 via-neutral-50/95 dark:from-neutral-950/95 to-transparent z-30">
-             <div class="max-w-2xl mx-auto flex gap-4 bg-white dark:bg-neutral-900 p-4 rounded-3xl shadow-2xl ring-1 ring-neutral-200 dark:ring-neutral-800">
+             <div class="max-w-2xl mx-auto flex flex-wrap gap-4 bg-white dark:bg-neutral-900 p-4 rounded-3xl shadow-2xl ring-1 ring-neutral-200 dark:ring-neutral-800">
                 <UButton
                     variant="soft"
                     color="neutral"
                     icon="i-lucide-trash-2"
                     size="xl"
-                    class="flex-1 justify-center font-black uppercase tracking-wider text-xs h-14"
+                    class="flex-1 min-w-[120px] justify-center font-black uppercase tracking-wider text-xs h-14"
                     :label="$t('results.actions.discard')"
                     @click="discard"
                 />
                 <UButton 
                     icon="i-lucide-save" 
                     size="xl"
-                    class="flex-[2] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20" 
+                    class="flex-[2] min-w-[200px] justify-center font-black uppercase tracking-wider text-xs h-14 shadow-lg shadow-primary-500/20" 
                     :label="$t('results.actions.save')"
                     @click="saveReceipt"
                 />

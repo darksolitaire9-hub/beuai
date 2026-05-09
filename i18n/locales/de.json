@@ -1,0 +1,97 @@
+{
+  "app": {
+    "title": "beuai",
+    "tabs": {
+      "scan": "Scannen",
+      "history": "Verlauf",
+      "analyze": "Intelligenz",
+      "results": "Ergebnisse"
+    }
+  },
+  "scan": {
+    "title": "Beleg erfassen",
+    "subtitle": "Scannen oder laden Sie einen physischen Beleg hoch, um ihn umzuwandeln.",
+    "live_capture": "Live-Aufnahme",
+    "digital_upload": "Digitaler Upload",
+    "or_use_file": "ODER DATEI VERWENDEN",
+    "choose_file": "Datei auswählen",
+    "file_limits": "JPEG, PNG BIS ZU 10 MB",
+    "ready": "Bereit zum Scannen",
+    "controls": {
+      "open": "Kamera öffnen",
+      "cancel": "Abbrechen",
+      "capture": "Aufnehmen",
+      "retake": "Wiederholen",
+      "confirm": "Dies scannen"
+    },
+    "stages": {
+      "compressing": "Privatsphäre sichern & Bild optimieren...",
+      "analyzing": "Daten mit KI extrahieren..."
+    },
+    "alerts": {
+      "scan_failed": "Scan fehlgeschlagen",
+      "invalid_format": "Bitte verwenden Sie das JPEG- oder PNG-Format",
+      "too_large": "Bild zu groß — max. 10 MB"
+    }
+  },
+  "results": {
+    "title": "Prüfen & Bestätigen",
+    "summary": "Zusammenfassung",
+    "subtotal": "Zwischensumme",
+    "savings": "Ersparnis",
+    "total_paid": "Gesamtbetrag",
+    "items": "Artikel",
+    "actions": {
+      "discard": "Verwerfen",
+      "save": "Im Verlauf speichern"
+    },
+    "warnings": {
+      "mismatch": "Genauigkeit prüfen",
+      "mismatch_desc": "Wir haben eine Preisabweichung festgestellt. Bitte prüfen Sie die Artikel."
+    },
+    "alerts": {
+      "saved": "Beleg gespeichert!",
+      "save_failed": "Beleg konnte nicht gespeichert werden",
+      "storage_full": "Der Speicher ist möglicherweise voll oder nicht verfügbar.",
+      "discarded": "Verworfen"
+    }
+  },
+  "history": {
+    "title": "Verlauf",
+    "export": "CSV exportieren",
+    "rescued": "erfasst",
+    "total": "gesamt",
+    "saved": "gespart",
+    "empty_title": "Bereit zur Rettung?",
+    "empty_desc": "Scannen Sie Ihre physischen Belege, um sie in strukturierte Intelligenz umzuwandeln.",
+    "no_data": "Noch keine Daten erfasst.",
+    "items": "Artikel",
+    "alerts": {
+      "load_failed": "Verlauf konnte nicht geladen werden",
+      "storage_unavailable": "Speicher möglicherweise nicht verfügbar.",
+      "removed": "Beleg entfernt",
+      "remove_failed": "Beleg konnte nicht entfernt werden",
+      "no_export": "Keine Belege zum Exportieren vorhanden"
+    }
+  },
+  "analyze": {
+    "title": "Intelligenz",
+    "subtitle": "Erweiterte Muster und Ausgabenanalyse.",
+    "rescued": "Erfasst",
+    "savings": "Ersparnis",
+    "discounts": "Rabatte",
+    "total_items": "Gesamtartikel",
+    "coming_soon_title": "Demnächst: Tiefe Muster",
+    "coming_soon_desc": "Wir entwickeln automatische Preisvergleiche und Ausgabentrends nach Kategorien.",
+    "beta_access": "BETA-ZUGANG DEMNÄCHST"
+  },
+  "api_errors": {
+    "NOT_A_RECEIPT": "Dieses Bild ist kein Kassenbon — probieren Sie ein anderes Foto.",
+    "AI_RESPONSE_PARSE_FAILED": "Wir konnten diesen Beleg derzeit nicht lesen. Bitte versuchen Sie es gleich noch einmal.",
+    "UNSUPPORTED_MEDIA_TYPE": "Nicht unterstützter Dateityp oder -größe — verwenden Sie JPEG oder PNG bis zu 10 MB.",
+    "HTTP_429": "Zu viele Anfragen — bitte warten Sie einen Moment, bevor Sie erneut scannen.",
+    "HTTP_502": "Der Belegservice ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
+    "HTTP_503": "Der Belegservice ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
+    "generic": "Wir konnten diesen Beleg nicht lesen. Bitte versuchen Sie es mit einem deutlicheren Foto erneut."
+  }
+}

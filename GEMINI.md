@@ -58,6 +58,7 @@ Refer to `docs/domain-language.md` for naming conventions:
 - **Privacy & Uploads:** All uploaded images (receipts) MUST be processed client-side via `browser-image-compression` to strip EXIF data (GPS, metadata) and enforce size limits (max 2MB, 2048px) prior to network transmission.
 - **Progressive UX:** Multi-step async operations (like parsing) MUST provide transparent, localized progress states (e.g., "Compressing...", "Analyzing...") rather than generic loading spinners.
 - **Responsive Design System:** Follow "Refactoring UI" principles: use soft, multi-layered shadows for elevation, avoid harsh borders, use typographic weight/color for hierarchy instead of just size, and ensure all mobile touch targets respect Fitts's Law (min 44px height, safe-area padded).
+- **DDD-Aligned Translations:** Error messages and domain responses MUST map 1:1 from the domain constants (e.g. `ERROR_CODES`) directly to i18n JSON keys (e.g., `api_errors.NOT_A_RECEIPT`). Never hardcode English error dictionaries in composables or components.
 
 ---
 *These instructions are foundational. Any architectural deviation requires a corresponding update to this document.*

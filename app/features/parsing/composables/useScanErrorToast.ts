@@ -7,41 +7,28 @@ import { useToast } from "#imports";
 import { ERROR_CODES } from "~~/shared/constants/errors";
 import type { ApiFetchError } from "~~/shared/constants/errors";
 
-const BY_CODE: Record<string, string> = {
-  [ERROR_CODES.NOT_A_RECEIPT]:
-    "This image is not a shopping receipt — try a different photo.",
-  [ERROR_CODES.AI_RESPONSE_PARSE_FAILED]:
-    "We could not read this receipt right now. Please try again in a moment.",
-  [ERROR_CODES.UNSUPPORTED_MEDIA_TYPE]:
-    "Unsupported file type or size — use a JPEG or PNG up to 10 MB.",
-};
-
-const BY_STATUS: Record<number, string> = {
-  429: "Too many requests — please wait a bit before scanning again.",
-  502: "Receipt service is temporarily unavailable. Please try again shortly.",
-  503: "Receipt service is temporarily unavailable. Please try again shortly.",
-};
-
 export const useScanErrorToast = () => {
   const toast = useToast();
+  const { t } = useI18n();
 
   const show = (err: ApiFetchError) => {
     const innerData = (err as any).data as any;
     const code = innerData?.data?.code as string | undefined;
     const status = err.statusCode;
 
-    const messageFromCode = code ? BY_CODE[code] : undefined;
-    const messageFromStatus = status ? BY_STATUS[status] : undefined;
+    // Resolve description from i18n (DDD mapping)
+    let description = t("api_errors.generic");
 
-    const description =
-      messageFromCode ??
-      messageFromStatus ??
-      "We could not read this receipt. Please try again with a clearer photo.";
+    if (code && code in ERROR_CODES) {
+      description = t(`api_errors.${code}`);
+    } else if (status && [429, 502, 503].includes(status)) {
+      description = t(`api_errors.HTTP_${status}`);
+    }
 
     toast.add({
       id: "scan-error",
       color: "warning",
-      title: "Scan failed",
+      title: t("scan.alerts.scan_failed"),
       description,
     });
   };

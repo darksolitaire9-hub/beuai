@@ -1,9 +1,12 @@
-export type ReceiptLanguage = "pt" | "en" | "es";
+export type ReceiptLanguage = "pt" | "en" | "es" | "de" | "hi" | "zh";
 
 export const LANGUAGE_LABELS: Record<ReceiptLanguage, string> = {
   pt: "🇵🇹 PT",
   en: "🇬🇧 EN",
   es: "🇪🇸 ES",
+  de: "🇩🇪 DE",
+  hi: "🇮🇳 HI",
+  zh: "🇨🇳 ZH",
 };
 
 export const useReceiptLanguage = () => {

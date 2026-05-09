@@ -8,6 +8,9 @@ const LANGUAGE_LABELS = {
     en: "English",
     es: "Español",
     pt: "Português",
+    de: "Deutsch",
+    hi: "हिन्दी",
+    zh: "中文",
 };
 
 const display = computed(() => LANGUAGE_LABELS[locale.value as keyof typeof LANGUAGE_LABELS] || 'English');

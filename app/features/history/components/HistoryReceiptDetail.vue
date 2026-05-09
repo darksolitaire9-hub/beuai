@@ -56,16 +56,16 @@ function close() {
                     <header
                         class="flex items-start justify-between gap-4 px-8 pt-8 pb-6 border-b border-neutral-100 dark:border-neutral-800"
                     >
-                        <div>
-                            <h2 class="text-2xl font-black tracking-tighter text-neutral-900 dark:text-white">
+                        <div class="min-w-0">
+                            <h2 class="text-2xl font-black tracking-tighter text-neutral-900 dark:text-white truncate">
                                 {{ receipt.store }}
                             </h2>
-                            <div class="flex items-center gap-3 mt-2">
-                                <p class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.15em]">
+                            <div class="flex items-center gap-3 mt-2 flex-wrap">
+                                <p class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.15em] whitespace-nowrap">
                                     {{ formatDate(receipt.date) }}
                                 </p>
-                                <div class="size-1 rounded-full bg-neutral-300" />
-                                <p class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.15em]">
+                                <div class="size-1 rounded-full bg-neutral-300 flex-shrink-0" />
+                                <p class="text-[10px] font-black text-neutral-400 uppercase tracking-[0.15em] whitespace-nowrap">
                                     {{ receipt.items.length }} {{ $t('results.items') }}
                                 </p>
                             </div>

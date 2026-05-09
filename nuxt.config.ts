@@ -10,11 +10,20 @@ export default defineNuxtConfig({
       { code: "en", name: "English", file: "en.json" },
       { code: "pt", name: "Português", file: "pt.json" },
       { code: "es", name: "Español", file: "es.json" },
+      { code: "de", name: "Deutsch", file: "de.json" },
+      { code: "hi", name: "हिन्दी", file: "hi.json" },
+      { code: "zh", name: "中文", file: "zh.json" },
     ],
     lazy: true,
     langDir: "locales/",
     defaultLocale: "en",
     strategy: "no_prefix",
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ["browser-image-compression"],
+    },
   },
 
   future: {

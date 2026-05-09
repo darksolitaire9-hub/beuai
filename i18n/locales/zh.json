@@ -1,0 +1,97 @@
+{
+  "app": {
+    "title": "beuai",
+    "tabs": {
+      "scan": "扫描",
+      "history": "历史",
+      "analyze": "智能",
+      "results": "结果"
+    }
+  },
+  "scan": {
+    "title": "获取收据",
+    "subtitle": "扫描或上传纸质收据以进行转换。",
+    "live_capture": "实时拍摄",
+    "digital_upload": "数字上传",
+    "or_use_file": "或使用文件",
+    "choose_file": "选择文件",
+    "file_limits": "JPEG, PNG 最大 10 MB",
+    "ready": "准备扫描",
+    "controls": {
+      "open": "打开摄像头",
+      "cancel": "取消",
+      "capture": "拍摄",
+      "retake": "重拍",
+      "confirm": "扫描此图"
+    },
+    "stages": {
+      "compressing": "正在保护隐私并优化图像...",
+      "analyzing": "正在使用 AI 提取数据..."
+    },
+    "alerts": {
+      "scan_failed": "扫描失败",
+      "invalid_format": "请使用 JPEG 或 PNG 格式",
+      "too_large": "图像过大 — 最大 10 MB"
+    }
+  },
+  "results": {
+    "title": "检查并确认",
+    "summary": "摘要",
+    "subtotal": "小计",
+    "savings": "节省",
+    "total_paid": "实付总额",
+    "items": "项",
+    "actions": {
+      "discard": "放弃",
+      "save": "保存到历史"
+    },
+    "warnings": {
+      "mismatch": "核实准确性",
+      "mismatch_desc": "我们检测到价格不匹配。请检查各项。"
+    },
+    "alerts": {
+      "saved": "收据已保存！",
+      "save_failed": "无法保存收据",
+      "storage_full": "存储可能已满或不可用。",
+      "discarded": "已放弃"
+    }
+  },
+  "history": {
+    "title": "历史",
+    "export": "导出 CSV",
+    "rescued": "项已获取",
+    "total": "总计",
+    "saved": "已节省",
+    "empty_title": "准备好获取了吗？",
+    "empty_desc": "扫描您的纸质收据，将其转换为结构化智能数据。",
+    "no_data": "尚无获取的数据。",
+    "items": "项",
+    "alerts": {
+      "load_failed": "无法加载历史记录",
+      "storage_unavailable": "存储可能不可用。",
+      "removed": "收据已移除",
+      "remove_failed": "无法移除收据",
+      "no_export": "没有可导出的收据"
+    }
+  },
+  "analyze": {
+    "title": "智能",
+    "subtitle": "高级模式和支出分析。",
+    "rescued": "已获取",
+    "savings": "节省",
+    "discounts": "折扣",
+    "total_items": "项目总数",
+    "coming_soon_title": "即将推出：深度模式",
+    "coming_soon_desc": "我们正在构建自动价格比较和按类别划分的支出趋势，以帮助您优化每次购买。",
+    "beta_access": "测试版访问即将推出"
+  },
+  "api_errors": {
+    "NOT_A_RECEIPT": "此图像不是购物收据 — 请尝试另一张照片。",
+    "AI_RESPONSE_PARSE_FAILED": "我们目前无法读取此收据。请稍后再试。",
+    "UNSUPPORTED_MEDIA_TYPE": "不支持的文件类型或大小 — 请使用不超过 10 MB 的 JPEG 或 PNG。",
+    "HTTP_429": "请求过多 — 请稍等片刻再重新扫描。",
+    "HTTP_502": "收据服务暂时不可用。请稍后再试。",
+    "HTTP_503": "收据服务暂时不可用。请稍后再试。",
+    "generic": "我们无法读取此收据。请使用更清晰的照片重试。"
+  }
+}
