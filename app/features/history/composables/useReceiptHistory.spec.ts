@@ -2,14 +2,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useReceiptHistory } from "./useReceiptHistory";
 import { ref, computed } from "vue";
 
-// Mock Nuxt useState
-vi.stubGlobal("useState", (key: string, init: () => any) => {
-  return ref(init());
-});
-
-// Mock Nuxt toRaw
-vi.stubGlobal("toRaw", (val: any) => val);
-
 // Mock storage dependency
 const mockStorage = {
   loadAll: vi.fn(),
@@ -29,6 +21,8 @@ vi.mock("../../shared/utils/clone", () => ({
 describe("useReceiptHistory", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    const { history } = useReceiptHistory();
+    history.value = [];
   });
 
   it("should hydrate history and sort by savedAt descending", async () => {
