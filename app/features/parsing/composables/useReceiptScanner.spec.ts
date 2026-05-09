@@ -2,11 +2,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useReceiptScanner } from "./useReceiptScanner";
 import { ref } from "vue";
 
-// Mock Nuxt useState
-vi.stubGlobal("useState", (key: string, init: () => any) => {
-  return ref(init());
-});
-
 // Mock dependencies
 const mockApi = {
   parse: vi.fn(),

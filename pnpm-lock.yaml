@@ -32,19 +32,22 @@ importers:
         version: 1.2.106
       '@nuxt/test-utils':
         specifier: ^3.23.0
-        version: 3.23.0(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))
+        version: 3.23.0(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(happy-dom@17.6.3)(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))
       '@types/node':
         specifier: ^25.6.2
         version: 25.6.2
       '@vue/test-utils':
         specifier: ^2.4.10
         version: 2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2))
+      happy-dom:
+        specifier: ^17.1.0
+        version: 17.6.3
       jsdom:
         specifier: ^26.1.0
         version: 26.1.0
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4)
+        version: 3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4)
 
 packages:
 
@@ -3024,6 +3027,10 @@ packages:
       crossws:
         optional: true
 
+  happy-dom@17.6.3:
+    resolution: {integrity: sha512-UVIHeVhxmxedbWPCfgS55Jg2rDfwf2BCKeylcPSqazLz5w3Kri7Q4xdBJubsr/+VUzFLh0VjIvh13RaDA2/Xug==}
+    engines: {node: '>=20.0.0'}
+
   hasown@2.0.3:
     resolution: {integrity: sha512-ej4AhfhfL2Q2zpMmLo7U1Uv9+PyhIZpgQLGT1F9miIGmiCJIoCgSmczFdrc97mWT4kVY72KA+WnnhJ5pghSvSg==}
     engines: {node: '>= 0.4'}
@@ -4734,6 +4741,10 @@ packages:
     engines: {node: '>=18'}
     deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
+  whatwg-mimetype@3.0.0:
+    resolution: {integrity: sha512-nt+N2dzIutVRxARx1nghPKGv1xHikU7HKdfafKkLNLindmPU/ch3U31NOCGGA/dmPcmb1VlofO0vnKAcsm0o/Q==}
+    engines: {node: '>=12'}
+
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
     engines: {node: '>=18'}
@@ -5711,7 +5722,7 @@ snapshots:
       rc9: 3.0.1
       std-env: 4.1.0
 
-  '@nuxt/test-utils@3.23.0(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))':
+  '@nuxt/test-utils@3.23.0(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(happy-dom@17.6.3)(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))':
     dependencies:
       '@clack/prompts': 1.0.0-alpha.9
       '@nuxt/kit': 3.21.4(magicast@0.5.2)
@@ -5739,12 +5750,13 @@ snapshots:
       tinyexec: 1.1.2
       ufo: 1.6.4
       unplugin: 2.3.11
-      vitest-environment-nuxt: 1.0.1(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))
+      vitest-environment-nuxt: 1.0.1(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(happy-dom@17.6.3)(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))
       vue: 3.5.34(typescript@6.0.2)
     optionalDependencies:
       '@vue/test-utils': 2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2))
+      happy-dom: 17.6.3
       jsdom: 26.1.0
-      vitest: 3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4)
+      vitest: 3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4)
     transitivePeerDependencies:
       - crossws
       - magicast
@@ -7840,6 +7852,11 @@ snapshots:
     optionalDependencies:
       crossws: 0.4.5(srvx@0.11.15)
 
+  happy-dom@17.6.3:
+    dependencies:
+      webidl-conversions: 7.0.0
+      whatwg-mimetype: 3.0.0
+
   hasown@2.0.3:
     dependencies:
       function-bind: 1.1.2
@@ -9710,9 +9727,9 @@ snapshots:
       terser: 5.47.1
       yaml: 2.8.4
 
-  vitest-environment-nuxt@1.0.1(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4)):
+  vitest-environment-nuxt@1.0.1(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(happy-dom@17.6.3)(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4)):
     dependencies:
-      '@nuxt/test-utils': 3.23.0(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))
+      '@nuxt/test-utils': 3.23.0(@vue/test-utils@2.4.10(@vue/compiler-dom@3.5.34)(@vue/server-renderer@3.5.34(vue@3.5.34(typescript@6.0.2)))(vue@3.5.34(typescript@6.0.2)))(crossws@0.4.5(srvx@0.11.15))(happy-dom@17.6.3)(jsdom@26.1.0)(magicast@0.5.2)(typescript@6.0.2)(vitest@3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4))
     transitivePeerDependencies:
       - '@cucumber/cucumber'
       - '@jest/globals'
@@ -9728,7 +9745,7 @@ snapshots:
       - typescript
       - vitest
 
-  vitest@3.2.4(@types/node@25.6.2)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4):
+  vitest@3.2.4(@types/node@25.6.2)(happy-dom@17.6.3)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(terser@5.47.1)(yaml@2.8.4):
     dependencies:
       '@types/chai': 5.2.3
       '@vitest/expect': 3.2.4
@@ -9755,6 +9772,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.6.2
+      happy-dom: 17.6.3
       jsdom: 26.1.0
     transitivePeerDependencies:
       - jiti
@@ -9834,6 +9852,8 @@ snapshots:
   whatwg-encoding@3.1.1:
     dependencies:
       iconv-lite: 0.6.3
+
+  whatwg-mimetype@3.0.0: {}
 
   whatwg-mimetype@4.0.0: {}
 
