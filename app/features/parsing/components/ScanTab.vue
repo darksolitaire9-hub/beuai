@@ -46,50 +46,71 @@ async function onUpload(file: File) {
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-6 h-full">
-        <!-- Camera zone -->
-        <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-[3/4] md:aspect-video rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden shadow-sm">
-            <video
-                v-show="mode === 'live'"
-                ref="videoRef"
-                class="absolute inset-0 w-full h-full object-cover"
-                playsinline
-                muted
-                autoplay
-            />
-            <canvas ref="canvasRef" class="hidden" />
-            <img
-                v-show="mode === 'captured'"
-                ref="previewRef"
-                alt="Captured receipt"
-                class="absolute inset-0 w-full h-full object-cover"
-            />
-        </CameraFrame>
+    <div class="flex flex-col gap-10 p-6 md:p-8 h-full pb-32 md:pb-12">
+        <!-- Header -->
+        <div class="space-y-1">
+            <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">Rescue Receipt</h2>
+            <p class="text-sm font-medium text-neutral-500">Scan or upload a physical receipt to transform it.</p>
+        </div>
 
-        <!-- CameraControls -->
-        <div class="flex items-center justify-center">
-            <CameraControls
-                :mode="mode"
-                :loading="loading"
-                @open="startCamera"
-                @cancel="resetToIdle"
-                @capture="capturePhoto"
-                @retake="retake"
-                @confirm="useThis"
-            />
+        <!-- Camera zone -->
+        <div class="space-y-4">
+            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">Live Capture</p>
+            <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-[3/4] md:aspect-video rounded-[2rem] shadow-2xl ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden transition-all duration-500">
+                <video
+                    v-show="mode === 'live'"
+                    ref="videoRef"
+                    class="absolute inset-0 w-full h-full object-cover"
+                    playsinline
+                    muted
+                    autoplay
+                />
+                <canvas ref="canvasRef" class="hidden" />
+                <img
+                    v-show="mode === 'captured'"
+                    ref="previewRef"
+                    alt="Captured receipt"
+                    class="absolute inset-0 w-full h-full object-cover"
+                />
+                
+                <!-- Overlay for idle state -->
+                <div v-if="mode === 'idle'" class="absolute inset-0 flex items-center justify-center bg-neutral-100/50 dark:bg-neutral-900/50 backdrop-blur-sm">
+                    <div class="bg-white/80 dark:bg-neutral-800/80 p-6 rounded-full shadow-xl">
+                        <UIcon name="i-lucide-camera" class="size-12 text-primary-500" />
+                    </div>
+                </div>
+            </CameraFrame>
+
+            <!-- CameraControls -->
+            <div class="flex items-center justify-center pt-4">
+                <CameraControls
+                    :mode="mode"
+                    :loading="loading"
+                    class="w-full max-w-sm"
+                    @open="startCamera"
+                    @cancel="resetToIdle"
+                    @capture="capturePhoto"
+                    @retake="retake"
+                    @confirm="useThis"
+                />
+            </div>
         </div>
 
         <!-- Upload zone  -->
         <template v-if="mode === 'idle'">
-            <div class="relative py-2">
+            <div class="relative py-4">
                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div class="w-full border-t border-neutral-200 dark:border-neutral-800"></div>
+                    <div class="w-full border-t border-neutral-100 dark:border-neutral-800"></div>
                 </div>
-                <div class="relative flex justify-center text-[10px] uppercase font-bold tracking-widest text-neutral-400">
-                    <span class="bg-neutral-50 dark:bg-neutral-950 px-2">or upload file</span>
+                <div class="relative flex justify-center text-[10px] uppercase font-black tracking-[0.2em] text-neutral-400">
+                    <span class="bg-neutral-50 dark:bg-neutral-950 px-4">OR USE FILE</span>
                 </div>
             </div>
-            <ScanUploadZone @upload="onUpload" />
+            
+            <div class="space-y-4">
+                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">Digital Upload</p>
+                 <ScanUploadZone @upload="onUpload" />
+            </div>
         </template>
 
         <!-- Processing overlay -->

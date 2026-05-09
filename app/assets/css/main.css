@@ -4,18 +4,45 @@
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+
+  /* Refactoring UI: Multi-layered, soft shadows for organic depth */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 }
 
 :root {
-  --ui-radius: 0.5rem;
+  --ui-radius: 0.75rem; /* Friendly, approachable corners */
 }
 
 @layer base {
+  /* Prevent pure black/white for better readability and "organic" feel */
+  body {
+    @apply antialiased text-neutral-900 dark:text-neutral-50 bg-neutral-50 dark:bg-neutral-950;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
   button:not(:disabled),
   [role="button"]:not(:disabled),
   input[type="button"]:not(:disabled),
   input[type="submit"]:not(:disabled),
   input[type="reset"]:not(:disabled) {
     cursor: pointer;
+  }
+}
+
+@layer utilities {
+  /* Safe-area utilities for modern mobile browsers (HCI / 100 Things) */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
+  }
+  .px-safe {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 }
