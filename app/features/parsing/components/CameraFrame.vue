@@ -17,17 +17,6 @@ const props = defineProps<{
         <!-- Video / preview slot -->
         <slot />
 
-        <!-- Idle state -->
-        <div
-            v-if="props.mode === 'idle'"
-            class="flex flex-col items-center gap-3 p-6 text-center"
-        >
-            <UIcon name="i-lucide-camera" class="size-10 text-muted" />
-            <p class="text-sm text-muted max-w-[22ch]">
-                Point camera at your receipt
-            </p>
-        </div>
-
         <!-- Corner guides -->
         <template v-if="props.mode === 'live'">
             <div
