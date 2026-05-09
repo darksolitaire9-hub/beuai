@@ -3,6 +3,9 @@ import { APP_TABS, type AppTabId } from "~/features/shared/constants/tabs";
 
 const activeTab = ref<AppTabId>("scan");
 
+const navItems = computed(() => APP_TABS.filter(item => item.value !== 'results'));
+const isReviewMode = computed(() => activeTab.value === 'results');
+
 provide("setTab", (tab: AppTabId) => {
     activeTab.value = tab;
 });
@@ -15,7 +18,7 @@ watch(result, (val, prev) => {
 </script>
 
 <template>
-    <AppTabs v-model="activeTab" :items="APP_TABS">
+    <AppTabs v-model="activeTab" :items="navItems" :hide-nav="isReviewMode">
         <template #scan><ScanTab /></template>
         <template #results><ResultsTab /></template>
         <template #history><HistoryTab /></template>
