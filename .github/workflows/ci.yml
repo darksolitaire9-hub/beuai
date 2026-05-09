@@ -14,13 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Needed for TruffleHog to scan full history if desired
+          fetch-depth: 0
 
       - name: Secret Scanning (TruffleHog)
         uses: trufflesecurity/trufflehog@main
         with:
-          base: ${{ github.event.repository.default_branch }}
-          head: HEAD
+          base: ${{ github.event.before || github.event.repository.default_branch }}
+          head: ${{ github.sha }}
           extra_args: --only-verified
 
       - name: Setup Node.js
