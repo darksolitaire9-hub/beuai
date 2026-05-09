@@ -52,5 +52,12 @@ Refer to `docs/domain-language.md` for naming conventions:
 - `ReceiptItem`: Individual line on a receipt.
 - `drift`/`trusted`: Metadata for validation.
 
+## Design, UX & Privacy Mandates
+
+- **Internationalization (i18n):** The UI MUST be strictly language-agnostic. All user-facing strings must use `@nuxtjs/i18n` `$t()` functions mapping to `locales/*.json`. Never hardcode English text in components.
+- **Privacy & Uploads:** All uploaded images (receipts) MUST be processed client-side via `browser-image-compression` to strip EXIF data (GPS, metadata) and enforce size limits (max 2MB, 2048px) prior to network transmission.
+- **Progressive UX:** Multi-step async operations (like parsing) MUST provide transparent, localized progress states (e.g., "Compressing...", "Analyzing...") rather than generic loading spinners.
+- **Responsive Design System:** Follow "Refactoring UI" principles: use soft, multi-layered shadows for elevation, avoid harsh borders, use typographic weight/color for hierarchy instead of just size, and ensure all mobile touch targets respect Fitts's Law (min 44px height, safe-area padded).
+
 ---
 *These instructions are foundational. Any architectural deviation requires a corresponding update to this document.*
