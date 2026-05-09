@@ -7,7 +7,7 @@ CameraControls, ScanUploadZone, ScanProcessingOverlay
 -->
 
 <script setup lang="ts">
-import type { ApiFetchError } from "../../../../shared/constants/errors";
+import type { ApiFetchError } from "~~/shared/constants/errors";
 
 const { scan, loading } = useReceiptScanner();
 const { show: showScanError } = useScanErrorToast();
