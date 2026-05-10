@@ -11,6 +11,7 @@ import type { ApiFetchError } from "~~/shared/constants/errors";
 
 const { queue, addFiles, processNext, processing } = useDocumentQueue();
 const { show: showScanError } = useScanErrorToast();
+const setTab = inject<(tab: string) => void>("setTab");
 
 const {
     videoRef,
@@ -30,14 +31,22 @@ async function useThis() {
 
     // Treat capture as a single-file list
     const file = new File([capturedBlob.value], `capture-${Date.now()}.jpg`, { type: "image/jpeg" });
-    addFiles([file]);
+    await addFiles([file]);
     resetToIdle();
     await processNext();
+    
+    // Auto-navigate to review
+    if (setTab) setTab("results");
 }
 
 async function onUpload(files: File[]) {
-    addFiles(files);
+    await addFiles(files);
     await processNext();
+    
+    // Auto-navigate to review if any items reached review state
+    if (setTab && queue.value.some(i => i.status === 'review_needed')) {
+        setTab("results");
+    }
 }
 </script>
 
@@ -59,11 +68,11 @@ async function onUpload(files: File[]) {
                     <UIcon name="i-lucide-list-checks" class="size-4 text-white" />
                 </div>
                 <div>
-                    <p class="text-xs font-black uppercase tracking-widest text-primary-900 dark:text-primary-100">Queue Active</p>
-                    <p class="text-[10px] font-bold text-primary-600 dark:text-primary-400">{{ queue.length }} items total</p>
+                    <p class="text-xs font-black uppercase tracking-widest text-primary-900 dark:text-primary-100">{{ $t('queue.active') }}</p>
+                    <p class="text-[10px] font-bold text-primary-600 dark:text-primary-400">{{ $t('queue.items_total', { count: queue.length }) }}</p>
                 </div>
             </div>
-            <UButton variant="soft" color="primary" size="xs" @click="() => $emit('setTab', 'results')">Review Results</UButton>
+            <UButton variant="soft" color="primary" size="xs" @click="() => setTab?.('results')">{{ $t('queue.review') }}</UButton>
         </div>
 
         <!-- Camera zone -->

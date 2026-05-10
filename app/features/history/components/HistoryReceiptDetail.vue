@@ -127,7 +127,13 @@ function close() {
                                 </span>
                             </div>
                             <div class="flex justify-between items-center text-sm font-bold">
-                                <span class="text-neutral-500">{{ $t('results.savings') }}</span>
+                                <span class="text-neutral-500">{{ $t('results.tax_total') }}</span>
+                                <span class="text-neutral-900 dark:text-white tabular-nums">
+                                    {{ fmt(receipt.tax_total) }}
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm font-bold">
+                                <span class="text-neutral-500">{{ $t('results.total_savings') }}</span>
                                 <span class="text-success-600 tabular-nums">
                                     {{ receipt.total_savings > 0 ? `−${fmt(receipt.total_savings)}` : fmt(0) }}
                                 </span>

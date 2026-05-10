@@ -6,8 +6,9 @@
 import type { SavedReceipt } from "../types/receipt";
 
 const DB_NAME = "bewai-db";
-const DB_VERSION = 2; // Incremented version to add index
+const DB_VERSION = 3; // Incremented version to add queue store
 const STORE_NAME = "receipts";
+const QUEUE_STORE = "queue";
 
 let _db: IDBDatabase | null = null;
 
@@ -37,16 +38,21 @@ function openDb(): Promise<IDBDatabase> {
 
     req.onupgradeneeded = (e) => {
       const db = (e.target as IDBOpenDBRequest).result;
-      let store: IDBObjectStore;
+      
+      // Receipts Store
+      let receiptStore: IDBObjectStore;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        receiptStore = db.createObjectStore(STORE_NAME, { keyPath: "id" });
       } else {
-        store = (e.target as IDBOpenDBRequest).transaction!.objectStore(
-          STORE_NAME,
-        );
+        receiptStore = (e.target as IDBOpenDBRequest).transaction!.objectStore(STORE_NAME);
       }
-      if (!store.indexNames.contains("signature")) {
-        store.createIndex("signature", "signature", { unique: false });
+      if (!receiptStore.indexNames.contains("signature")) {
+        receiptStore.createIndex("signature", "signature", { unique: false });
+      }
+
+      // Queue Store
+      if (!db.objectStoreNames.contains(QUEUE_STORE)) {
+        db.createObjectStore(QUEUE_STORE, { keyPath: "id" });
       }
     };
 
@@ -72,7 +78,7 @@ export const useReceiptStorage = () => {
       const req = tx.objectStore(STORE_NAME).getAll();
       req.onsuccess = () => resolve(req.result as SavedReceipt[]);
       req.onerror = () =>
-        reject(req.error ?? new Error("[storage] request failed"));
+        reject(req.error ?? new Error("[storage] loadAll failed"));
     });
   };
 
@@ -94,10 +100,11 @@ export const useReceiptStorage = () => {
     const db = await openDb();
     return new Promise((resolve, reject) => {
       const tx = db.transaction(STORE_NAME, "readwrite");
-      tx.objectStore(STORE_NAME).put(receipt);
+      // JSON stringify/parse is the safest way to strip Vue proxies for IDB
+      tx.objectStore(STORE_NAME).put(JSON.parse(JSON.stringify(receipt)));
       tx.oncomplete = () => resolve();
       tx.onerror = () =>
-        reject(tx.error ?? new Error("[storage] transaction failed"));
+        reject(tx.error ?? new Error("[storage] persist failed"));
     });
   };
 
@@ -108,9 +115,50 @@ export const useReceiptStorage = () => {
       tx.objectStore(STORE_NAME).delete(id);
       tx.oncomplete = () => resolve();
       tx.onerror = () =>
-        reject(tx.error ?? new Error("[storage] transaction failed"));
+        reject(tx.error ?? new Error("[storage] drop failed"));
     });
   };
 
-  return { loadAll, isDuplicate, persist, drop };
+  // Queue Operations (Persistent part of the Hybrid Queue)
+  const loadQueue = async (): Promise<any[]> => {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(QUEUE_STORE, "readonly");
+      const req = tx.objectStore(QUEUE_STORE).getAll();
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error ?? new Error("[storage] loadQueue failed"));
+    });
+  };
+
+  const persistQueueItem = async (item: any): Promise<void> => {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(QUEUE_STORE, "readwrite");
+      
+      // Construct a plain object, stripping proxies but preserving data
+      // Note: We do NOT persist the File object (volatile RAM only)
+      const persistentItem = {
+        id: item.id,
+        status: item.status,
+        result: item.result ? JSON.parse(JSON.stringify(item.result)) : null,
+        error: item.error
+      };
+
+      tx.objectStore(QUEUE_STORE).put(persistentItem);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error ?? new Error("[storage] persistQueueItem failed"));
+    });
+  };
+
+  const dropQueueItem = async (id: string): Promise<void> => {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(QUEUE_STORE, "readwrite");
+      tx.objectStore(QUEUE_STORE).delete(id);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error ?? new Error("[storage] dropQueueItem failed"));
+    });
+  };
+
+  return { loadAll, isDuplicate, persist, drop, loadQueue, persistQueueItem, dropQueueItem };
 };

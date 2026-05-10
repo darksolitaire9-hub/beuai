@@ -43,11 +43,25 @@
     "date": "Data",
     "subtotal": "Subtotal",
     "tax_total": "Total IVA",
+    "total_savings": "Economia Total",
     "total_paid": "Total Pago",
+    "payment_method": "Método de Pagamento",
     "items": "itens",
+    "line_items": "Itens da Fatura",
+    "visual_evidence": "Evidência Visual",
     "actions": {
       "discard": "Descartar",
-      "save": "Salvar no Histórico"
+      "save": "Salvar no Histórico",
+      "add_item": "Adicionar Item"
+    },
+    "placeholders": {
+      "store": "Nome da Loja",
+      "item_name": "Nome do Item"
+    },
+    "table": {
+      "qty": "Qtd",
+      "price": "Preço",
+      "total": "Total"
     },
     "warnings": {
       "mismatch": "Verificar Precisão",
@@ -67,6 +81,11 @@
     "office_supplies": "Escritório",
     "fuel": "Combustível",
     "other": "Outro"
+  },
+  "queue": {
+    "active": "Fila Ativa",
+    "items_total": "{count} itens no total",
+    "review": "Revisar Resultados"
   },
   "history": {
     "title": "Histórico",

@@ -13,9 +13,18 @@ const emit = defineEmits<{
     "update:modelValue": [value: TabValue];
 }>();
 
+const scrollContainer = ref<HTMLElement | null>(null);
+
 function onTabClick(value: TabValue) {
     emit("update:modelValue", value);
 }
+
+// Ensure tab content starts at the top when switching
+watch(() => props.modelValue, () => {
+    if (scrollContainer.value) {
+        scrollContainer.value.scrollTop = 0;
+    }
+});
 </script>
 
 <template>
@@ -82,6 +91,7 @@ function onTabClick(value: TabValue) {
 
             <!-- Scrollable Page Content -->
             <div 
+                ref="scrollContainer"
                 class="flex-1 overflow-y-auto bg-neutral-50 dark:bg-neutral-950"
                 :class="[!hideNav ? 'pb-32 md:pb-0' : '']"
             >

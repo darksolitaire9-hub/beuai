@@ -35,6 +35,7 @@ Ignore handwritten calculations. Prioritize printed totals.
   "invoice_number": string | null,
   "subtotal": number | null,
   "tax_total": number | null,
+  "total_savings": number | null,
   "total_paid": number | null,
   "payment_method": string | null,
   "items": [{

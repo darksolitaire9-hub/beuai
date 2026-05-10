@@ -31,6 +31,7 @@ export interface ParsedReceipt {
   payment_method: string;
   subtotal: number;
   tax_total: number;
+  total_savings: number;
   total_paid: number;
   items: ReceiptItem[];
   _image?: string;
@@ -39,3 +40,14 @@ export interface ParsedReceipt {
     trusted: boolean;
   };
 }
+
+export const RECEIPT_CATEGORIES = [
+  "supermarket",
+  "utilities",
+  "restaurant",
+  "office_supplies",
+  "fuel",
+  "other",
+] as const;
+
+export type ReceiptCategory = (typeof RECEIPT_CATEGORIES)[number];
