@@ -16,6 +16,7 @@ export interface ReceiptItem {
   line_type?: ReceiptLineType;
   qty: number;
   unit_price: number;
+  tax_rate: number | null;
   discount: number;
   total: number;
   pack: ReceiptItemPack | null;
@@ -23,12 +24,16 @@ export interface ReceiptItem {
 
 export interface ParsedReceipt {
   store: string;
+  vendor_tax_id: string | null;
+  customer_tax_id: string | null;
   date: string;
+  invoice_number: string | null;
   payment_method: string;
   subtotal: number;
-  total_savings: number;
+  tax_total: number;
   total_paid: number;
   items: ReceiptItem[];
+  _image?: string;
   _meta: {
     drift: number;
     trusted: boolean;

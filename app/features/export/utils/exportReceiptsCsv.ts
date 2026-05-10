@@ -24,7 +24,10 @@ export function mapToRows(receipts: SavedReceipt[]): ReceiptExportRow[] {
         receipt_id: receipt.id,
         saved_at: receipt.savedAt,
         store: receipt.store,
+        vendor_tax_id: receipt.vendor_tax_id,
+        customer_tax_id: receipt.customer_tax_id,
         receipt_date: receipt.date,
+        invoice_number: receipt.invoice_number,
         payment_method: receipt.payment_method,
 
         line_index: index,
@@ -38,13 +41,14 @@ export function mapToRows(receipts: SavedReceipt[]): ReceiptExportRow[] {
         effective_units: effectiveUnits,
 
         unit_price: item.unit_price,
+        tax_rate: item.tax_rate,
         gross_line_total: item.qty * item.unit_price,
         discount_amount: item.discount,
         line_total: item.total,
         price_per_unit: item.pack?.unit_cost ?? null,
 
         receipt_subtotal: receipt.subtotal,
-        receipt_total_savings: receipt.total_savings,
+        receipt_tax_total: receipt.tax_total,
         receipt_total_paid: receipt.total_paid,
       });
     });

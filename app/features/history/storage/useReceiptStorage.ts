@@ -6,10 +6,23 @@
 import type { SavedReceipt } from "../types/receipt";
 
 const DB_NAME = "bewai-db";
-const DB_VERSION = 1;
+const DB_VERSION = 2; // Incremented version to add index
 const STORE_NAME = "receipts";
 
 let _db: IDBDatabase | null = null;
+
+export const generateReceiptSignature = (receipt: {
+  vendor_tax_id: string | null;
+  date: string | null;
+  total_paid: number | null;
+}): string => {
+  const parts = [
+    receipt.vendor_tax_id ?? "unknown-vendor",
+    receipt.date ?? "unknown-date",
+    receipt.total_paid?.toFixed(2) ?? "0.00",
+  ];
+  return parts.join("|");
+};
 
 function openDb(): Promise<IDBDatabase> {
   if (!import.meta.client) {
@@ -24,22 +37,21 @@ function openDb(): Promise<IDBDatabase> {
 
     req.onupgradeneeded = (e) => {
       const db = (e.target as IDBOpenDBRequest).result;
+      let store: IDBObjectStore;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        store = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+      } else {
+        store = (e.target as IDBOpenDBRequest).transaction!.objectStore(
+          STORE_NAME,
+        );
+      }
+      if (!store.indexNames.contains("signature")) {
+        store.createIndex("signature", "signature", { unique: false });
       }
     };
 
     req.onsuccess = (e) => {
       const db = (e.target as IDBOpenDBRequest).result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.close();
-        indexedDB.deleteDatabase(DB_NAME);
-        _db = null;
-        reject(
-          new Error(`[storage] ${STORE_NAME} store missing — database reset`),
-        );
-        return;
-      }
       _db = db;
       resolve(db);
     };
@@ -61,8 +73,20 @@ export const useReceiptStorage = () => {
       req.onsuccess = () => resolve(req.result as SavedReceipt[]);
       req.onerror = () =>
         reject(req.error ?? new Error("[storage] request failed"));
-      tx.onabort = () =>
-        reject(tx.error ?? new Error("[storage] transaction aborted"));
+    });
+  };
+
+  const isDuplicate = async (signature: string): Promise<boolean> => {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, "readonly");
+      const store = tx.objectStore(STORE_NAME);
+      const index = store.index("signature");
+      const req = index.getKey(signature);
+
+      req.onsuccess = () => resolve(req.result !== undefined);
+      req.onerror = () =>
+        reject(req.error ?? new Error("[storage] duplicate check failed"));
     });
   };
 
@@ -74,8 +98,6 @@ export const useReceiptStorage = () => {
       tx.oncomplete = () => resolve();
       tx.onerror = () =>
         reject(tx.error ?? new Error("[storage] transaction failed"));
-      tx.onabort = () =>
-        reject(tx.error ?? new Error("[storage] transaction aborted"));
     });
   };
 
@@ -87,10 +109,8 @@ export const useReceiptStorage = () => {
       tx.oncomplete = () => resolve();
       tx.onerror = () =>
         reject(tx.error ?? new Error("[storage] transaction failed"));
-      tx.onabort = () =>
-        reject(tx.error ?? new Error("[storage] transaction aborted"));
     });
   };
 
-  return { loadAll, persist, drop };
+  return { loadAll, isDuplicate, persist, drop };
 };

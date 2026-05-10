@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const { history, totalSpent, totalSaved } = useReceiptHistory();
+const { history, totalSpent } = useReceiptHistory();
 
-const fmt = (n: number) => `€${n.toFixed(2)}`;
+const fmt = (n: number) => `€${(n || 0).toFixed(2)}`;
 </script>
 
 <template>
@@ -22,9 +22,9 @@ const fmt = (n: number) => `€${n.toFixed(2)}`;
                     <p class="text-[10px] text-neutral-500 font-bold mt-1">{{ $t('analyze.total_items') }}</p>
                 </UCard>
                 <UCard class="ring-1 ring-neutral-200 dark:ring-neutral-800 shadow-lg">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-neutral-400">{{ $t('analyze.savings') }}</p>
-                    <p class="text-4xl font-black mt-2 text-success-600 tracking-tighter">{{ fmt(totalSaved) }}</p>
-                    <p class="text-[10px] text-neutral-500 font-bold mt-1">{{ $t('analyze.discounts') }}</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-neutral-400">{{ $t('results.total_paid') }}</p>
+                    <p class="text-4xl font-black mt-2 text-primary-600 tracking-tighter">{{ fmt(totalSpent) }}</p>
+                    <p class="text-[10px] text-neutral-500 font-bold mt-1">{{ $t('analyze.rescued') }}</p>
                 </UCard>
             </div>
 

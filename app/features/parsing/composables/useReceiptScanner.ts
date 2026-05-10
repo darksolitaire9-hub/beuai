@@ -32,7 +32,10 @@ export const useReceiptScanner = () => {
       const mimeType = optimized.type || "image/jpeg";
 
       const data = await parse(base64, mimeType, lang.value);
-      result.value = data;
+      result.value = {
+        ...data,
+        _image: base64Full
+      };
     } catch (err) {
       throw err;
     } finally {

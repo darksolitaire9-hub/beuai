@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emit = defineEmits<{ upload: [file: File] }>();
+const emit = defineEmits<{ upload: [files: File[]] }>();
 const toast = useToast();
 const { t } = useI18n();
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -9,18 +9,26 @@ function triggerUpload() {
 }
 
 function onFileChange(e: Event) {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    if (["image/heic", "image/heif"].includes(file.type)) {
-        toast.add({ title: t('scan.alerts.invalid_format'), color: "warning" });
-        return;
+    const files = Array.from((e.target as HTMLInputElement).files || []);
+    if (!files.length) return;
+    
+    const validFiles: File[] = [];
+    for (const file of files) {
+        if (["image/heic", "image/heif"].includes(file.type)) {
+            toast.add({ title: `${file.name}: ${t('scan.alerts.invalid_format')}`, color: "warning" });
+            continue;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+            toast.add({ title: `${file.name}: ${t('scan.alerts.too_large')}`, color: "warning" });
+            continue;
+        }
+        validFiles.push(file);
     }
-    if (file.size > 10 * 1024 * 1024) {
-        toast.add({ title: t('scan.alerts.too_large'), color: "warning" });
-        return;
-    }
+
     (e.target as HTMLInputElement).value = "";
-    emit("upload", file);
+    if (validFiles.length) {
+        emit("upload", validFiles);
+    }
 }
 </script>
 
@@ -45,6 +53,7 @@ function onFileChange(e: Event) {
         ref="fileInput"
         type="file"
         accept="image/*"
+        multiple
         class="hidden"
         @change="onFileChange"
     />

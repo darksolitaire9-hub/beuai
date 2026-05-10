@@ -37,8 +37,12 @@
   "results": {
     "title": "Review & Confirm",
     "summary": "Summary",
+    "vendor_tax_id": "Vendor Tax ID",
+    "customer_tax_id": "Customer Tax ID",
+    "invoice_number": "Invoice No",
+    "date": "Date",
     "subtotal": "Subtotal",
-    "savings": "Savings",
+    "tax_total": "Tax Total",
     "total_paid": "Total Paid",
     "items": "items",
     "actions": {
@@ -55,6 +59,14 @@
       "storage_full": "Storage may be full or unavailable.",
       "discarded": "Discarded"
     }
+  },
+  "categories": {
+    "supermarket": "Supermarket",
+    "utilities": "Utilities",
+    "restaurant": "Restaurant",
+    "office_supplies": "Office Supplies",
+    "fuel": "Fuel",
+    "other": "Other"
   },
   "history": {
     "title": "History",

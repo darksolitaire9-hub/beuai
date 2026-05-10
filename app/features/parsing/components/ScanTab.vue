@@ -9,7 +9,7 @@ CameraControls, ScanUploadZone, ScanProcessingOverlay
 <script setup lang="ts">
 import type { ApiFetchError } from "~~/shared/constants/errors";
 
-const { scan, loading } = useReceiptScanner();
+const { queue, addFiles, processNext, processing } = useDocumentQueue();
 const { show: showScanError } = useScanErrorToast();
 
 const {
@@ -28,20 +28,16 @@ const {
 async function useThis() {
     if (!capturedBlob.value) return;
 
-    try {
-        await scan(capturedBlob.value);
-        resetToIdle();
-    } catch (err) {
-        showScanError(err as ApiFetchError);
-    }
+    // Treat capture as a single-file list
+    const file = new File([capturedBlob.value], `capture-${Date.now()}.jpg`, { type: "image/jpeg" });
+    addFiles([file]);
+    resetToIdle();
+    await processNext();
 }
 
-async function onUpload(file: File) {
-    try {
-        await scan(file);
-    } catch (err) {
-        showScanError(err as ApiFetchError);
-    }
+async function onUpload(files: File[]) {
+    addFiles(files);
+    await processNext();
 }
 </script>
 
@@ -51,6 +47,23 @@ async function onUpload(file: File) {
         <div class="space-y-1">
             <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">{{ $t('scan.title') }}</h2>
             <p class="text-sm font-medium text-neutral-500">{{ $t('scan.subtitle') }}</p>
+        </div>
+
+        <!-- Queue Status (Mini version) -->
+        <div v-if="queue.length > 0" class="p-4 bg-primary-50 dark:bg-primary-950/30 rounded-2xl border border-primary-100 dark:border-primary-900/50 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-primary-500 rounded-full animate-pulse" v-if="processing">
+                    <UIcon name="i-lucide-loader-2" class="size-4 text-white animate-spin" />
+                </div>
+                <div class="p-2 bg-primary-500 rounded-full" v-else>
+                    <UIcon name="i-lucide-list-checks" class="size-4 text-white" />
+                </div>
+                <div>
+                    <p class="text-xs font-black uppercase tracking-widest text-primary-900 dark:text-primary-100">Queue Active</p>
+                    <p class="text-[10px] font-bold text-primary-600 dark:text-primary-400">{{ queue.length }} items total</p>
+                </div>
+            </div>
+            <UButton variant="soft" color="primary" size="xs" @click="() => $emit('setTab', 'results')">Review Results</UButton>
         </div>
 
         <!-- Camera zone -->
@@ -73,7 +86,7 @@ async function onUpload(file: File) {
                     class="absolute inset-0 w-full h-full object-cover"
                 />
                 
-                <!-- Overlay for idle state — make it look like a prompt -->
+                <!-- Overlay for idle state -->
                 <div v-if="mode === 'idle'" class="absolute inset-0 flex flex-col items-center justify-center bg-neutral-100/50 dark:bg-neutral-900/50 backdrop-blur-sm p-8 text-center">
                     <div class="bg-white dark:bg-neutral-800 p-6 rounded-full shadow-2xl mb-4 animate-pulse">
                         <UIcon name="i-lucide-camera" class="size-10 text-primary-500" />
@@ -86,7 +99,7 @@ async function onUpload(file: File) {
             <div class="flex items-center justify-center pt-2">
                 <CameraControls
                     :mode="mode"
-                    :loading="loading"
+                    :loading="processing"
                     class="w-full max-w-sm h-14"
                     @open="startCamera"
                     @cancel="resetToIdle"
@@ -115,6 +128,6 @@ async function onUpload(file: File) {
         </template>
 
         <!-- Processing overlay -->
-        <ScanProcessingOverlay :visible="loading" />
+        <ScanProcessingOverlay :visible="processing" />
     </div>
 </template>

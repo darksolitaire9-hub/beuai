@@ -37,8 +37,12 @@
   "results": {
     "title": "Revisar e Confirmar",
     "summary": "Resumo",
+    "vendor_tax_id": "NIF do Fornecedor",
+    "customer_tax_id": "NIF do Cliente",
+    "invoice_number": "Nº da Fatura",
+    "date": "Data",
     "subtotal": "Subtotal",
-    "savings": "Economia",
+    "tax_total": "Total IVA",
     "total_paid": "Total Pago",
     "items": "itens",
     "actions": {
@@ -55,6 +59,14 @@
       "storage_full": "O armazenamento pode estar cheio ou indisponível.",
       "discarded": "Descartado"
     }
+  },
+  "categories": {
+    "supermarket": "Supermercado",
+    "utilities": "Serviços/Contas",
+    "restaurant": "Restaurante",
+    "office_supplies": "Escritório",
+    "fuel": "Combustível",
+    "other": "Outro"
   },
   "history": {
     "title": "Histórico",

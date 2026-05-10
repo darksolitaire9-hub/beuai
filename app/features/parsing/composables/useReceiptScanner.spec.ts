@@ -47,7 +47,10 @@ describe("useReceiptScanner", () => {
 
     expect(mockCompression.compressForOcr).toHaveBeenCalled();
     expect(mockApi.parse).toHaveBeenCalled();
-    expect(result.value).toEqual(mockResponse);
+    expect(result.value).toEqual({
+      ...mockResponse,
+      _image: expect.any(String)
+    });
     expect(loading.value).toBe(false);
     expect(stage.value).toBe("idle");
   });
