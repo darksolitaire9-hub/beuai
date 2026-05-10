@@ -45,9 +45,24 @@ export const useReceiptHistory = () => {
     history.value = history.value.filter((r) => r.id !== id);
   };
 
+  const update = async (id: string, partial: Partial<SavedReceipt>): Promise<void> => {
+    const index = history.value.findIndex((r) => r.id === id);
+    if (index === -1) return;
+
+    const updated = { ...history.value[index], ...partial };
+    
+    // Regenerate signature if critical fields changed
+    if (partial.vendor_tax_id || partial.date || partial.total_paid) {
+      updated.signature = generateReceiptSignature(updated);
+    }
+
+    await persist(updated);
+    history.value[index] = updated;
+  };
+
   const totalSpent = computed(() =>
     history.value.reduce((s, r) => s + r.total_paid, 0),
   );
 
-  return { history, hydrate, save, remove, totalSpent, isDuplicate };
+  return { history, hydrate, save, remove, update, totalSpent, isDuplicate };
 };

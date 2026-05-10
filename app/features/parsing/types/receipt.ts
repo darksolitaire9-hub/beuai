@@ -34,7 +34,6 @@ export interface ParsedReceipt {
   total_savings: number;
   total_paid: number;
   items: ReceiptItem[];
-  _image?: string;
   _meta: {
     drift: number;
     trusted: boolean;

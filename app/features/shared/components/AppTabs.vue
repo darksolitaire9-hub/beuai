@@ -15,79 +15,29 @@ const emit = defineEmits<{
 
 const scrollContainer = ref<HTMLElement | null>(null);
 
-function onTabClick(value: TabValue) {
-    emit("update:modelValue", value);
-}
-
 // Ensure tab content starts at the top when switching
-watch(() => props.modelValue, () => {
+watch(() => props.modelValue, async () => {
+    await nextTick();
     if (scrollContainer.value) {
         scrollContainer.value.scrollTop = 0;
     }
+});
+
+const internalModel = computed({
+    get: () => props.modelValue,
+    set: (val) => emit("update:modelValue", val)
 });
 </script>
 
 <template>
     <div class="flex flex-1 w-full h-screen overflow-hidden bg-neutral-50 dark:bg-neutral-950">
         <!-- Desktop Sidebar Navigation -->
-        <aside
-            v-if="!hideNav"
-            class="hidden md:flex flex-col w-72 bg-white dark:bg-neutral-900 border-r border-neutral-100 dark:border-neutral-800 shadow-xl z-20"
-        >
-            <div class="p-8">
-                <div class="flex items-center gap-4 font-black text-2xl text-neutral-900 dark:text-white tracking-tighter">
-                    <div class="bg-primary-500 text-white p-2.5 rounded-2xl shadow-lg shadow-primary-500/30">
-                        <UIcon name="i-lucide-scan-line" class="size-7 block" />
-                    </div>
-                    <span>{{ $t('app.title') }}</span>
-                </div>
-            </div>
-
-            <nav class="flex-1 px-4 py-4 space-y-2" role="tablist" aria-label="Main Navigation">
-                <button
-                    v-for="item in props.items"
-                    :key="item.value"
-                    role="tab"
-                    :aria-selected="props.modelValue === item.value"
-                    :aria-controls="`tabpanel-${item.value}`"
-                    :id="`tab-${item.value}`"
-                    class="flex items-center gap-4 w-full px-4 py-3.5 rounded-2xl transition-all duration-200 font-black text-sm uppercase tracking-wider group relative overflow-hidden"
-                    :class="[
-                        props.modelValue === item.value
-                            ? 'bg-primary-50 dark:bg-primary-950/30 text-primary-600 dark:text-primary-400 shadow-sm'
-                            : 'text-neutral-500 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:text-neutral-900 dark:hover:text-white',
-                    ]"
-                    @click="onTabClick(item.value)"
-                >
-                    <UIcon :name="item.icon" class="size-5 transition-transform group-hover:scale-110" />
-                    {{ $t(`app.tabs.${item.value}`) }}
-                    
-                    <div v-if="props.modelValue === item.value" class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary-500 rounded-r-full" />
-                </button>
-            </nav>
-
-            <div class="p-6 border-t border-neutral-100 dark:border-neutral-800 space-y-6">
-               <AppLanguagePicker class="w-full justify-start font-bold" />
-               <UColorModeButton class="w-full justify-start font-bold" />
-            </div>
-        </aside>
+        <AppSidebar v-if="!hideNav" v-model="internalModel" :items="props.items" />
 
         <!-- Main Content Area -->
         <main class="flex-1 flex flex-col min-w-0 relative">
             <!-- Mobile Header (hidden on desktop) -->
-            <header
-                v-if="!hideNav"
-                class="md:hidden flex items-center justify-between px-6 py-4 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-100 dark:border-neutral-800 z-20"
-            >
-                <div class="flex items-center gap-3 font-black text-xl text-neutral-900 dark:text-white tracking-tighter">
-                    <UIcon name="i-lucide-scan-line" class="text-primary-500 size-6" />
-                    <span>{{ $t('app.title') }}</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <AppLanguagePicker aria-label="Change language" />
-                    <UColorModeButton />
-                </div>
-            </header>
+            <AppHeaderMobile v-if="!hideNav" />
 
             <!-- Scrollable Page Content -->
             <div 
@@ -122,31 +72,7 @@ watch(() => props.modelValue, () => {
             </div>
 
             <!-- Mobile Bottom Navigation (hidden on desktop) -->
-            <nav
-                v-if="!hideNav"
-                class="fixed bottom-0 left-0 w-full md:hidden bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl border-t border-neutral-100 dark:border-neutral-800 flex justify-around items-center px-4 py-3 pb-safe z-40 shadow-[0_-8px_30px_rgb(0,0,0,0.04)]"
-                role="tablist"
-                aria-label="Mobile Navigation"
-            >
-                <button
-                    v-for="item in props.items"
-                    :key="item.value"
-                    role="tab"
-                    :aria-selected="props.modelValue === item.value"
-                    :aria-controls="`tabpanel-${item.value}`"
-                    :id="`mobile-tab-${item.value}`"
-                    class="flex flex-col items-center gap-1.5 px-4 py-2 transition-all duration-300 rounded-2xl active:scale-90"
-                    :class="[
-                        props.modelValue === item.value
-                            ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/30 shadow-sm'
-                            : 'text-neutral-500 hover:text-primary-400',
-                    ]"
-                    @click="onTabClick(item.value)"
-                >
-                    <UIcon :name="item.icon" class="size-6" />
-                    <span class="text-[10px] font-black uppercase tracking-widest">{{ $t(`app.tabs.${item.value}`) }}</span>
-                </button>
-            </nav>
+            <AppBottomNav v-if="!hideNav" v-model="internalModel" :items="props.items" />
         </main>
     </div>
 </template>

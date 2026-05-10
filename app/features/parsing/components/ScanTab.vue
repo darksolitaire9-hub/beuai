@@ -9,14 +9,14 @@ CameraControls, ScanUploadZone, ScanProcessingOverlay
 <script setup lang="ts">
 import type { ApiFetchError } from "~~/shared/constants/errors";
 
-const { queue, addFiles, processNext, processing } = useDocumentQueue();
+const { scan, loading, result } = useReceiptScanner();
+const { save } = useReceiptHistory();
 const { show: showScanError } = useScanErrorToast();
 const setTab = inject<(tab: string) => void>("setTab");
 
 const {
     videoRef,
     canvasRef,
-    previewRef,
     mode,
     capturedBlob,
     qualityWarn,
@@ -26,117 +26,118 @@ const {
     resetToIdle,
 } = useCameraCapture();
 
+async function handleCapture() {
+    await capturePhoto();
+    await useThis();
+}
+
 async function useThis() {
     if (!capturedBlob.value) return;
 
-    // Treat capture as a single-file list
-    const file = new File([capturedBlob.value], `capture-${Date.now()}.jpg`, { type: "image/jpeg" });
-    await addFiles([file]);
-    resetToIdle();
-    await processNext();
-    
-    // Auto-navigate to review
-    if (setTab) setTab("results");
+    try {
+        await scan(capturedBlob.value);
+        if (result.value) {
+            await save(result.value);
+            resetToIdle();
+            if (setTab) setTab("history");
+        }
+    } catch (err) {
+        showScanError(err as ApiFetchError);
+    }
 }
 
-async function onUpload(files: File[]) {
-    await addFiles(files);
-    await processNext();
-    
-    // Auto-navigate to review if any items reached review state
-    if (setTab && queue.value.some(i => i.status === 'review_needed')) {
-        setTab("results");
+async function onUpload(file: File) {
+    try {
+        await scan(file);
+        if (result.value) {
+            await save(result.value);
+            if (setTab) setTab("history");
+        }
+    } catch (err) {
+        showScanError(err as ApiFetchError);
     }
 }
 </script>
 
 <template>
-    <div class="flex flex-col gap-10 p-6 md:p-8 min-h-full pb-32 md:pb-12">
-        <!-- Header -->
-        <div class="space-y-1">
-            <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">{{ $t('scan.title') }}</h2>
-            <p class="text-sm font-medium text-neutral-500">{{ $t('scan.subtitle') }}</p>
-        </div>
-
-        <!-- Queue Status (Mini version) -->
-        <div v-if="queue.length > 0" class="p-4 bg-primary-50 dark:bg-primary-950/30 rounded-2xl border border-primary-100 dark:border-primary-900/50 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="p-2 bg-primary-500 rounded-full animate-pulse" v-if="processing">
-                    <UIcon name="i-lucide-loader-2" class="size-4 text-white animate-spin" />
-                </div>
-                <div class="p-2 bg-primary-500 rounded-full" v-else>
-                    <UIcon name="i-lucide-list-checks" class="size-4 text-white" />
-                </div>
-                <div>
-                    <p class="text-xs font-black uppercase tracking-widest text-primary-900 dark:text-primary-100">{{ $t('queue.active') }}</p>
-                    <p class="text-[10px] font-bold text-primary-600 dark:text-primary-400">{{ $t('queue.items_total', { count: queue.length }) }}</p>
-                </div>
+    <div class="w-full h-full">
+        <div class="flex flex-col gap-10 p-6 md:p-8 min-h-full pb-32 md:pb-12">
+            <!-- Header -->
+            <div class="space-y-1">
+                <h2 class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white">{{ $t('scan.title') }}</h2>
+                <p class="text-sm font-medium text-neutral-500">{{ $t('scan.subtitle') }}</p>
             </div>
-            <UButton variant="soft" color="primary" size="xs" @click="() => setTab?.('results')">{{ $t('queue.review') }}</UButton>
-        </div>
 
-        <!-- Camera zone -->
-        <div class="space-y-4">
-            <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">{{ $t('scan.live_capture') }}</p>
-            <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-square md:aspect-video rounded-[2.5rem] shadow-2xl ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden transition-all duration-500">
-                <video
-                    v-show="mode === 'live'"
-                    ref="videoRef"
-                    class="absolute inset-0 w-full h-full object-cover"
-                    playsinline
-                    muted
-                    autoplay
-                />
-                <canvas ref="canvasRef" class="hidden" />
-                <img
-                    v-show="mode === 'captured'"
-                    ref="previewRef"
-                    alt="Captured receipt"
-                    class="absolute inset-0 w-full h-full object-cover"
-                />
-                
-                <!-- Overlay for idle state -->
-                <div v-if="mode === 'idle'" class="absolute inset-0 flex flex-col items-center justify-center bg-neutral-100/50 dark:bg-neutral-900/50 backdrop-blur-sm p-8 text-center">
-                    <div class="bg-white dark:bg-neutral-800 p-6 rounded-full shadow-2xl mb-4 animate-pulse">
-                        <UIcon name="i-lucide-camera" class="size-10 text-primary-500" />
+            <!-- Mobile: Camera + Upload -->
+            <div class="md:hidden space-y-10">
+                <!-- Camera zone -->
+                <div class="space-y-4">
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">{{ $t('scan.live_capture') }}</p>
+                    <CameraFrame :mode="mode" :show-quality-warning="qualityWarn" class="aspect-square rounded-[2.5rem] shadow-2xl ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-100 dark:bg-neutral-900 overflow-hidden transition-all duration-500">
+                        <video
+                            v-show="mode === 'live'"
+                            ref="videoRef"
+                            class="absolute inset-0 w-full h-full object-cover"
+                            playsinline
+                            muted
+                            autoplay
+                        />
+                        <canvas ref="canvasRef" class="hidden" />
+                        
+                        <!-- Overlay for idle state -->
+                        <div v-if="mode === 'idle'" class="absolute inset-0 flex flex-col items-center justify-center bg-neutral-100/50 dark:bg-neutral-900/50 backdrop-blur-sm p-8 text-center">
+                            <div class="bg-white dark:bg-neutral-800 p-6 rounded-full shadow-2xl mb-4 animate-pulse">
+                                <UIcon name="i-lucide-camera" class="size-10 text-primary-500" />
+                            </div>
+                            <p class="text-xs font-black uppercase tracking-widest text-neutral-500 dark:text-neutral-400">{{ $t('scan.ready') }}</p>
+                        </div>
+                    </CameraFrame>
+
+                    <!-- CameraControls -->
+                    <div class="flex items-center justify-center pt-2">
+                        <CameraControls
+                            :mode="mode"
+                            :loading="loading"
+                            class="w-full max-w-sm h-14"
+                            @open="startCamera"
+                            @cancel="resetToIdle"
+                            @capture="handleCapture"
+                            @retake="retake"
+                            @confirm="useThis"
+                        />
                     </div>
-                    <p class="text-xs font-black uppercase tracking-widest text-neutral-500 dark:text-neutral-400">{{ $t('scan.ready') }}</p>
                 </div>
-            </CameraFrame>
 
-            <!-- CameraControls -->
-            <div class="flex items-center justify-center pt-2">
-                <CameraControls
-                    :mode="mode"
-                    :loading="processing"
-                    class="w-full max-w-sm h-14"
-                    @open="startCamera"
-                    @cancel="resetToIdle"
-                    @capture="capturePhoto"
-                    @retake="retake"
-                    @confirm="useThis"
-                />
+                <!-- Small Upload zone for mobile -->
+                <div v-if="mode === 'idle'" class="space-y-4">
+                    <div class="relative py-4">
+                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                            <div class="w-full border-t border-neutral-100 dark:border-neutral-800"></div>
+                        </div>
+                        <div class="relative flex justify-center text-[10px] uppercase font-black tracking-[0.2em] text-neutral-400">
+                            <span class="bg-neutral-50 dark:bg-neutral-950 px-4">{{ $t('scan.or_use_file') }}</span>
+                        </div>
+                    </div>
+                    <ScanUploadZone @upload="onUpload" />
+                </div>
             </div>
+
+            <!-- Desktop: Dominant Upload Zone (No Camera) -->
+            <div class="hidden md:flex flex-col flex-1 min-h-[400px]">
+                <div class="flex-1 bg-white dark:bg-neutral-900 rounded-[3rem] border-4 border-dashed border-neutral-100 dark:border-neutral-800 p-12 flex flex-col items-center justify-center text-center shadow-inner group hover:border-primary-500/50 transition-all duration-500">
+                    <div class="bg-primary-50 dark:bg-primary-950/20 p-10 rounded-[2.5rem] mb-8 group-hover:scale-110 transition-transform duration-500 shadow-sm">
+                        <UIcon name="i-lucide-upload-cloud" class="size-20 text-primary-500" />
+                    </div>
+                    <h3 class="text-3xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">{{ $t('scan.choose_file') }}</h3>
+                    <p class="text-neutral-500 font-bold max-w-sm leading-relaxed mb-10">
+                        Drag and drop your digital receipts here or click to browse. We support high-resolution scans and digital exports.
+                    </p>
+                    <ScanUploadZone @upload="onUpload" class="border-none p-0 bg-transparent shadow-none hover:bg-transparent" />
+                </div>
+            </div>
+
+            <!-- Processing overlay -->
+            <ScanProcessingOverlay :visible="loading" />
         </div>
-
-        <!-- Upload zone  -->
-        <template v-if="mode === 'idle'">
-            <div class="relative py-4">
-                <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div class="w-full border-t border-neutral-100 dark:border-neutral-800"></div>
-                </div>
-                <div class="relative flex justify-center text-[10px] uppercase font-black tracking-[0.2em] text-neutral-400">
-                    <span class="bg-neutral-50 dark:bg-neutral-950 px-4">{{ $t('scan.or_use_file') }}</span>
-                </div>
-            </div>
-            
-            <div class="space-y-4">
-                 <p class="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-400 ml-1">{{ $t('scan.digital_upload') }}</p>
-                 <ScanUploadZone @upload="onUpload" />
-            </div>
-        </template>
-
-        <!-- Processing overlay -->
-        <ScanProcessingOverlay :visible="processing" />
     </div>
 </template>
