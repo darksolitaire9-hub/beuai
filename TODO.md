@@ -17,6 +17,10 @@
 - [ ] **Export Logic:** Refine CSV export to include all line-item details.
 
 ## 🧪 Testing & Quality Assurance
-- [ ] **Unit Tests:** Achieve 100% coverage for business logic in composables (`useReceiptScanner`, `useReceiptHistory`).
-- [ ] **E2E Smoke Tests:** Implement Playwright tests for the full "Scan -> Save -> View" happy path.
+- [x] **Unit Tests:** Achieve 100% coverage for business logic in composables (`useReceiptScanner`, `useReceiptHistory`).
+- [x] **E2E Smoke Tests:** Implement Playwright tests for the full "Scan -> Save -> View" happy path and multi-locale verification.
 - [ ] **Performance Benchmarks:** Monitor and optimize LCP (Largest Contentful Paint) for the scan tab.
+
+## 🚀 Deployment & CI/CD
+- [ ] **CI Pipeline:** Run full suite (Vitest + Playwright) successfully on push.
+- [ ] **Security Validation:** Ensure no critical findings in pre-commit/CI static analysis.
