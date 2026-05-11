@@ -127,12 +127,31 @@ async function onUpload(file: File) {
                 <ScanUploadZone 
                     @upload="onUpload" 
                     class="flex-1 !border-4 !rounded-[3rem] !p-12"
+                    v-slot="{ isDragging }"
                 >
-                    <div class="bg-primary-50 dark:bg-primary-950/20 p-10 rounded-[2.5rem] mb-8 group-hover:scale-110 transition-transform duration-500 shadow-sm">
-                        <UIcon name="i-lucide-upload-cloud" class="size-20 text-primary-500" />
+                    <div 
+                        class="p-10 rounded-[2.5rem] mb-8 transition-all duration-500 shadow-sm ring-2"
+                        :class="[
+                            isDragging 
+                                ? 'bg-white dark:bg-neutral-800 ring-primary-500 scale-110 shadow-xl' 
+                                : 'bg-primary-50 dark:bg-primary-950/20 ring-transparent group-hover:scale-110 shadow-sm'
+                        ]"
+                    >
+                        <UIcon 
+                            name="i-lucide-upload-cloud" 
+                            class="size-20 transition-colors duration-500 text-primary-500"
+                        />
                     </div>
-                    <h3 class="text-3xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">{{ $t('scan.choose_file') }}</h3>
-                    <p class="text-neutral-500 font-bold max-w-sm mx-auto leading-relaxed mb-10">
+                    <h3 
+                        class="text-3xl font-black tracking-tighter mb-4 transition-colors duration-500"
+                        :class="[isDragging ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-900 dark:text-white']"
+                    >
+                        {{ $t('scan.choose_file') }}
+                    </h3>
+                    <p 
+                        class="font-bold max-w-sm mx-auto leading-relaxed mb-10 transition-colors duration-500"
+                        :class="[isDragging ? 'text-primary-500/80' : 'text-neutral-500']"
+                    >
                         {{ $t('scan.desktop_drag_drop') }}
                     </p>
                 </ScanUploadZone>
