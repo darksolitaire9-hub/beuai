@@ -26,7 +26,7 @@ function onTabClick(value: string | number) {
             </div>
         </div>
 
-        <nav class="flex-1 px-4 py-4 space-y-2" role="tablist" aria-label="Main Navigation">
+        <nav class="flex-1 px-4 py-4 space-y-2" role="tablist" :aria-label="$t('app.aria.main_navigation')">
             <button
                 v-for="item in props.items"
                 :key="item.value"

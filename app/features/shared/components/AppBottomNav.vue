@@ -19,7 +19,7 @@ function onTabClick(value: string | number) {
     <nav
         class="fixed bottom-0 left-0 w-full md:hidden bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl border-t border-neutral-100 dark:border-neutral-800 flex justify-around items-center px-4 py-3 pb-safe z-40 shadow-[0_-8px_30px_rgb(0,0,0,0.04)]"
         role="tablist"
-        aria-label="Mobile Navigation"
+        :aria-label="$t('app.aria.mobile_navigation')"
     >
         <button
             v-for="item in props.items"

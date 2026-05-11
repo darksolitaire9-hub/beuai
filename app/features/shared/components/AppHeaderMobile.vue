@@ -8,7 +8,7 @@
             <span>{{ $t('app.title') }}</span>
         </div>
         <div class="flex items-center gap-2">
-            <AppLanguagePicker aria-label="Change language" />
+            <AppLanguagePicker :aria-label="$t('app.aria.change_language')" />
             <UColorModeButton />
         </div>
     </header>

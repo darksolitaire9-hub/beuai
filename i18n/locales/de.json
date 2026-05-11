@@ -6,6 +6,11 @@
       "history": "Verlauf",
       "analyze": "Intelligenz",
       "results": "Ergebnisse"
+    },
+    "aria": {
+      "main_navigation": "Hauptnavigation",
+      "mobile_navigation": "Mobile Navigation",
+      "change_language": "Sprache ändern"
     }
   },
   "scan": {
@@ -31,8 +36,10 @@
     "alerts": {
       "scan_failed": "Scan fehlgeschlagen",
       "invalid_format": "Bitte verwenden Sie das JPEG- oder PNG-Format",
-      "too_large": "Bild zu groß — max. 10 MB"
-    }
+      "too_large": "Bild zu groß — max. 10 MB",
+      "too_dark": "Zu dunkel — versuchen Sie es mit besserer Beleuchtung"
+    },
+    "desktop_drag_drop": "Ziehen Sie Ihre digitalen Belege hierher oder klicken Sie zum Durchsuchen."
   },
   "results": {
     "title": "Prüfen & Bestätigen",
@@ -43,7 +50,11 @@
     "items": "Artikel",
     "actions": {
       "discard": "Verwerfen",
-      "save": "Im Verlauf speichern"
+      "save": "Im Verlauf speichern",
+      "add_item": "Artikel hinzufügen",
+      "discard_changes": "Änderungen verwerfen",
+      "save_intelligence": "Intelligenz speichern",
+      "confirm_save": "Bestätigen & Speichern"
     },
     "warnings": {
       "mismatch": "Genauigkeit prüfen",
@@ -54,6 +65,34 @@
       "save_failed": "Beleg konnte nicht gespeichert werden",
       "storage_full": "Der Speicher ist möglicherweise voll oder nicht verfügbar.",
       "discarded": "Verworfen"
+    },
+    "vendor_tax_id": "USt-IdNr. Verkäufer",
+    "customer_tax_id": "USt-IdNr. Kunde",
+    "invoice_number": "Rechnungsnr.",
+    "date": "Datum",
+    "tax_total": "Gesamtsteuer",
+    "total_savings": "Gesamtersparnis",
+    "payment_method": "Zahlungsmethode",
+    "line_items": "Artikel",
+    "visual_evidence": "Visueller Beleg",
+    "verified_ai": "KI-VERIFIZIERT",
+    "placeholders": {
+      "store": "Geschäftsname",
+      "item_name": "Artikelname"
+    },
+    "table": {
+      "qty": "Menge",
+      "price": "Preis",
+      "total": "Gesamt"
+    },
+    "workspace": "Verifizierungsbereich",
+    "new_entry": "Neuer Eintrag",
+    "store_info": "Geschäftsinformationen",
+    "identity_invoice": "Identität & Rechnung",
+    "empty": {
+      "title": "Bereit zur Überprüfung?",
+      "desc": "Scannen Sie einen Beleg, um Ihre Daten zu überprüfen und zu retten.",
+      "action": "Zum Scannen gehen"
     }
   },
   "history": {
@@ -72,6 +111,10 @@
       "removed": "Beleg entfernt",
       "remove_failed": "Beleg konnte nicht entfernt werden",
       "no_export": "Keine Belege zum Exportieren vorhanden"
+    },
+    "aria": {
+      "view_details": "Details anzeigen für {store} am {date}",
+      "delete_receipt": "Beleg von {store} löschen"
     }
   },
   "analyze": {
@@ -83,7 +126,12 @@
     "total_items": "Gesamtartikel",
     "coming_soon_title": "Demnächst: Tiefe Muster",
     "coming_soon_desc": "Wir entwickeln automatische Preisvergleiche und Ausgabentrends nach Kategorien.",
-    "beta_access": "BETA-ZUGANG DEMNÄCHST"
+    "beta_access": "BETA-ZUGANG DEMNÄCHST",
+    "lifetime_spend": "GESAMTAUSGABEN",
+    "category_breakdown": "Ausgaben nach Kategorie",
+    "top_destinations": "Top Ziele",
+    "empty_title": "Noch keine Intelligenz",
+    "empty_desc": "Retten Sie Ihre ersten Belege, um erweiterte Muster zu sehen."
   },
   "api_errors": {
     "NOT_A_RECEIPT": "Dieses Bild ist kein Kassenbon — probieren Sie ein anderes Foto.",
@@ -93,5 +141,18 @@
     "HTTP_502": "Der Belegservice ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
     "HTTP_503": "Der Belegservice ist vorübergehend nicht verfügbar. Bitte versuchen Sie es in Kürze erneut.",
     "generic": "Wir konnten diesen Beleg nicht lesen. Bitte versuchen Sie es mit einem deutlicheren Foto erneut."
+  },
+  "categories": {
+    "supermarket": "Supermarkt",
+    "utilities": "Nebenkosten",
+    "restaurant": "Restaurant",
+    "office_supplies": "Bürobedarf",
+    "fuel": "Kraftstoff",
+    "other": "Andere"
+  },
+  "queue": {
+    "active": "Queue Active",
+    "items_total": "{count} items total",
+    "review": "Review Results"
   }
 }

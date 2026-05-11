@@ -79,7 +79,7 @@ function toggleEdit() {
 function addItem() {
   if (!form.value) return;
   form.value.items.push({
-    name: "New Item",
+    name: t("results.placeholders.item_name"),
     category: "other",
     qty: 1,
     unit_price: 0,
@@ -129,6 +129,7 @@ watch(() => form.value?.items, (items) => {
                                 v-model="form.store" 
                                 variant="none" 
                                 class="text-3xl font-black tracking-tighter p-0 h-auto focus:ring-0 w-full" 
+                                :placeholder="$t('results.placeholders.store')"
                             />
                             <h2 v-else class="text-3xl font-black tracking-tighter text-neutral-900 dark:text-white truncate">
                                 {{ receipt.store }}
@@ -177,7 +178,7 @@ watch(() => form.value?.items, (items) => {
                         >
                             <div class="flex items-center gap-4">
                                 <p class="text-[10px] font-black uppercase tracking-[0.3em] text-primary-500">
-                                    {{ category }}
+                                    {{ $t('categories.' + category) }}
                                 </p>
                                 <div class="h-px flex-1 bg-neutral-100 dark:bg-neutral-800" />
                             </div>
@@ -189,11 +190,18 @@ watch(() => form.value?.items, (items) => {
                                 >
                                     <div class="flex-1 min-w-0">
                                         <template v-if="isEditing">
-                                            <UInput v-model="item.name" variant="soft" size="sm" class="font-bold mb-2" />
+                                            <UInput v-model="item.name" variant="soft" size="sm" class="font-bold mb-2" :placeholder="$t('results.placeholders.item_name')" />
                                             <div class="flex items-center gap-3">
                                                  <UInput v-model.number="item.qty" type="number" step="0.1" size="xs" class="w-16" />
                                                  <span class="text-xs text-neutral-400">×</span>
                                                  <UInput v-model.number="item.unit_price" type="number" step="0.01" size="xs" class="w-20" />
+                                                 <USelect 
+                                                    v-model="item.category" 
+                                                    :options="RECEIPT_CATEGORIES.map(c => ({ label: $t('categories.' + c), value: c }))" 
+                                                    variant="soft"
+                                                    size="xs"
+                                                    class="flex-1"
+                                                 />
                                             </div>
                                         </template>
                                         <template v-else>
@@ -220,7 +228,7 @@ watch(() => form.value?.items, (items) => {
                         </div>
 
                         <div v-if="isEditing" class="flex justify-center pt-4">
-                             <UButton variant="soft" color="primary" icon="i-lucide-plus" class="rounded-full px-6 font-black uppercase tracking-widest text-[10px]" @click="addItem">Add Item</UButton>
+                             <UButton variant="soft" color="primary" icon="i-lucide-plus" class="rounded-full px-6 font-black uppercase tracking-widest text-[10px]" @click="addItem">{{ $t('results.actions.add_item') }}</UButton>
                         </div>
 
                         <!-- Totals Section -->
@@ -274,14 +282,14 @@ watch(() => form.value?.items, (items) => {
                              >
                                 {{ receipt.payment_method }}
                              </UBadge>
-                             <p class="text-[10px] font-black text-neutral-300 dark:text-neutral-700 uppercase tracking-widest">VERIFIED AI</p>
+                             <p class="text-[10px] font-black text-neutral-300 dark:text-neutral-700 uppercase tracking-widest">{{ $t('results.verified_ai') }}</p>
                         </div>
                     </div>
 
                     <!-- Actions footer when editing -->
                     <footer v-if="isEditing" class="p-8 border-t border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex gap-4">
-                        <UButton variant="soft" color="neutral" class="flex-1 font-black uppercase tracking-widest text-xs h-12" @click="toggleEdit">Discard Changes</UButton>
-                        <UButton color="primary" class="flex-[2] font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-primary-500/20" @click="saveChanges">Save Intelligence</UButton>
+                        <UButton variant="soft" color="neutral" class="flex-1 font-black uppercase tracking-widest text-xs h-12" @click="toggleEdit">{{ $t('results.actions.discard_changes') }}</UButton>
+                        <UButton color="primary" class="flex-[2] justify-center font-black uppercase tracking-widest text-xs h-12 shadow-lg shadow-primary-500/20" @click="saveChanges">{{ $t('results.actions.save_intelligence') }}</UButton>
                     </footer>
                 </div>
             </div>

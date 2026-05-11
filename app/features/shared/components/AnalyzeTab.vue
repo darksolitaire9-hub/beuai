@@ -32,7 +32,7 @@ const maxStoreValue = computed(() => Math.max(...topStores.value.map(s => s.valu
                     <div class="p-2">
                         <p class="text-[10px] font-black uppercase tracking-widest text-neutral-400 mb-1">{{ $t('results.total_paid') }}</p>
                         <p class="text-4xl font-black text-primary-600 tracking-tighter">{{ fmt(totalSpent) }}</p>
-                        <p class="text-[10px] text-neutral-500 font-bold mt-1">LIFETIME SPEND</p>
+                        <p class="text-[10px] text-neutral-500 font-bold mt-1 uppercase">{{ $t('analyze.lifetime_spend') }}</p>
                     </div>
                 </UCard>
                 <UCard class="bg-white dark:bg-neutral-900 border-none shadow-xl rounded-[2.5rem]">
@@ -52,7 +52,7 @@ const maxStoreValue = computed(() => Math.max(...topStores.value.map(s => s.valu
                         <div class="bg-primary-500 text-white p-2 rounded-xl">
                             <UIcon name="i-lucide-pie-chart" class="size-5" />
                         </div>
-                        <h3 class="text-xs font-black uppercase tracking-widest text-neutral-400">Category Breakdown</h3>
+                        <h3 class="text-xs font-black uppercase tracking-widest text-neutral-400">{{ $t('analyze.category_breakdown') }}</h3>
                     </div>
                     
                     <div class="bg-white dark:bg-neutral-900 rounded-[2.5rem] p-8 shadow-sm border border-neutral-100 dark:border-neutral-800 space-y-6">
@@ -77,7 +77,7 @@ const maxStoreValue = computed(() => Math.max(...topStores.value.map(s => s.valu
                         <div class="bg-primary-500 text-white p-2 rounded-xl">
                             <UIcon name="i-lucide-store" class="size-5" />
                         </div>
-                        <h3 class="text-xs font-black uppercase tracking-widest text-neutral-400">Top Destinations</h3>
+                        <h3 class="text-xs font-black uppercase tracking-widest text-neutral-400">{{ $t('analyze.top_destinations') }}</h3>
                     </div>
                     
                     <div class="bg-white dark:bg-neutral-900 rounded-[2.5rem] p-8 shadow-sm border border-neutral-100 dark:border-neutral-800 space-y-6">
@@ -121,9 +121,9 @@ const maxStoreValue = computed(() => Math.max(...topStores.value.map(s => s.valu
             <div class="bg-neutral-100 dark:bg-neutral-900 p-8 rounded-[3rem] mb-8 shadow-inner ring-1 ring-neutral-200 dark:ring-neutral-800">
                 <UIcon name="i-lucide-bar-chart-3" class="size-16 text-neutral-400" />
             </div>
-            <h3 class="text-2xl font-black text-neutral-900 dark:text-white tracking-tighter mb-2">No Intelligence Yet</h3>
-            <p class="text-sm font-bold text-neutral-500 max-w-xs leading-relaxed mb-10">
-                Rescue your first receipts to see advanced patterns and spending analysis.
+            <h3 class="text-2xl font-black text-neutral-900 dark:text-white tracking-tighter mb-2">{{ $t('analyze.empty_title') }}</h3>
+            <p class="text-sm font-bold text-neutral-500 max-w-xs mx-auto leading-relaxed mb-10">
+                {{ $t('analyze.empty_desc') }}
             </p>
         </div>
     </div>

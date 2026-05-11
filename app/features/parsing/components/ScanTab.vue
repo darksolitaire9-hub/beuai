@@ -129,8 +129,8 @@ async function onUpload(file: File) {
                         <UIcon name="i-lucide-upload-cloud" class="size-20 text-primary-500" />
                     </div>
                     <h3 class="text-3xl font-black text-neutral-900 dark:text-white tracking-tighter mb-4">{{ $t('scan.choose_file') }}</h3>
-                    <p class="text-neutral-500 font-bold max-w-sm leading-relaxed mb-10">
-                        Drag and drop your digital receipts here or click to browse. We support high-resolution scans and digital exports.
+                    <p class="text-neutral-500 font-bold max-w-sm mx-auto leading-relaxed mb-10">
+                        {{ $t('scan.desktop_drag_drop') }}
                     </p>
                     <ScanUploadZone @upload="onUpload" class="border-none p-0 bg-transparent shadow-none hover:bg-transparent" />
                 </div>

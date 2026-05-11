@@ -96,10 +96,10 @@ watch(() => form.value?.items, (items) => {
       <UIcon name="i-lucide-receipt" class="size-16 text-faint" />
     </div>
     <div class="space-y-2 mb-8">
-      <p class="text-xl font-black tracking-tight text-neutral-900 dark:text-white">Ready for review?</p>
-      <p class="text-sm font-medium text-neutral-500 max-w-xs">Scan a receipt to verify and rescue your data.</p>
+      <p class="text-xl font-black tracking-tight text-neutral-900 dark:text-white">{{ $t('results.empty.title') }}</p>
+      <p class="text-sm font-medium text-neutral-500 max-w-xs">{{ $t('results.empty.desc') }}</p>
     </div>
-    <UButton size="xl" color="primary" class="font-black uppercase tracking-widest text-xs px-8 h-12" @click="setTab?.('scan')">Go to Scan</UButton>
+    <UButton size="xl" color="primary" class="font-black uppercase tracking-widest text-xs px-8 h-12" @click="setTab?.('scan')">{{ $t('results.empty.action') }}</UButton>
   </div>
 
   <!-- Workspace View -->
@@ -109,13 +109,13 @@ watch(() => form.value?.items, (items) => {
       <div class="flex items-center gap-4">
         <UButton variant="soft" color="neutral" icon="i-lucide-trash-2" class="rounded-full" @click="discard" />
         <div>
-           <p class="text-[10px] font-black text-primary-500 uppercase tracking-[0.2em] mb-0.5">Verification Workspace</p>
-           <h1 class="text-xl font-black tracking-tighter truncate max-w-[150px] sm:max-w-md">{{ form.store || 'New Entry' }}</h1>
+           <p class="text-[10px] font-black text-primary-500 uppercase tracking-[0.2em] mb-0.5">{{ $t('results.workspace') }}</p>
+           <h1 class="text-xl font-black tracking-tighter truncate max-w-[150px] sm:max-w-md">{{ form.store || $t('results.new_entry') }}</h1>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
-        <UButton color="primary" class="hidden sm:flex font-black px-8 h-11" @click="saveVerified">Confirm & Save</UButton>
+        <UButton color="primary" class="hidden sm:flex font-black px-8 h-11" @click="saveVerified">{{ $t('results.actions.confirm_save') }}</UButton>
         <UButton color="primary" icon="i-lucide-check" class="sm:hidden rounded-full h-11 w-11 flex items-center justify-center" @click="saveVerified" />
       </div>
     </header>
@@ -130,7 +130,7 @@ watch(() => form.value?.items, (items) => {
             <div class="bg-primary-500 text-white p-2 rounded-xl">
               <UIcon name="i-lucide-store" class="size-5" />
             </div>
-            <h3 class="text-xs font-black uppercase tracking-widest text-neutral-400">Store Information</h3>
+            <h3 class="text-xs font-black uppercase tracking-widest text-neutral-400">{{ $t('results.store_info') }}</h3>
           </div>
           <UInput 
             v-model="form.store" 
@@ -152,7 +152,7 @@ watch(() => form.value?.items, (items) => {
         <section class="p-8 bg-white dark:bg-neutral-900 rounded-[2.5rem] shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-800 space-y-8">
           <div class="flex items-center gap-3">
              <UIcon name="i-lucide-fingerprint" class="size-4 text-neutral-400" />
-             <h3 class="text-[10px] font-black uppercase tracking-widest text-neutral-400">Identity & Invoice</h3>
+             <h3 class="text-[10px] font-black uppercase tracking-widest text-neutral-400">{{ $t('results.identity_invoice') }}</h3>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <UFormField :label="$t('results.invoice_number')">
