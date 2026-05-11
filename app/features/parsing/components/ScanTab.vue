@@ -123,8 +123,11 @@ async function onUpload(file: File) {
             </div>
 
             <!-- Desktop: Dominant Upload Zone (No Camera) -->
-            <div class="hidden md:flex flex-col flex-1 min-h-[400px]">
-                <div class="flex-1 bg-white dark:bg-neutral-900 rounded-[3rem] border-4 border-dashed border-neutral-100 dark:border-neutral-800 p-12 flex flex-col items-center justify-center text-center shadow-inner group hover:border-primary-500/50 transition-all duration-500">
+            <div class="hidden md:flex flex-col flex-1 min-h-[500px]">
+                <ScanUploadZone 
+                    @upload="onUpload" 
+                    class="flex-1 !border-4 !rounded-[3rem] !p-12"
+                >
                     <div class="bg-primary-50 dark:bg-primary-950/20 p-10 rounded-[2.5rem] mb-8 group-hover:scale-110 transition-transform duration-500 shadow-sm">
                         <UIcon name="i-lucide-upload-cloud" class="size-20 text-primary-500" />
                     </div>
@@ -132,8 +135,7 @@ async function onUpload(file: File) {
                     <p class="text-neutral-500 font-bold max-w-sm mx-auto leading-relaxed mb-10">
                         {{ $t('scan.desktop_drag_drop') }}
                     </p>
-                    <ScanUploadZone @upload="onUpload" class="border-none p-0 bg-transparent shadow-none hover:bg-transparent" />
-                </div>
+                </ScanUploadZone>
             </div>
 
             <!-- Processing overlay -->

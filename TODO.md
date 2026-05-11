@@ -1,42 +1,22 @@
-# Gemini CLI Skills Setup Checklist
+# Project Roadmap & Maintainability
 
-## Development
-- [x] Frontend: Vue/Nuxt (`nuxt/ui@nuxt-ui`)
-- [x] Backend (`agent-arch-system-design`)
-- [x] Database: Supabase (`mindrally/skills@supabase`, `daffy0208/ai-dev-standards@Supabase Developer`)
+## 🛠 Core Improvements & Maintainability
+- [ ] **Strict DDD Enforcement:** Audit all feature modules for clear separation between logic (composables) and view (components).
+- [ ] **Nuxt UI v4 Compliance:** Ensure all UI components leverage Nuxt UI semantic tokens and component patterns.
+- [ ] **Error Handling Standardization:** Map all API and domain errors to i18n keys for 100% localized feedback.
+- [ ] **Codebase Indexing for AI:** Maintain and update `GEMINI.md` files in each feature directory to assist LLM context.
 
-## Engineering & Architecture
-- [x] Architect Skill (`daffy0208/ai-dev-standards@Design System Architect`)
-- [x] System Analyst Skill (`daffy0208/ai-dev-standards@product-analyst`)
-- [x] Time/Space Complexity Analysis (`tkersey/dotfiles@complexity-mitigator`)
-- [x] Anti-Hallucination / Fact-Checking Guardrails (`patricio0312rev/skills@guardrails-safety-filter-builder`)
+## 📁 Scanning & Parsing (app/features/parsing)
+- [x] **Robust Drag & Drop:** Refactor desktop upload zone to be full-screen aware and flicker-free.
+- [ ] **Image Optimization Pipeline:** Enhance client-side compression to balance speed vs. AI extraction quality.
+- [ ] **Scan Result Validation:** Implement visual cues for "drift" and "trusted" metadata from the parser.
 
-## UI/UX & Design
-- [x] UI/UX Design (`nuxt-ui`, `Design System Architect`)
+## 📜 History & Management (app/features/history)
+- [ ] **IndexedDB Persistence:** Solidify the storage adapter to handle large volumes of receipts safely.
+- [ ] **Analytics Dashboard:** Implement data visualization for spending patterns using `@nuxt/ui` and charts.
+- [ ] **Export Logic:** Refine CSV export to include all line-item details.
 
-## Process & Quality
-- [x] Git / Version Control (`personamanagmentlayer/pcl@git-expert`)
-- [x] Security (`github/awesome-copilot@security-review`)
-- [x] Spec-Driven Development (Testing/Docs) (`duc01226/easyplatform@test-specs-docs`)
-- [x] Quality Assurance Engineer (`daffy0208/ai-dev-standards@Quality Assurance`)
-- [x] Policy Creator / Terms of Use (`kostja94/marketing-skills@legal-page-generator`, `guia-matthieu/clawfu-skills@terms-analyzer`)
-
-## Marketing & Growth
-- [x] SEO (`affaan-m/everything-claude-code@seo`)
-- [x] Marketing (`jk-0001/skills@social-media-marketing`)
-- [x] Social Media (`jk-0001/skills@social-media-marketing`)
-
-## DevOps
-- [x] CI/CD Pipeline (`ailabs-393/ai-labs-claude-skills@cicd-pipeline-generator`)
-
-## Localization & Reach
-- [x] Internationalization (i18n) (`harlan-zw/vue-ecosystem-skills@vue-i18n-skilld`)
-
-## Performance
-- [x] Web Vitals & Optimization (`daffy0208/ai-dev-standards@Performance Optimizer`)
-
-## AI & Integration
-- [x] Prompt Engineering (`codealive-ai/prompt-engineering-skill@prompt-engineering`)
-
-## Data & Reporting
-- [x] Data Visualization / Analytics (`owl-listener/designer-skills@data-visualization`)
+## 🧪 Testing & Quality Assurance
+- [ ] **Unit Tests:** Achieve 100% coverage for business logic in composables (`useReceiptScanner`, `useReceiptHistory`).
+- [ ] **E2E Smoke Tests:** Implement Playwright tests for the full "Scan -> Save -> View" happy path.
+- [ ] **Performance Benchmarks:** Monitor and optimize LCP (Largest Contentful Paint) for the scan tab.

@@ -39,10 +39,10 @@ function onDrop(e: DragEvent) {
 
 <template>
     <div
-        class="border-2 border-dashed rounded-[2rem] p-10 flex flex-col items-center gap-6 text-center cursor-pointer transition-all duration-300 group shadow-inner"
+        class="relative border-2 border-dashed rounded-[2rem] p-10 flex flex-col items-center justify-center gap-6 text-center cursor-pointer transition-all duration-300 group shadow-inner w-full h-full min-h-[12rem]"
         :class="[
             isDragging 
-                ? 'border-primary-500 bg-primary-50/50 dark:bg-primary-950/30 ring-4 ring-primary-500/20' 
+                ? 'border-primary-500 bg-primary-50/50 dark:bg-primary-950/30 ring-4 ring-primary-500/20 scale-[0.99]' 
                 : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 hover:border-primary-500 hover:bg-primary-50/30 dark:hover:bg-primary-950/20'
         ]"
         role="button"
@@ -50,17 +50,23 @@ function onDrop(e: DragEvent) {
         @click="triggerUpload"
         @keydown.enter="triggerUpload"
         @keydown.space.prevent="triggerUpload"
+        @dragenter.prevent="isDragging = true"
         @dragover.prevent="isDragging = true"
         @dragleave.prevent="isDragging = false"
         @drop.prevent="onDrop"
     >
-        <div class="p-5 rounded-[1.5rem] bg-neutral-50 dark:bg-neutral-800 group-hover:bg-white dark:group-hover:bg-neutral-700 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700 group-hover:ring-primary-500/50 transition-all duration-300 group-active:scale-90">
-            <UIcon name="i-lucide-upload-cloud" class="size-8 text-neutral-400 group-hover:text-primary-500 transition-colors" />
-        </div>
-        <div class="space-y-1">
-            <p class="text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider">{{ $t('scan.choose_file') }}</p>
-            <p class="text-xs text-neutral-400 font-bold tracking-tight">{{ $t('scan.file_limits') }}</p>
-        </div>
+        <!-- Invisible overlay to capture drag events and prevent child element flickering -->
+        <div v-if="isDragging" class="absolute inset-0 z-50 rounded-[2rem] bg-primary-500/5"></div>
+
+        <slot>
+            <div class="p-5 rounded-[1.5rem] bg-neutral-50 dark:bg-neutral-800 group-hover:bg-white dark:group-hover:bg-neutral-700 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700 group-hover:ring-primary-500/50 transition-all duration-300 group-active:scale-90">
+                <UIcon name="i-lucide-upload-cloud" class="size-8 text-neutral-400 group-hover:text-primary-500 transition-colors" />
+            </div>
+            <div class="space-y-1">
+                <p class="text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider">{{ $t('scan.choose_file') }}</p>
+                <p class="text-xs text-neutral-400 font-bold tracking-tight">{{ $t('scan.file_limits') }}</p>
+            </div>
+        </slot>
 
         <input
             ref="fileInput"
