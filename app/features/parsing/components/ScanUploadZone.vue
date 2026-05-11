@@ -39,10 +39,10 @@ function onDrop(e: DragEvent) {
 
 <template>
     <div
-        class="relative border-2 border-dashed rounded-[2rem] p-10 flex flex-col items-center justify-center gap-6 text-center cursor-pointer transition-all duration-300 group shadow-inner w-full h-full min-h-[12rem]"
+        class="relative border-2 border-dashed rounded-[2rem] p-10 flex flex-col items-center justify-center gap-6 text-center cursor-pointer transition-all duration-500 group shadow-inner w-full h-full min-h-[12rem]"
         :class="[
             isDragging 
-                ? 'border-primary-500 bg-primary-50/50 dark:bg-primary-950/30 ring-4 ring-primary-500/20 scale-[0.99]' 
+                ? 'border-primary-500 bg-primary-50/80 dark:bg-primary-950/40 ring-8 ring-primary-500/10' 
                 : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 hover:border-primary-500 hover:bg-primary-50/30 dark:hover:bg-primary-950/20'
         ]"
         role="button"
@@ -56,14 +56,30 @@ function onDrop(e: DragEvent) {
         @drop.prevent="onDrop"
     >
         <!-- Invisible overlay to capture drag events and prevent child element flickering -->
-        <div v-if="isDragging" class="absolute inset-0 z-50 rounded-[2rem] bg-primary-500/5"></div>
+        <div v-if="isDragging" class="absolute inset-0 z-50 rounded-[2rem] bg-primary-500/5 animate-pulse"></div>
 
         <slot>
-            <div class="p-5 rounded-[1.5rem] bg-neutral-50 dark:bg-neutral-800 group-hover:bg-white dark:group-hover:bg-neutral-700 shadow-sm ring-1 ring-neutral-200 dark:ring-neutral-700 group-hover:ring-primary-500/50 transition-all duration-300 group-active:scale-90">
-                <UIcon name="i-lucide-upload-cloud" class="size-8 text-neutral-400 group-hover:text-primary-500 transition-colors" />
+            <div 
+                class="p-6 rounded-[1.5rem] shadow-sm ring-1 transition-all duration-500 group-active:scale-95"
+                :class="[
+                    isDragging 
+                        ? 'bg-white dark:bg-neutral-700 ring-primary-500 scale-110 shadow-xl' 
+                        : 'bg-neutral-50 dark:bg-neutral-800 group-hover:bg-white dark:group-hover:bg-neutral-700 ring-neutral-200 dark:ring-neutral-700 group-hover:ring-primary-500/50'
+                ]"
+            >
+                <UIcon 
+                    name="i-lucide-upload-cloud" 
+                    class="size-10 transition-colors duration-500" 
+                    :class="[isDragging ? 'text-primary-500' : 'text-neutral-400 group-hover:text-primary-500']"
+                />
             </div>
-            <div class="space-y-1">
-                <p class="text-sm font-black text-neutral-900 dark:text-white uppercase tracking-wider">{{ $t('scan.choose_file') }}</p>
+            <div class="space-y-2">
+                <p 
+                    class="text-sm font-black uppercase tracking-wider transition-colors duration-500"
+                    :class="[isDragging ? 'text-primary-600 dark:text-primary-400' : 'text-neutral-900 dark:text-white']"
+                >
+                    {{ $t('scan.choose_file') }}
+                </p>
                 <p class="text-xs text-neutral-400 font-bold tracking-tight">{{ $t('scan.file_limits') }}</p>
             </div>
         </slot>
