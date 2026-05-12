@@ -22,5 +22,5 @@
 - [ ] **Performance Benchmarks:** Monitor and optimize LCP (Largest Contentful Paint) for the scan tab.
 
 ## 🚀 Deployment & CI/CD
-- [ ] **CI Pipeline:** Run full suite (Vitest + Playwright) successfully on push.
-- [ ] **Security Validation:** Ensure no critical findings in pre-commit/CI static analysis.
+- [x] **CI Pipeline:** Run full suite (Vitest + Playwright) successfully on push.
+- [x] **Security Validation:** Ensure no critical findings in pre-commit/CI static analysis and verify .gitignore coverage.
