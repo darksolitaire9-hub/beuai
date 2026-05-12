@@ -6,10 +6,23 @@
 import type { SavedReceipt } from "../types/receipt";
 
 const DB_NAME = "bewai-db";
-const DB_VERSION = 1;
+const DB_VERSION = 3; 
 const STORE_NAME = "receipts";
 
 let _db: IDBDatabase | null = null;
+
+export const generateReceiptSignature = (receipt: {
+  vendor_tax_id: string | null;
+  date: string | null;
+  total_paid: number | null;
+}): string => {
+  const parts = [
+    receipt.vendor_tax_id ?? "unknown-vendor",
+    receipt.date ?? "unknown-date",
+    receipt.total_paid?.toFixed(2) ?? "0.00",
+  ];
+  return parts.join("|");
+};
 
 function openDb(): Promise<IDBDatabase> {
   if (!import.meta.client) {
@@ -24,22 +37,21 @@ function openDb(): Promise<IDBDatabase> {
 
     req.onupgradeneeded = (e) => {
       const db = (e.target as IDBOpenDBRequest).result;
+      
+      // Receipts Store
+      let receiptStore: IDBObjectStore;
       if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, { keyPath: "id" });
+        receiptStore = db.createObjectStore(STORE_NAME, { keyPath: "id" });
+      } else {
+        receiptStore = (e.target as IDBOpenDBRequest).transaction!.objectStore(STORE_NAME);
+      }
+      if (!receiptStore.indexNames.contains("signature")) {
+        receiptStore.createIndex("signature", "signature", { unique: false });
       }
     };
 
     req.onsuccess = (e) => {
       const db = (e.target as IDBOpenDBRequest).result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.close();
-        indexedDB.deleteDatabase(DB_NAME);
-        _db = null;
-        reject(
-          new Error(`[storage] ${STORE_NAME} store missing — database reset`),
-        );
-        return;
-      }
       _db = db;
       resolve(db);
     };
@@ -60,9 +72,21 @@ export const useReceiptStorage = () => {
       const req = tx.objectStore(STORE_NAME).getAll();
       req.onsuccess = () => resolve(req.result as SavedReceipt[]);
       req.onerror = () =>
-        reject(req.error ?? new Error("[storage] request failed"));
-      tx.onabort = () =>
-        reject(tx.error ?? new Error("[storage] transaction aborted"));
+        reject(req.error ?? new Error("[storage] loadAll failed"));
+    });
+  };
+
+  const isDuplicate = async (signature: string): Promise<boolean> => {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction(STORE_NAME, "readonly");
+      const store = tx.objectStore(STORE_NAME);
+      const index = store.index("signature");
+      const req = index.getKey(signature);
+
+      req.onsuccess = () => resolve(req.result !== undefined);
+      req.onerror = () =>
+        reject(req.error ?? new Error("[storage] duplicate check failed"));
     });
   };
 
@@ -70,12 +94,11 @@ export const useReceiptStorage = () => {
     const db = await openDb();
     return new Promise((resolve, reject) => {
       const tx = db.transaction(STORE_NAME, "readwrite");
-      tx.objectStore(STORE_NAME).put(receipt);
+      // JSON stringify/parse is the safest way to strip Vue proxies for IDB
+      tx.objectStore(STORE_NAME).put(JSON.parse(JSON.stringify(receipt)));
       tx.oncomplete = () => resolve();
       tx.onerror = () =>
-        reject(tx.error ?? new Error("[storage] transaction failed"));
-      tx.onabort = () =>
-        reject(tx.error ?? new Error("[storage] transaction aborted"));
+        reject(tx.error ?? new Error("[storage] persist failed"));
     });
   };
 
@@ -86,11 +109,9 @@ export const useReceiptStorage = () => {
       tx.objectStore(STORE_NAME).delete(id);
       tx.oncomplete = () => resolve();
       tx.onerror = () =>
-        reject(tx.error ?? new Error("[storage] transaction failed"));
-      tx.onabort = () =>
-        reject(tx.error ?? new Error("[storage] transaction aborted"));
+        reject(tx.error ?? new Error("[storage] drop failed"));
     });
   };
 
-  return { loadAll, persist, drop };
+  return { loadAll, isDuplicate, persist, drop };
 };

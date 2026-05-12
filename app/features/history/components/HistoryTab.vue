@@ -9,7 +9,7 @@
 import type { SavedReceipt } from "../types/receipt";
 import type { ReceiptItem } from "../../parsing/types/receipt";
 
-const { history, remove, totalSpent, totalSaved, hydrate } =
+const { history, remove, totalSpent } =
     useReceiptHistory();
 const { exportAll: exportToCsv } = useCsvExport();
 const toast = useToast();
@@ -19,15 +19,7 @@ const selected = ref<SavedReceipt | null>(null);
 const showDetail = ref(false);
 
 onMounted(async () => {
-    try {
-        await hydrate();
-    } catch {
-        toast.add({
-            title: t('history.alerts.load_failed'),
-            description: t('history.alerts.storage_unavailable'),
-            color: "error",
-        });
-    }
+    // Hydration is now handled globally in app.vue
 });
 
 const fmt = (n: number) => `€${n.toFixed(2)}`;
@@ -91,8 +83,7 @@ function exportAll() {
                  </UBadge>
                  <div class="h-4 w-px bg-neutral-200 dark:bg-neutral-700" />
                  <p class="text-sm font-bold text-neutral-500">
-                    <span class="text-neutral-900 dark:text-white">{{ fmt(totalSpent) }}</span> {{ $t('history.total') }} ·
-                    <span class="text-success-600">{{ fmt(totalSaved) }} {{ $t('history.saved') }}</span>
+                    <span class="text-neutral-900 dark:text-white">{{ fmt(totalSpent) }}</span> {{ $t('history.total') }}
                  </p>
             </div>
             <p v-else class="text-sm font-bold text-neutral-400 uppercase tracking-widest">{{ $t('history.no_data') }}</p>
@@ -127,7 +118,7 @@ function exportAll() {
                     <button 
                         class="w-full text-left focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-500/20"
                         @click="openReceipt(receipt)"
-                        :aria-label="`View details for ${receipt.store} on ${formatDate(receipt.date)}`"
+                        :aria-label="$t('history.aria.view_details', { store: receipt.store, date: formatDate(receipt.date) })"
                     >
                         <div class="flex items-start justify-between p-6">
                             <div class="flex-1 min-w-0 mr-4">
@@ -154,7 +145,7 @@ function exportAll() {
                                     icon="i-lucide-trash-2"
                                     size="xs"
                                     class="mt-3 opacity-0 group-hover:opacity-100 transition-opacity"
-                                    :aria-label="`Delete receipt from ${receipt.store}`"
+                                    :aria-label="$t('history.aria.delete_receipt', { store: receipt.store })"
                                     @click.stop="deleteReceipt(receipt.id)"
                                 />
                             </div>

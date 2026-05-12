@@ -6,6 +6,11 @@
       "history": "Histórico",
       "analyze": "Inteligência",
       "results": "Resultados"
+    },
+    "aria": {
+      "main_navigation": "Navegação Principal",
+      "mobile_navigation": "Navegação Mobile",
+      "change_language": "Mudar Idioma"
     }
   },
   "scan": {
@@ -31,19 +36,42 @@
     "alerts": {
       "scan_failed": "Falha na leitura",
       "invalid_format": "Por favor, use o formato JPEG ou PNG",
-      "too_large": "Imagem muito grande — máx. 10 MB"
-    }
+      "too_large": "Imagem muito grande — máx. 10 MB",
+      "too_dark": "Muito escuro — tente uma iluminação melhor"
+    },
+    "desktop_drag_drop": "Arraste e solte seus recibos digitais aqui ou clique para procurar."
   },
   "results": {
     "title": "Revisar e Confirmar",
     "summary": "Resumo",
+    "vendor_tax_id": "NIF do Fornecedor",
+    "customer_tax_id": "NIF do Cliente",
+    "invoice_number": "Nº da Fatura",
+    "date": "Data",
     "subtotal": "Subtotal",
-    "savings": "Economia",
+    "tax_total": "Total IVA",
+    "total_savings": "Economia Total",
     "total_paid": "Total Pago",
+    "payment_method": "Método de Pagamento",
     "items": "itens",
+    "line_items": "Itens da Fatura",
+    "visual_evidence": "Evidência Visual",
     "actions": {
       "discard": "Descartar",
-      "save": "Salvar no Histórico"
+      "save": "Salvar no Histórico",
+      "add_item": "Adicionar Item",
+      "discard_changes": "Descartar Alterações",
+      "save_intelligence": "Salvar Inteligência",
+      "confirm_save": "Confirmar e Salvar"
+    },
+    "placeholders": {
+      "store": "Nome da Loja",
+      "item_name": "Nome do Item"
+    },
+    "table": {
+      "qty": "Qtd",
+      "price": "Preço",
+      "total": "Total"
     },
     "warnings": {
       "mismatch": "Verificar Precisão",
@@ -54,7 +82,30 @@
       "save_failed": "Não foi possível salvar o recibo",
       "storage_full": "O armazenamento pode estar cheio ou indisponível.",
       "discarded": "Descartado"
+    },
+    "verified_ai": "VERIFICADO POR IA",
+    "workspace": "Espaço de Verificação",
+    "new_entry": "Nova Entrada",
+    "store_info": "Informações da Loja",
+    "identity_invoice": "Identidade e Fatura",
+    "empty": {
+      "title": "Pronto para revisar?",
+      "desc": "Escaneie um recibo para verificar e resgatar seus dados.",
+      "action": "Ir para Escanear"
     }
+  },
+  "categories": {
+    "supermarket": "Supermercado",
+    "utilities": "Serviços/Contas",
+    "restaurant": "Restaurante",
+    "office_supplies": "Escritório",
+    "fuel": "Combustível",
+    "other": "Outro"
+  },
+  "queue": {
+    "active": "Fila Ativa",
+    "items_total": "{count} itens no total",
+    "review": "Revisar Resultados"
   },
   "history": {
     "title": "Histórico",
@@ -72,6 +123,10 @@
       "removed": "Recibo removido",
       "remove_failed": "Não foi possível remover o recibo",
       "no_export": "Nenhum recibo para exportar"
+    },
+    "aria": {
+      "view_details": "Ver detalhes de {store} em {date}",
+      "delete_receipt": "Excluir recibo de {store}"
     }
   },
   "analyze": {
@@ -83,7 +138,12 @@
     "total_items": "Total de itens",
     "coming_soon_title": "Em Breve: Padrões Profundos",
     "coming_soon_desc": "Estamos construindo comparações automáticas de preços e tendências de gastos por categoria.",
-    "beta_access": "ACESSO BETA EM BREVE"
+    "beta_access": "ACESSO BETA EM BREVE",
+    "lifetime_spend": "GASTO TOTAL",
+    "category_breakdown": "Gasto por Categoria",
+    "top_destinations": "Principais Destinos",
+    "empty_title": "Nenhuma Inteligência Ainda",
+    "empty_desc": "Resgate seus primeiros recibos para ver padrões avançados e análise de gastos."
   },
   "api_errors": {
     "NOT_A_RECEIPT": "Esta imagem não é um recibo de compras — tente outra foto.",

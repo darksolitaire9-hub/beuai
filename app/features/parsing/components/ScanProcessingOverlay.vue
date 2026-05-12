@@ -5,7 +5,7 @@ const props = defineProps<{ visible: boolean }>();
 const { stage } = useReceiptScanner();
 
 const STAGES: Record<ScanStage, { id: number, labelKey: string, icon: string }> = {
-    idle: { id: 0, labelKey: '', icon: '' },
+    idle: { id: 0, labelKey: 'scan.stages.analyzing', icon: 'i-lucide-brain-circuit' },
     compressing: { id: 1, labelKey: 'scan.stages.compressing', icon: 'i-lucide-shield-check' },
     analyzing: { id: 2, labelKey: 'scan.stages.analyzing', icon: 'i-lucide-brain-circuit' }
 };
@@ -27,7 +27,7 @@ const current = computed(() => STAGES[stage.value]);
                         <div class="absolute inset-0 border-8 border-primary-500 rounded-full border-t-transparent animate-spin" />
                         <div class="absolute inset-0 flex items-center justify-center">
                             <UIcon
-                                :name="current.icon || 'i-lucide-scan-line'"
+                                :name="current.icon"
                                 class="size-12 text-primary-500 animate-pulse"
                             />
                         </div>

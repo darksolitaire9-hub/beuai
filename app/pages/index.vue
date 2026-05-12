@@ -9,12 +9,6 @@ const isReviewMode = computed(() => activeTab.value === 'results');
 provide("setTab", (tab: AppTabId) => {
     activeTab.value = tab;
 });
-
-const { result } = useReceiptScanner();
-
-watch(result, (val, prev) => {
-    if (val && !prev) activeTab.value = "results";
-});
 </script>
 
 <template>

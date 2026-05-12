@@ -125,9 +125,7 @@ export default defineEventHandler(async (event) => {
 
   // Heuristic: if there are no items and no total, treat as non-receipt.
   const hasItems = Array.isArray(parsed.items) && parsed.items.length > 0;
-  const hasTotal =
-    typeof parsed.receipt_total_paid === "number" &&
-    parsed.receipt_total_paid > 0;
+  const hasTotal = typeof parsed.total_paid === "number" && parsed.total_paid > 0;
 
   if (!hasItems && !hasTotal) {
     throw createError({
@@ -142,10 +140,10 @@ export default defineEventHandler(async (event) => {
     delete parsed.not_receipt;
   }
 
+  // Drift is calculated as difference between sum of line items and the claimed subtotal
   const computedSubtotal =
     parsed.items?.reduce(
-      (sum: number, item: any) =>
-        sum + (item.total ?? 0) - (item.discount ?? 0),
+      (sum: number, item: any) => sum + (item.total ?? 0),
       0,
     ) ?? 0;
 

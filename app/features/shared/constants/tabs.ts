@@ -8,7 +8,7 @@ export type AppTabId = "scan" | "results" | "history" | "analyze";
 export const APP_TABS: TabsItem[] = [
   { label: "Scan", value: "scan", slot: "scan", icon: "i-lucide-camera" },
   {
-    label: "Analyze",
+    label: "Intelligence",
     value: "analyze",
     slot: "analyze",
     icon: "i-lucide-bar-chart-3",
@@ -18,11 +18,5 @@ export const APP_TABS: TabsItem[] = [
     value: "history",
     slot: "history",
     icon: "i-lucide-clock",
-  },
-  {
-    label: "Results",
-    value: "results",
-    slot: "results",
-    icon: "i-lucide-receipt",
   },
 ];

@@ -10,7 +10,7 @@ export const LANGUAGE_LABELS: Record<ReceiptLanguage, string> = {
 };
 
 export const useReceiptLanguage = () => {
-  const lang = useState<ReceiptLanguage>("receipt-language", () => "pt");
+  const lang = useState<ReceiptLanguage>("receipt-language", () => "en");
   const set = (l: ReceiptLanguage) => {
     lang.value = l;
   };

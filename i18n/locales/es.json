@@ -6,6 +6,11 @@
       "history": "Historial",
       "analyze": "Inteligencia",
       "results": "Resultados"
+    },
+    "aria": {
+      "main_navigation": "Navegación Principal",
+      "mobile_navigation": "Navegación Móvil",
+      "change_language": "Cambiar Idioma"
     }
   },
   "scan": {
@@ -31,8 +36,10 @@
     "alerts": {
       "scan_failed": "Fallo al escanear",
       "invalid_format": "Por favor, use formato JPEG o PNG",
-      "too_large": "Imagen demasiado grande — máx. 10 MB"
-    }
+      "too_large": "Imagen demasiado grande — máx. 10 MB",
+      "too_dark": "Demasiado oscuro — intenta mejor iluminación"
+    },
+    "desktop_drag_drop": "Arrastra y suelta tus recibos digitales aquí o haz clic para buscar."
   },
   "results": {
     "title": "Revisar y Confirmar",
@@ -43,7 +50,11 @@
     "items": "artículos",
     "actions": {
       "discard": "Descartar",
-      "save": "Guardar en Historial"
+      "save": "Guardar en Historial",
+      "add_item": "Añadir Artículo",
+      "discard_changes": "Descartar Cambios",
+      "save_intelligence": "Guardar Inteligencia",
+      "confirm_save": "Confirmar y Guardar"
     },
     "warnings": {
       "mismatch": "Verificar Precisión",
@@ -54,6 +65,34 @@
       "save_failed": "No se pudo guardar el recibo",
       "storage_full": "El almacenamiento puede estar lleno o no disponible.",
       "discarded": "Descartado"
+    },
+    "vendor_tax_id": "NIF del Proveedor",
+    "customer_tax_id": "NIF del Cliente",
+    "invoice_number": "Nº Factura",
+    "date": "Fecha",
+    "tax_total": "Total Impuestos",
+    "total_savings": "Ahorro Total",
+    "payment_method": "Método de Pago",
+    "line_items": "Artículos",
+    "visual_evidence": "Evidencia Visual",
+    "verified_ai": "VERIFICADO POR IA",
+    "placeholders": {
+      "store": "Nombre de la Tienda",
+      "item_name": "Nombre del Artículo"
+    },
+    "table": {
+      "qty": "Cant",
+      "price": "Precio",
+      "total": "Total"
+    },
+    "workspace": "Espacio de Verificación",
+    "new_entry": "Nueva Entrada",
+    "store_info": "Información de la Tienda",
+    "identity_invoice": "Identidad y Factura",
+    "empty": {
+      "title": "¿Listo para revisar?",
+      "desc": "Escanea un recibo para verificar y rescatar tus datos.",
+      "action": "Ir a Escanear"
     }
   },
   "history": {
@@ -72,6 +111,10 @@
       "removed": "Recibo eliminado",
       "remove_failed": "No se pudo eliminar el recibo",
       "no_export": "No hay recibos para exportar"
+    },
+    "aria": {
+      "view_details": "Ver detalles de {store} el {date}",
+      "delete_receipt": "Eliminar recibo de {store}"
     }
   },
   "analyze": {
@@ -83,7 +126,12 @@
     "total_items": "Total de artículos",
     "coming_soon_title": "Próximamente: Patrones Profundos",
     "coming_soon_desc": "Estamos creando comparaciones automáticas de precios y tendencias de gastos por categoría.",
-    "beta_access": "ACCESO BETA PRÓXIMAMENTE"
+    "beta_access": "ACCESO BETA PRÓXIMAMENTE",
+    "lifetime_spend": "GASTO TOTAL",
+    "category_breakdown": "Desglose por Categoría",
+    "top_destinations": "Destinos Principales",
+    "empty_title": "Aún No Hay Inteligencia",
+    "empty_desc": "Rescata tus primeros recibos para ver patrones avanzados y análisis de gastos."
   },
   "api_errors": {
     "NOT_A_RECEIPT": "Esta imagen no es un recibo de compras — intente con otra foto.",
@@ -93,5 +141,18 @@
     "HTTP_502": "El servicio de recibos no está disponible temporalmente. Inténtelo de nuevo en breve.",
     "HTTP_503": "El servicio de recibos no está disponible temporalmente. Inténtelo de nuevo en breve.",
     "generic": "No pudimos leer este recibo. Inténtelo de nuevo con una foto más clara."
+  },
+  "categories": {
+    "supermarket": "Supermercado",
+    "utilities": "Servicios Públicos",
+    "restaurant": "Restaurante",
+    "office_supplies": "Material de Oficina",
+    "fuel": "Combustible",
+    "other": "Otro"
+  },
+  "queue": {
+    "active": "Queue Active",
+    "items_total": "{count} items total",
+    "review": "Review Results"
   }
 }

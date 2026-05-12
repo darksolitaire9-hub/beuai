@@ -31,3 +31,16 @@ localhost+1-key.pem
 # internal mds
 docs/dev-conventions.md
 inspiration/
+output/
+
+# Testing artifacts
+playwright-report/
+test-results/
+blob-report/
+coverage/
+
+# Package manager logs
+pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

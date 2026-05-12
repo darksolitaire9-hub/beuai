@@ -7,10 +7,12 @@ const mockStorage = {
   loadAll: vi.fn(),
   persist: vi.fn(),
   drop: vi.fn(),
+  isDuplicate: vi.fn(() => Promise.resolve(false)),
 };
 
 vi.mock("../storage/useReceiptStorage", () => ({
   useReceiptStorage: () => mockStorage,
+  generateReceiptSignature: () => "mock-signature",
 }));
 
 // Mock deepClone
@@ -40,7 +42,7 @@ describe("useReceiptHistory", () => {
   });
 
   it("should save a receipt and update local state", async () => {
-    const mockReceipt = { store: "Test Store", total_paid: 15, total_savings: 5, items: [] };
+    const mockReceipt = { store: "Test Store", total_paid: 15, items: [] };
     const { history, save } = useReceiptHistory();
     
     await save(mockReceipt as any);
@@ -50,6 +52,18 @@ describe("useReceiptHistory", () => {
     expect(history.value[0].store).toBe("Test Store");
     expect(history.value[0].id).toBeDefined();
     expect(history.value[0].savedAt).toBeDefined();
+    expect(history.value[0].signature).toBe("mock-signature");
+  });
+
+  it("should not save if it's a duplicate", async () => {
+    mockStorage.isDuplicate.mockResolvedValueOnce(true);
+    const mockReceipt = { store: "Dup Store", total_paid: 10, items: [] };
+    const { history, save } = useReceiptHistory();
+    
+    await save(mockReceipt as any);
+
+    expect(mockStorage.persist).not.toHaveBeenCalled();
+    expect(history.value).toHaveLength(0);
   });
 
   it("should remove a receipt and update local state", async () => {
@@ -63,13 +77,12 @@ describe("useReceiptHistory", () => {
   });
 
   it("should compute correct totals", () => {
-    const { history, totalSpent, totalSaved } = useReceiptHistory();
+    const { history, totalSpent } = useReceiptHistory();
     history.value = [
-      { total_paid: 10, total_savings: 2 } as any,
-      { total_paid: 25, total_savings: 5 } as any,
+      { total_paid: 10 } as any,
+      { total_paid: 25 } as any,
     ];
 
     expect(totalSpent.value).toBe(35);
-    expect(totalSaved.value).toBe(7);
   });
 });

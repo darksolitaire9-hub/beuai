@@ -40,7 +40,7 @@ const props = defineProps<{
                 icon="i-lucide-sun"
                 color="warning"
                 variant="soft"
-                title="Too dark — try better lighting"
+                :title="$t('scan.alerts.too_dark')"
                 class="absolute bottom-3 left-3 right-3 text-xs"
             />
         </Transition>

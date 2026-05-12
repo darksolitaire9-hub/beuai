@@ -16,17 +16,27 @@ test.describe("beuai smoke tests", () => {
     await expect(scanTitle).toBeVisible();
   });
 
-  test("should allow switching language to Portuguese", async ({ page }) => {
-    // Open language picker
-    await page.getByRole('button', { name: 'English' }).click();
-    
-    // Select Português
-    await page.getByRole('menuitem', { name: 'Português' }).click();
-    
-    // Verify title changed
-    const scanTitlePt = page.locator('h2', { hasText: 'Resgatar Recibo' }).first();
-    await expect(scanTitlePt).toBeVisible();
-  });
+  const locales = [
+    { name: 'Português', title: 'Resgatar Recibo' },
+    { name: 'Español', title: 'Rescatar Recibo' },
+    { name: 'Deutsch', title: 'Beleg erfassen' },
+    { name: 'हिन्दी', title: 'रसीद प्राप्त करें' },
+    { name: '中文', title: '获取收据' }
+  ];
+
+  for (const locale of locales) {
+    test(`should allow switching language to ${locale.name}`, async ({ page }) => {
+      // Open language picker
+      await page.getByRole('button', { name: 'English' }).click();
+      
+      // Select the locale
+      await page.getByRole('menuitem', { name: locale.name }).click();
+      
+      // Verify title changed
+      const scanTitle = page.locator('h2', { hasText: locale.title }).first();
+      await expect(scanTitle).toBeVisible();
+    });
+  }
 
   test("should navigate to history tab", async ({ page }) => {
     // Click History tab in bottom nav (mobile) or sidebar

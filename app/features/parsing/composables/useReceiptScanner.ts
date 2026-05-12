@@ -24,6 +24,9 @@ export const useReceiptScanner = () => {
       // Step 1: Optimize & Strip Metadata
       const optimized = await compressForOcr(blob);
       
+      // Mandatory UX delay so the user sees the "Securing privacy..." stage
+      await delay(800);
+      
       stage.value = "analyzing";
       
       // Step 2: Extract

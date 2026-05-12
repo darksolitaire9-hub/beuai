@@ -6,6 +6,11 @@
       "history": "历史",
       "analyze": "智能",
       "results": "结果"
+    },
+    "aria": {
+      "main_navigation": "主导航",
+      "mobile_navigation": "移动导航",
+      "change_language": "更改语言"
     }
   },
   "scan": {
@@ -31,8 +36,10 @@
     "alerts": {
       "scan_failed": "扫描失败",
       "invalid_format": "请使用 JPEG 或 PNG 格式",
-      "too_large": "图像过大 — 最大 10 MB"
-    }
+      "too_large": "图像过大 — 最大 10 MB",
+      "too_dark": "太暗了 — 尝试更好的照明"
+    },
+    "desktop_drag_drop": "将您的数字收据拖放到此处或点击浏览。"
   },
   "results": {
     "title": "检查并确认",
@@ -43,7 +50,11 @@
     "items": "项",
     "actions": {
       "discard": "放弃",
-      "save": "保存到历史"
+      "save": "保存到历史",
+      "add_item": "添加项目",
+      "discard_changes": "放弃更改",
+      "save_intelligence": "保存智能",
+      "confirm_save": "确认并保存"
     },
     "warnings": {
       "mismatch": "核实准确性",
@@ -54,6 +65,34 @@
       "save_failed": "无法保存收据",
       "storage_full": "存储可能已满或不可用。",
       "discarded": "已放弃"
+    },
+    "vendor_tax_id": "供应商税号",
+    "customer_tax_id": "客户税号",
+    "invoice_number": "发票编号",
+    "date": "日期",
+    "tax_total": "税额总计",
+    "total_savings": "节省总额",
+    "payment_method": "付款方式",
+    "line_items": "项目列表",
+    "visual_evidence": "视觉证据",
+    "verified_ai": "AI已验证",
+    "placeholders": {
+      "store": "商店名称",
+      "item_name": "项目名称"
+    },
+    "table": {
+      "qty": "数量",
+      "price": "价格",
+      "total": "总计"
+    },
+    "workspace": "验证工作区",
+    "new_entry": "新条目",
+    "store_info": "商店信息",
+    "identity_invoice": "身份和发票",
+    "empty": {
+      "title": "准备好检查了吗？",
+      "desc": "扫描收据以验证并保存您的数据。",
+      "action": "去扫描"
     }
   },
   "history": {
@@ -72,6 +111,10 @@
       "removed": "收据已移除",
       "remove_failed": "无法移除收据",
       "no_export": "没有可导出的收据"
+    },
+    "aria": {
+      "view_details": "查看 {store} 在 {date} 的详情",
+      "delete_receipt": "删除来自 {store} 的收据"
     }
   },
   "analyze": {
@@ -83,7 +126,12 @@
     "total_items": "项目总数",
     "coming_soon_title": "即将推出：深度模式",
     "coming_soon_desc": "我们正在构建自动价格比较和按类别划分的支出趋势，以帮助您优化每次购买。",
-    "beta_access": "测试版访问即将推出"
+    "beta_access": "测试版访问即将推出",
+    "lifetime_spend": "总花费",
+    "category_breakdown": "按类别分类",
+    "top_destinations": "热门目的地",
+    "empty_title": "目前没有智能数据",
+    "empty_desc": "保存您的第一张收据以查看高级模式和支出分析。"
   },
   "api_errors": {
     "NOT_A_RECEIPT": "此图像不是购物收据 — 请尝试另一张照片。",
@@ -93,5 +141,18 @@
     "HTTP_502": "收据服务暂时不可用。请稍后再试。",
     "HTTP_503": "收据服务暂时不可用。请稍后再试。",
     "generic": "我们无法读取此收据。请使用更清晰的照片重试。"
+  },
+  "categories": {
+    "supermarket": "超市",
+    "utilities": "公用事业",
+    "restaurant": "餐厅",
+    "office_supplies": "办公用品",
+    "fuel": "燃料",
+    "other": "其他"
+  },
+  "queue": {
+    "active": "Queue Active",
+    "items_total": "{count} items total",
+    "review": "Review Results"
   }
 }
